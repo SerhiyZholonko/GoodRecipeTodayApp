@@ -14,11 +14,12 @@ struct MainViewControllerViewModel {
     private let recipe: RecipeModel
     
     enum SectionType: CaseIterable {
-        case photo
-        case information
-        case episodes
+        
+        case category
+        case recomend
+        case oftheWeek
     }
-    public var sections = SectionType.allCases
+    public var sections: [SectionType] = SectionType.allCases
     //MARK: - init
     init() {
         self.recipe = .init(name: "Salat")
@@ -36,7 +37,7 @@ struct MainViewControllerViewModel {
     
     //MARK: - layout
     
-    public func createPhotoSectionLayout() -> NSCollectionLayoutSection {
+    public func createCategorySectionLayout() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(1.0)))
         item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0)
 
@@ -45,12 +46,12 @@ struct MainViewControllerViewModel {
         section.orthogonalScrollingBehavior = .continuous
 
         // Create the header item and add it to the section
-         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
          let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
          section.boundarySupplementaryItems = [headerItem]
         return section
     }
-    public func createInfoSectionLayout() -> NSCollectionLayoutSection {
+    public func createRecomendSectionLayout() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33), heightDimension: .fractionalHeight(1.0)))
         item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 0)
 
@@ -59,13 +60,13 @@ struct MainViewControllerViewModel {
         section.orthogonalScrollingBehavior = .continuous
         
         // Create the header item and add it to the section
-         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
          let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
          section.boundarySupplementaryItems = [headerItem]
 
         return section
     }
-    public func createEpisodeSectionLayout() -> NSCollectionLayoutSection {
+    public func createOfTheWeekSectionLayout() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
         item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
 
@@ -74,7 +75,7 @@ struct MainViewControllerViewModel {
         section.orthogonalScrollingBehavior = .continuous
         
         // Create the header item and add it to the section
-         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))
          let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
          section.boundarySupplementaryItems = [headerItem]
         return section

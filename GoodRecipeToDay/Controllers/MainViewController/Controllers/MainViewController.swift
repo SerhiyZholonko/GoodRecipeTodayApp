@@ -13,6 +13,10 @@ class MainViewController: UIViewController {
         let header = HeaderHomeView()
         return header
     }()
+    let searchView: MainSearchView = {
+       let view = MainSearchView()
+        return view
+    }()
     private let detailView: MainCollectionView
 
     init() {
@@ -27,6 +31,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         setupBasicUI()
         view.addSubview(headerView)
+        view.addSubview(searchView)
         view.addSubview(detailView)
         addConstraints()
         detailView.collectionView?.delegate = self
@@ -38,7 +43,7 @@ class MainViewController: UIViewController {
 
     }
     private func setupBasicUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .secondarySystemBackground
     }
     private func addConstraints() {
        let  headerViewConstraints = [
@@ -48,8 +53,15 @@ class MainViewController: UIViewController {
         headerView.heightAnchor.constraint(equalToConstant: 120)
        ]
         NSLayoutConstraint.activate(headerViewConstraints)
+        let searchViewConstraints = [
+            searchView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10),
+            searchView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            searchView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
+            searchView.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        NSLayoutConstraint.activate(searchViewConstraints)
         NSLayoutConstraint.activate([
-            detailView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10),
+            detailView.topAnchor.constraint(equalTo: searchView.bottomAnchor, constant: 10),
             detailView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             detailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             detailView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
@@ -80,32 +92,63 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        if indexPath.section == 0 {
-            cell.backgroundColor = .systemPink
+        switch indexPath.section {
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryViewCell.identifier, for: indexPath) as? CategoryViewCell else {
+                return UICollectionViewCell()
+            }
+                return cell
+        case 1:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecomendViewCell.identifier, for: indexPath) as? RecomendViewCell else { return UICollectionViewCell() }
+            return cell
+        case 2:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekViewCell.identiofier, for: indexPath) as? WeekViewCell else { return UICollectionViewCell() }
+            return cell
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+            return cell
         }
-        else  if indexPath.section == 1 {
-            cell.backgroundColor = .systemGreen
-        }
-        else  if indexPath.section == 2 {
-            cell.backgroundColor = .systemYellow
-        }
-        return cell
+
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             if indexPath.section == 0 {
-                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "categoryHeader", for: indexPath)
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainCategoryHeaderView.identifier, for: indexPath) as?  MainCategoryHeaderView else { return UICollectionReusableView() }
+                headerView.delegate = self
                 return headerView
             } else if indexPath.section == 1 {
-                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "recomendHeader", for: indexPath)
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainRecomendHeaderView.identifier, for: indexPath) as? MainRecomendHeaderView else { return  UICollectionReusableView() }
+                headerView.delegate = self
                 return headerView
-            }else if indexPath.section == 2 { 
-                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "weekHeader", for: indexPath)
+            }else if indexPath.section == 2 {
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainWeekHeaderView.identifier, for: indexPath) as? MainWeekHeaderView else { return UICollectionReusableView() }
+                headerView.delegate = self
                 return headerView
             }
         }
         return UICollectionReusableView()
     }
     
+}
+
+
+
+//MARK: - Delegate Header
+extension MainViewController: MainWeekHeaderViewDelegate {
+    func didTapWeek() {
+        print("Week")
+    }
+}
+
+extension MainViewController: MainRecomendHeaderViewDelegate {
+    func didTapRecomend() {
+        print("Recomend")
+    }
+}
+extension MainViewController: MainCategoryHeaderViewDelegete {
+    func didTapCategories() {
+        print("Categories")
+    }
+    
+  
 }

@@ -21,8 +21,8 @@ class MainCollectionView: UIView {
         self.viewModel = viewModel
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .systemBackground
         let collectionView = createCollectionView()
+        collectionView.backgroundColor = .secondarySystemBackground
         self.collectionView = collectionView
         addSubview(spiner)
 
@@ -65,22 +65,25 @@ class MainCollectionView: UIView {
         }
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(MainCategoryHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "categoryHeader")
-        collectionView.register(MainRecomendHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "recomendHeader")
-        collectionView.register(MainWeekHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "weekHeader")
+        collectionView.register(WeekViewCell.self, forCellWithReuseIdentifier: WeekViewCell.identiofier)
+        collectionView.register(CategoryViewCell.self, forCellWithReuseIdentifier: CategoryViewCell.identifier)
+        collectionView.register(RecomendViewCell.self, forCellWithReuseIdentifier: RecomendViewCell.identifier)
+        
+        collectionView.register(MainCategoryHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainCategoryHeaderView.identifier)
+        collectionView.register(MainRecomendHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainRecomendHeaderView.identifier)
+        collectionView.register(MainWeekHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainWeekHeaderView.identifier)
         return collectionView
         }
     
     private func createSection(for sectionIndex: Int) -> NSCollectionLayoutSection {
         let sectionTypes = viewModel.sections
         switch sectionTypes[sectionIndex] {
-        case .photo:
-            return viewModel.createPhotoSectionLayout()
-        case .information:
-            return viewModel.createInfoSectionLayout()
-        case .episodes:
-            return viewModel.createEpisodeSectionLayout()
+        case .category:
+            return viewModel.createCategorySectionLayout()
+        case .recomend:
+            return viewModel.createRecomendSectionLayout()
+        case .oftheWeek:
+            return viewModel.createOfTheWeekSectionLayout()
         }
        
     }

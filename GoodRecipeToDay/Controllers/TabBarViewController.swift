@@ -30,7 +30,7 @@ class TabBarViewController: UITabBarController {
         profileViewController.tabBarItem = UITabBarItem(title: "profile", image: UIImage(systemName: "person"), tag: 4)
         tabBar.tintColor = UIColor.red
         tabBar.barTintColor = UIColor.white
-        tabBar.backgroundColor = .secondarySystemBackground
+        tabBar.backgroundColor = .systemBackground
 
     }
 
