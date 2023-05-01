@@ -79,54 +79,61 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return viewModel.sections.count
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 8
-        case 1:
-            return 8
-        case 2:
-            return 4
-        default:
-            return 1
+        let sectionType = viewModel.sections[section]
+
+        switch sectionType {
+            
+        case .category(viewModel: let viewModel):
+            return viewModel.count
+        case .recomend(viewModel: let viewModel):
+            return viewModel.count
+        case .oftheWeek(viewModel: let viewModel):
+            return viewModel.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
+        let sectionType = viewModel.sections[indexPath.section]
+        switch sectionType {
+        case .category(let viewModel):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryViewCell.identifier, for: indexPath) as? CategoryViewCell else {
                 return UICollectionViewCell()
             }
+            cell.configure(viewModel: viewModel[indexPath.item])
                 return cell
-        case 1:
+        case .recomend(let viewModel):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecomendViewCell.identifier, for: indexPath) as? RecomendViewCell else { return UICollectionViewCell() }
+            cell.configure(viewModel: viewModel[indexPath.item])
             return cell
-        case 2:
+        case .oftheWeek(let viewModel):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekViewCell.identiofier, for: indexPath) as? WeekViewCell else { return UICollectionViewCell() }
+            cell.configure(viewModel: viewModel[indexPath.item])
             return cell
-        default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-            return cell
+
         }
 
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            if indexPath.section == 0 {
-                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainCategoryHeaderView.identifier, for: indexPath) as?  MainCategoryHeaderView else { return UICollectionReusableView() }
-                headerView.delegate = self
-                return headerView
-            } else if indexPath.section == 1 {
-                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainRecomendHeaderView.identifier, for: indexPath) as? MainRecomendHeaderView else { return  UICollectionReusableView() }
-                headerView.delegate = self
-                return headerView
-            }else if indexPath.section == 2 {
-                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainWeekHeaderView.identifier, for: indexPath) as? MainWeekHeaderView else { return UICollectionReusableView() }
-                headerView.delegate = self
-                return headerView
-            }
+        
+        switch indexPath.section {
+            
+        case 0:
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainCategoryHeaderView.identifier, for: indexPath) as?  MainCategoryHeaderView else { return UICollectionReusableView() }
+            headerView.delegate = self
+            return headerView
+        case 1:
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainRecomendHeaderView.identifier, for: indexPath) as? MainRecomendHeaderView else { return  UICollectionReusableView() }
+            headerView.delegate = self
+            return headerView
+        case 2:
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MainWeekHeaderView.identifier, for: indexPath) as? MainWeekHeaderView else { return UICollectionReusableView() }
+            headerView.delegate = self
+            return headerView
+        default:
+                return UICollectionReusableView()
+
         }
-        return UICollectionReusableView()
+
     }
     
 }

@@ -9,5 +9,8 @@ import Foundation
 
 
 final class RecomendViewCellViewModel {
-    
+    let recomendRecipe: RecipeModel
+    init(recomendRecipe: RecipeModel) {
+        self.recomendRecipe = recomendRecipe
+    }
 }

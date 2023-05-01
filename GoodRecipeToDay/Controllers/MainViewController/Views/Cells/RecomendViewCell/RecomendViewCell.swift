@@ -49,6 +49,13 @@ class RecomendViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     //MARK: - Functions
+    public func configure(viewModel: RecomendViewCellViewModel) {
+        DispatchQueue.main.async { [weak self] in
+            self?.recipeImageView.image = UIImage(named: viewModel.recomendRecipe.image)
+            self?.titleLabel.text = viewModel.recomendRecipe.title
+            self?.userLabel.text =  "By \(viewModel.recomendRecipe.ceator)"
+        }
+    }
     private func addConstraints() {
        let recipeImageViewCostraints = [
             recipeImageView.topAnchor.constraint(equalTo: topAnchor),

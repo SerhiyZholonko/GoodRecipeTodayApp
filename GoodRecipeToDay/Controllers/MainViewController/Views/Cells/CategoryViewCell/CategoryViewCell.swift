@@ -18,7 +18,7 @@ class CategoryViewCell: UICollectionViewCell {
     }()
     let titleLabel: UILabel = {
        let label = UILabel()
-        label.text = "Title"
+        label.numberOfLines = 2
         label.font = .systemFont(ofSize: 12, weight: .bold)
         label.textColor = .systemGray
         label.textAlignment = .center
@@ -38,6 +38,13 @@ class CategoryViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    //MARK: - Functions
+    public func configure(viewModel: CategoryViewCellViewModel) {
+        DispatchQueue.main.async {
+            self.categoryImage.image = UIImage(named: viewModel.category.image)
+            self.titleLabel.text = viewModel.category.name
+        }
     }
     private func addConstraints() {
         let categoryImageConstraints = [

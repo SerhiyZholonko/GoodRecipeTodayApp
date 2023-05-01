@@ -49,6 +49,13 @@ class WeekViewCell: UICollectionViewCell {
     }
     
     //MARK: - Functions
+    public func configure(viewModel: WeekViewCellViewModel) {
+        DispatchQueue.main.async {[weak self] in
+            self?.recipeImageView.image = UIImage(named: viewModel.recomendRecipe.image)
+            self?.titleLabel.text = viewModel.recomendRecipe.title
+            self?.userLabel.text = viewModel.recomendRecipe.ceator
+        }
+    }
     private func addConstraints() {
         let recipeImageViewConstraints = [
             recipeImageView.topAnchor.constraint(equalTo: topAnchor),

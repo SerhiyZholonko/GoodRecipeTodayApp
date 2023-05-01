@@ -10,18 +10,10 @@ import Foundation
 
 final class CategoryViewCellViewModel {
     //MARK: - Properties
-    var categories: [CategoryModel] = []
+    var category: CategoryModel
     
-    init() {
-        setupCategories()
+    init(category: CategoryModel) {
+        self.category = category
     }
-    private func setupCategories() {
-        let newCategories: [CategoryModel] = [
-            .init(name: "Breacfast", image: "english-breakfast"),
-            .init(name: "Breacfast", image: "english-breakfast"),
-            .init(name: "Breacfast", image: "english-breakfast"),
-            .init(name: "Breacfast", image: "english-breakfast"),
-        ]
-        categories.append(contentsOf: newCategories)
-    }
+
 }

@@ -9,5 +9,8 @@ import Foundation
 
 
 final class WeekViewCellViewModel {
-    
+    let recomendRecipe: RecipeModel
+    init(recomendRecipe: RecipeModel) {
+        self.recomendRecipe = recomendRecipe
+    }
 }
