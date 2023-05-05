@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1807B71A2A027FA7001F8F90 /* SNTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807B7192A027FA7001F8F90 /* SNTabBarController.swift */; };
+		1807B71C2A027FB2001F8F90 /* SNTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807B71B2A027FB2001F8F90 /* SNTabBar.swift */; };
+		1807B71E2A027FBE001F8F90 /* SNTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807B71D2A027FBE001F8F90 /* SNTabBarItem.swift */; };
+		1807B7282A029E80001F8F90 /* AppTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807B7272A029E80001F8F90 /* AppTabBar.swift */; };
 		1816E6F029FC0DE900A87487 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E6EF29FC0DE900A87487 /* AppDelegate.swift */; };
 		1816E6F229FC0DE900A87487 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E6F129FC0DE900A87487 /* SceneDelegate.swift */; };
 		1816E6F929FC0DEA00A87487 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1816E6F829FC0DEA00A87487 /* Assets.xcassets */; };
@@ -18,7 +22,16 @@
 		1816E70E29FC0FA200A87487 /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E70D29FC0FA200A87487 /* FavoriteViewController.swift */; };
 		1816E71029FC0FBC00A87487 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E70F29FC0FBC00A87487 /* ProfileViewController.swift */; };
 		1816E71329FC171400A87487 /* MainViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E71229FC171400A87487 /* MainViewControllerViewModel.swift */; };
+		184BE1992A03E5C400888B9C /* CookingTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184BE1982A03E5C400888B9C /* CookingTableViewCellViewModel.swift */; };
 		185A31AB29FFF17700D0EAE4 /* TopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A31AA29FFF17700D0EAE4 /* TopBarView.swift */; };
+		186927D02A04C0D300A3A4C7 /* AddDatePikerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927CF2A04C0D300A3A4C7 /* AddDatePikerViewController.swift */; };
+		186927D22A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927D12A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift */; };
+		186927D42A050D6C00A3A4C7 /* QuantityIngredientsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927D32A050D6C00A3A4C7 /* QuantityIngredientsModel.swift */; };
+		186927D72A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927D62A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift */; };
+		189C6D1F2A022B9E001EB808 /* AddIngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189C6D1E2A022B9E001EB808 /* AddIngredientTableViewCell.swift */; };
+		189C6D212A02527E001EB808 /* CookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189C6D202A02527E001EB808 /* CookingTableViewCell.swift */; };
+		18A0A3992A00E03400DA6FAB /* Extension+TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A0A3982A00E03400DA6FAB /* Extension+TextView.swift */; };
+		18A0A3BB2A0125D800DA6FAB /* LabelTextfieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A0A3BA2A0125D800DA6FAB /* LabelTextfieldView.swift */; };
 		18C23E2929FCF80700B06C53 /* MainCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C23E2829FCF80700B06C53 /* MainCollectionView.swift */; };
 		18C23E2D29FCF89500B06C53 /* RecipeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C23E2C29FCF89500B06C53 /* RecipeModel.swift */; };
 		18C23E3029FD390100B06C53 /* MainCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C23E2F29FD390100B06C53 /* MainCategoryHeaderView.swift */; };
@@ -42,6 +55,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1807B7192A027FA7001F8F90 /* SNTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNTabBarController.swift; sourceTree = "<group>"; };
+		1807B71B2A027FB2001F8F90 /* SNTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNTabBar.swift; sourceTree = "<group>"; };
+		1807B71D2A027FBE001F8F90 /* SNTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNTabBarItem.swift; sourceTree = "<group>"; };
+		1807B71F2A027FC6001F8F90 /* bg_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_image.png; sourceTree = "<group>"; };
+		1807B7272A029E80001F8F90 /* AppTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTabBar.swift; sourceTree = "<group>"; };
 		1816E6EC29FC0DE900A87487 /* GoodRecipeToDay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoodRecipeToDay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1816E6EF29FC0DE900A87487 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1816E6F129FC0DE900A87487 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,7 +73,16 @@
 		1816E70D29FC0FA200A87487 /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		1816E70F29FC0FBC00A87487 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1816E71229FC171400A87487 /* MainViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerViewModel.swift; sourceTree = "<group>"; };
+		184BE1982A03E5C400888B9C /* CookingTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		185A31AA29FFF17700D0EAE4 /* TopBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarView.swift; sourceTree = "<group>"; };
+		186927CF2A04C0D300A3A4C7 /* AddDatePikerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDatePikerViewController.swift; sourceTree = "<group>"; };
+		186927D12A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPersonsPikerViewController.swift; sourceTree = "<group>"; };
+		186927D32A050D6C00A3A4C7 /* QuantityIngredientsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantityIngredientsModel.swift; sourceTree = "<group>"; };
+		186927D62A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		189C6D1E2A022B9E001EB808 /* AddIngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientTableViewCell.swift; sourceTree = "<group>"; };
+		189C6D202A02527E001EB808 /* CookingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTableViewCell.swift; sourceTree = "<group>"; };
+		18A0A3982A00E03400DA6FAB /* Extension+TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+TextView.swift"; sourceTree = "<group>"; };
+		18A0A3BA2A0125D800DA6FAB /* LabelTextfieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextfieldView.swift; sourceTree = "<group>"; };
 		18C23E2829FCF80700B06C53 /* MainCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionView.swift; sourceTree = "<group>"; };
 		18C23E2C29FCF89500B06C53 /* RecipeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeModel.swift; sourceTree = "<group>"; };
 		18C23E2F29FD390100B06C53 /* MainCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCategoryHeaderView.swift; sourceTree = "<group>"; };
@@ -91,6 +118,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1807B7202A02826C001F8F90 /* TestTabBar */ = {
+			isa = PBXGroup;
+			children = (
+				1807B7272A029E80001F8F90 /* AppTabBar.swift */,
+				1807B7192A027FA7001F8F90 /* SNTabBarController.swift */,
+				1807B71F2A027FC6001F8F90 /* bg_image.png */,
+				1807B71B2A027FB2001F8F90 /* SNTabBar.swift */,
+				1807B71D2A027FBE001F8F90 /* SNTabBarItem.swift */,
+			);
+			path = TestTabBar;
+			sourceTree = "<group>";
+		};
 		1816E6E329FC0DE900A87487 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +162,7 @@
 		1816E70529FC0EE400A87487 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1807B7202A02826C001F8F90 /* TestTabBar */,
 				1816E70329FC0E9500A87487 /* TabBarViewController.swift */,
 				1816E71129FC16FF00A87487 /* MainViewController */,
 				18CE673229FC26600057BE58 /* SearchViewController */,
@@ -154,6 +194,14 @@
 			path = MainViewController;
 			sourceTree = "<group>";
 		};
+		184BE1972A03E58A00888B9C /* AddView */ = {
+			isa = PBXGroup;
+			children = (
+				186927D32A050D6C00A3A4C7 /* QuantityIngredientsModel.swift */,
+			);
+			path = AddView;
+			sourceTree = "<group>";
+		};
 		185A31A829FFF0A000D0EAE4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,9 +214,47 @@
 		185A31A929FFF13800D0EAE4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				189C6D1D2A022B5F001EB808 /* Cells */,
 				185A31AA29FFF17700D0EAE4 /* TopBarView.swift */,
+				18A0A3BA2A0125D800DA6FAB /* LabelTextfieldView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		186927CE2A04C09800A3A4C7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				186927CF2A04C0D300A3A4C7 /* AddDatePikerViewController.swift */,
+				186927D12A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		186927D52A050E9F00A3A4C7 /* CookingTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				189C6D202A02527E001EB808 /* CookingTableViewCell.swift */,
+				184BE1982A03E5C400888B9C /* CookingTableViewCellViewModel.swift */,
+			);
+			path = CookingTableViewCell;
+			sourceTree = "<group>";
+		};
+		186927D82A050F4500A3A4C7 /* AddIngredientTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				189C6D1E2A022B9E001EB808 /* AddIngredientTableViewCell.swift */,
+				186927D62A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift */,
+			);
+			path = AddIngredientTableViewCell;
+			sourceTree = "<group>";
+		};
+		189C6D1D2A022B5F001EB808 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				186927D82A050F4500A3A4C7 /* AddIngredientTableViewCell */,
+				186927D52A050E9F00A3A4C7 /* CookingTableViewCell */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		18C23E2E29FD378500B06C53 /* Headers */ = {
@@ -193,6 +279,7 @@
 		18C23E3829FD63B800B06C53 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				18A0A3982A00E03400DA6FAB /* Extension+TextView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -255,6 +342,7 @@
 		18C5986629FE79C1001506D7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				184BE1972A03E58A00888B9C /* AddView */,
 				18C5986729FE79DD001506D7 /* CategoryModel.swift */,
 				18C23E2C29FCF89500B06C53 /* RecipeModel.swift */,
 			);
@@ -275,6 +363,7 @@
 			children = (
 				185A31A829FFF0A000D0EAE4 /* Controller */,
 				185A31A929FFF13800D0EAE4 /* Views */,
+				186927CE2A04C09800A3A4C7 /* Controllers */,
 			);
 			path = AddViewController;
 			sourceTree = "<group>";
@@ -389,29 +478,42 @@
 			files = (
 				18C5985A29FE46A0001506D7 /* CategoryViewCell.swift in Sources */,
 				1816E71329FC171400A87487 /* MainViewControllerViewModel.swift in Sources */,
+				18A0A3992A00E03400DA6FAB /* Extension+TextView.swift in Sources */,
 				18C5986C29FE9EF7001506D7 /* RecomendViewCellViewModel.swift in Sources */,
 				1816E70A29FC0F8300A87487 /* SearchViewController.swift in Sources */,
 				18CE673B29FC26C30057BE58 /* AddViewControllerViewModel.swift in Sources */,
 				18C5985E29FE46FF001506D7 /* WeekViewCell.swift in Sources */,
 				18C5986A29FE7F81001506D7 /* MainCollectionViewViewModel.swift in Sources */,
+				186927D42A050D6C00A3A4C7 /* QuantityIngredientsModel.swift in Sources */,
+				189C6D212A02527E001EB808 /* CookingTableViewCell.swift in Sources */,
 				1816E6F029FC0DE900A87487 /* AppDelegate.swift in Sources */,
 				18C23E3429FD3A0F00B06C53 /* MainWeekHeaderView.swift in Sources */,
 				1816E70C29FC0F9200A87487 /* AddViewController.swift in Sources */,
 				185A31AB29FFF17700D0EAE4 /* TopBarView.swift in Sources */,
 				18CE673D29FC275F0057BE58 /* SearchViewControllerViewModel.swift in Sources */,
 				18C23E3D29FD657F00B06C53 /* FilterView.swift in Sources */,
+				184BE1992A03E5C400888B9C /* CookingTableViewCellViewModel.swift in Sources */,
+				1807B71A2A027FA7001F8F90 /* SNTabBarController.swift in Sources */,
 				18C5986E29FE9F19001506D7 /* WeekViewCellViewModel.swift in Sources */,
 				1816E70E29FC0FA200A87487 /* FavoriteViewController.swift in Sources */,
+				189C6D1F2A022B9E001EB808 /* AddIngredientTableViewCell.swift in Sources */,
 				1816E70429FC0E9500A87487 /* TabBarViewController.swift in Sources */,
 				18CE673929FC26B30057BE58 /* FavoriteViewControllerViewModel.swift in Sources */,
+				186927D72A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift in Sources */,
 				18CE674429FC3B890057BE58 /* MainSearchView.swift in Sources */,
 				1816E6F229FC0DE900A87487 /* SceneDelegate.swift in Sources */,
+				186927D02A04C0D300A3A4C7 /* AddDatePikerViewController.swift in Sources */,
 				18CE673729FC26A00057BE58 /* ProfileViewControllerViewModel.swift in Sources */,
 				18C23E3229FD39E100B06C53 /* MainRecomendHeaderView.swift in Sources */,
 				18C5986829FE79DD001506D7 /* CategoryModel.swift in Sources */,
+				18A0A3BB2A0125D800DA6FAB /* LabelTextfieldView.swift in Sources */,
 				18C5986529FE7975001506D7 /* CategoryViewCellViewModel.swift in Sources */,
 				18C23E3029FD390100B06C53 /* MainCategoryHeaderView.swift in Sources */,
+				1807B7282A029E80001F8F90 /* AppTabBar.swift in Sources */,
+				186927D22A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift in Sources */,
 				1816E71029FC0FBC00A87487 /* ProfileViewController.swift in Sources */,
+				1807B71E2A027FBE001F8F90 /* SNTabBarItem.swift in Sources */,
+				1807B71C2A027FB2001F8F90 /* SNTabBar.swift in Sources */,
 				18CE674229FC2FAD0057BE58 /* HeaderHomeView.swift in Sources */,
 				18C5985C29FE46BD001506D7 /* RecomendViewCell.swift in Sources */,
 				1816E70829FC0F7700A87487 /* MainViewController.swift in Sources */,

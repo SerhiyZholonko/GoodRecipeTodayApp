@@ -7,21 +7,28 @@
 
 import UIKit
 
+protocol TopBarViewDelegate: AnyObject {
+    func saveRecipe()
+    func closeView()
+}
+
 class TopBarView: UIView {
     //MARK: - Properties
-    let closeButton: UIButton = {
+    weak var delegate: TopBarViewDelegate?
+    lazy var closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark.app"), for: .normal)
         button.tintColor = .label
+        button.addTarget(self, action: #selector(didTappedClose), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    let saveButton: UIButton = {
+    lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("SAVE", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16)
         button.tintColor = .label
-        
+        button.addTarget(self, action: #selector(didTappedSave), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -53,5 +60,10 @@ class TopBarView: UIView {
         ]
         NSLayoutConstraint.activate(saveButtonConstraints)
     }
-    
+    @objc func didTappedSave() {
+        delegate?.saveRecipe()
+    }
+    @objc func didTappedClose() {
+        delegate?.closeView()
+    }
 }
