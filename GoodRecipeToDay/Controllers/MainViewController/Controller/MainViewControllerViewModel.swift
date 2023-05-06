@@ -28,16 +28,16 @@ final class MainViewControllerViewModel {
     
     private func uploadRecipes() {
         self.sections = [
-            .category(viewModel: [.init(category: CategoryModel(name: "breakfast", image: "english-breakfast")),
-                                  .init(category: CategoryModel(name: "lunch", image: "lunch")),
-                                  .init(category: CategoryModel(name: "dinner", image: "christmas-dinner")),
-                                  .init(category: CategoryModel(name: "dissert", image: "panna-cotta")),
-                                  .init(category: CategoryModel(name: "snacks appetizers", image: "nachos")),
-                                  .init(category: CategoryModel(name: "salads", image: "salad")),
-                                  .init(category: CategoryModel(name: "soups stews", image: "goulash")),
-                                  .init(category: CategoryModel(name: "pasta noodles", image: "noodles")),
-                                  .init(category: CategoryModel(name: "grilling barbecue", image: "grilling")),
-                                  .init(category: CategoryModel(name: "vegetarian vegan", image: "vegetable"))]),
+            .category(viewModel: [.init(category: CategoryModel(id: 1, name: "breakfast", image: "english-breakfast")),
+                                  .init(category: CategoryModel(id: 2, name: "lunch", image: "lunch")),
+                                  .init(category: CategoryModel(id: 3, name: "dinner", image: "christmas-dinner")),
+                                  .init(category: CategoryModel(id: 4, name: "dissert", image: "panna-cotta")),
+                                  .init(category: CategoryModel(id: 5, name: "snacks appetizers", image: "nachos")),
+                                  .init(category: CategoryModel(id: 6, name: "salads", image: "salad")),
+                                  .init(category: CategoryModel(id: 7, name: "soups stews", image: "goulash")),
+                                  .init(category: CategoryModel(id: 8, name: "pasta noodles", image: "noodles")),
+                                  .init(category: CategoryModel(id: 9, name: "grilling barbecue", image: "grilling")),
+                                  .init(category: CategoryModel(id: 10, name: "vegetarian vegan", image: "vegetable"))]),
             .recomend(viewModel: [
                 .init(recomendRecipe: RecipeModel(title: "Salat", category: "salads", description: "", ceator: "Mary", createdDate: Date(), image: "saladRecipe")),
                 .init(recomendRecipe: RecipeModel(title: "Pancakes", category: "dinner", description: "", ceator: "Mary", createdDate: Date(), image: "pancakes")),

@@ -9,6 +9,7 @@ import Foundation
 
 
 struct CategoryModel {
+    let id: Int
     let name: String
     let image: String
 }

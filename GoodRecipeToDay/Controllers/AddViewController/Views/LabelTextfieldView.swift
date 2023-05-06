@@ -12,7 +12,7 @@ protocol LabelTextfieldViewDelegate: AnyObject {
 }
 
 enum LabelTextfieldViewType {
-    case quantity, cookingTime
+    case category, quantity, cookingTime
     
     var titleLabel: String {
         switch self {
@@ -21,6 +21,8 @@ enum LabelTextfieldViewType {
             return "quantity of person: "
         case .cookingTime:
             return "cooking time: "
+        case .category:
+            return "category: "
         }
     }
     var placeholder: String {
@@ -29,6 +31,8 @@ enum LabelTextfieldViewType {
            return "Enter quantity"
         case .cookingTime:
             return "Enter time"
+        case .category:
+            return "Enter category"
         }
     }
     var keyboard: UIKeyboardType {
@@ -37,6 +41,8 @@ enum LabelTextfieldViewType {
         case .quantity:
             return .numberPad
         case .cookingTime:
+            return .default
+        case .category:
             return .default
         }
     }
@@ -59,7 +65,6 @@ class LabelTextfieldView: UIView {
        let tf = UITextField()
         tf.placeholder = type.placeholder
         tf.textAlignment = .center
-//        tf.isEnabled = type == .quantity ? true : false
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.keyboardType =  type.keyboard
         tf.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedTF)))

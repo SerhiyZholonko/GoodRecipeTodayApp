@@ -57,6 +57,12 @@ class AddViewController: UIViewController {
         return view
     }()
     
+    lazy var  categoryView: LabelTextfieldView = {
+        let view = LabelTextfieldView(frame: .zero, type: .category)
+        view.delegate = self
+        return view
+    }()
+    
     lazy var  quantityView: LabelTextfieldView = {
         let view = LabelTextfieldView(frame: .zero, type: .quantity)
         view.delegate = self
@@ -116,6 +122,7 @@ class AddViewController: UIViewController {
         contentView.addSubview(dividerNameView)
         contentView.addSubview(descriptionTextView)
         contentView.addSubview(dividerDescriptionView)
+        contentView.addSubview(categoryView)
         contentView.addSubview(quantityView)
         contentView.addSubview(cookigTimeView)
         
@@ -189,9 +196,15 @@ class AddViewController: UIViewController {
             dividerDescriptionView.heightAnchor.constraint(equalToConstant: 2),
         ]
         NSLayoutConstraint.activate(dividerDescriptionViewConstraints)
-        
+        let categoryViewConstraints = [
+            categoryView.topAnchor.constraint(equalTo: dividerDescriptionView.bottomAnchor),
+            categoryView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            categoryView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            categoryView.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        NSLayoutConstraint.activate(categoryViewConstraints)
         let quantityViewConstraints = [
-            quantityView.topAnchor.constraint(equalTo: dividerDescriptionView.bottomAnchor),
+            quantityView.topAnchor.constraint(equalTo: categoryView.bottomAnchor),
             quantityView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             quantityView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             quantityView.heightAnchor.constraint(equalToConstant: 50),
@@ -377,7 +390,6 @@ extension AddViewController: CookingTableViewCellDelegate {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         present(imagePicker, animated: true, completion: nil)
-        
     }
 }
 
@@ -386,20 +398,32 @@ extension AddViewController: CookingTableViewCellDelegate {
 
 extension AddViewController: LabelTextfieldViewDelegate {
     func pushToPiker(type: LabelTextfieldViewType) {
-        switch type {
+    switch type {
             
         case .quantity:
             let addPersonsPikerViewController = AddPersonsPikerViewController()
             addPersonsPikerViewController.delegate = self
             addPersonsPikerViewController.modalTransitionStyle = .crossDissolve
             addPersonsPikerViewController.modalPresentationStyle = .fullScreen
-            present(addPersonsPikerViewController, animated: true)
+            UIView.animate(withDuration: 0.4, delay: 0.2, options: [.repeat]) {
+                self.present(addPersonsPikerViewController, animated: true)
+            }
         case .cookingTime:
             let addDatePikerViewController = AddDatePikerViewController()
             addDatePikerViewController.delegate = self
             addDatePikerViewController.modalTransitionStyle = .crossDissolve
             addDatePikerViewController.modalPresentationStyle = .fullScreen
-            present(addDatePikerViewController, animated: true)
+            UIView.animate(withDuration: 0.4, delay: 0.2, options: [.repeat]) {
+                self.present(addDatePikerViewController, animated: true)
+            }
+        case .category:
+           let addCategoryViewController = AddCategoryViewController()
+        addCategoryViewController.delegate = self
+        addCategoryViewController.modalTransitionStyle = .crossDissolve
+        addCategoryViewController.modalPresentationStyle = .pageSheet
+        UIView.animate(withDuration: 0.4, delay: 0.2, options: [.repeat]) {
+            self.present(addCategoryViewController, animated: true)
+        }
         }
         
     }
@@ -416,13 +440,21 @@ extension AddViewController: AddPersonsPikerViewControllerDelegate {
         self.quantityView.textField.text = quantityPerson
     }
 }
-
+extension AddViewController: AddCategoryViewControllerDelegate {
+    func puchToViewController(category: String) {
+        self.categoryView.textField.text = category
+    }
+    
+    
+}
 
 //MARK: - extension TopHeader
 
 extension AddViewController: TopBarViewDelegate {
     func saveRecipe() {
         print("Save")
+        //TODO: - verification and make to save
+        
     }
     
     func closeView() {
