@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		180135442A09FD76008B7BFF /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180135432A09FD76008B7BFF /* AuthViewController.swift */; };
-		180135472A09FE63008B7BFF /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180135462A09FE63008B7BFF /* AuthButton.swift */; };
+		180135472A09FE63008B7BFF /* ImageTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180135462A09FE63008B7BFF /* ImageTextButton.swift */; };
 		1801354A2A0A0624008B7BFF /* ImageTextButtonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180135492A0A0624008B7BFF /* ImageTextButtonType.swift */; };
 		1807B71A2A027FA7001F8F90 /* SNTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807B7192A027FA7001F8F90 /* SNTabBarController.swift */; };
 		1807B71C2A027FB2001F8F90 /* SNTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807B71B2A027FB2001F8F90 /* SNTabBar.swift */; };
@@ -67,7 +67,7 @@
 
 /* Begin PBXFileReference section */
 		180135432A09FD76008B7BFF /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
-		180135462A09FE63008B7BFF /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
+		180135462A09FE63008B7BFF /* ImageTextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTextButton.swift; sourceTree = "<group>"; };
 		180135492A0A0624008B7BFF /* ImageTextButtonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTextButtonType.swift; sourceTree = "<group>"; };
 		1807B7192A027FA7001F8F90 /* SNTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNTabBarController.swift; sourceTree = "<group>"; };
 		1807B71B2A027FB2001F8F90 /* SNTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNTabBar.swift; sourceTree = "<group>"; };
@@ -160,7 +160,7 @@
 		180135482A0A0618008B7BFF /* ImageTextButton */ = {
 			isa = PBXGroup;
 			children = (
-				180135462A09FE63008B7BFF /* AuthButton.swift */,
+				180135462A09FE63008B7BFF /* ImageTextButton.swift */,
 				180135492A0A0624008B7BFF /* ImageTextButtonType.swift */,
 			);
 			path = ImageTextButton;
@@ -573,7 +573,7 @@
 				1816E70E29FC0FA200A87487 /* FavoriteViewController.swift in Sources */,
 				18F6B06F2A079AE700F2BD9D /* FirebaseImageManager.swift in Sources */,
 				189C6D1F2A022B9E001EB808 /* AddIngredientTableViewCell.swift in Sources */,
-				180135472A09FE63008B7BFF /* AuthButton.swift in Sources */,
+				180135472A09FE63008B7BFF /* ImageTextButton.swift in Sources */,
 				1816E70429FC0E9500A87487 /* TabBarViewController.swift in Sources */,
 				18CE673929FC26B30057BE58 /* FavoriteViewControllerViewModel.swift in Sources */,
 				186927D72A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift in Sources */,
