@@ -144,8 +144,6 @@ class AddViewController: UIViewController {
         cookingTableView.dataSource = self
         calculateCookingTableViewHeight()
     }
-    
-    
     //MARK: - Functions
     private func addConstraints() {
         let topViewConstraints = [
@@ -295,16 +293,15 @@ class AddViewController: UIViewController {
     @objc private func didTappedAddInstruction() {
         viewModel.addOneInfredient()
         DispatchQueue.main.async {
-            self.ingredientsTableView.reloadData()
             self.calculateIngredientTableViewHeight()
+            self.ingredientsTableView.reloadData()
         }
     }
     @objc private func didTappedAddStep() {
         viewModel.addInstructions()
-        print(viewModel.instructions)
         DispatchQueue.main.async {
-            self.cookingTableView.reloadData()
             self.calculateCookingTableViewHeight()
+            self.cookingTableView.reloadData()
         }
     }
 }
@@ -318,12 +315,14 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == ingredientsTableView {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: AddIngredientTableViewCell.identifier, for: indexPath) as? AddIngredientTableViewCell else { return UITableViewCell() }
-            cell.textField.placeholder = viewModel.ingregients[indexPath.row].ingredient
+            cell.delegate = self
+            
+            cell.configure(viewModel: viewModel.ingregients[indexPath.row])
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CookingTableViewCell.identifier, for: indexPath) as? CookingTableViewCell else { return UITableViewCell() }
             cell.delegate = self
-            cell.photoImageView.image = viewModel.instructions[indexPath.row].image
+            cell.configure(viewModel: viewModel.instructions[indexPath.row])
             return cell
         }
     }
@@ -332,19 +331,23 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let cell = tableView.cellForRow(at: indexPath)
+
+        if let index = tableView.indexPath(for: cell!)?.row {
+            self.index = index
+        }
+
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         
         if tableView == cookingTableView {
-//            let instruction = viewModel.instructions[indexPath.row]
             self.viewModel.instructions.remove(at: indexPath.row)
             DispatchQueue.main.async {
                 self.cookingTableView.deleteRows(at: [indexPath], with: .left)
                 self.calculateCookingTableViewHeight()
             }
         } else if tableView == ingredientsTableView {
-//            let ingredients = viewModel.ingregients[indexPath.row]
             
             self.viewModel.ingregients.remove(at: indexPath.row)
             DispatchQueue.main.async {
@@ -355,43 +358,8 @@ extension AddViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-//MARK: - extention, ImagePiker
-extension AddViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if isMainImage, let selectedImage = info[.originalImage] as? UIImage {
-            bestImageView.image = selectedImage
-            isMainImage = false
-        } else if let selectedImage = info[.originalImage] as? UIImage  {
-            if let index = index {
-                viewModel.instructions[index].updateImage(image: selectedImage)
-                cookingTableView.reloadData()
-                
-            } else {
-                let newIngredient = CookingTableViewCellViewModel(instruction: "", image: selectedImage)
-                viewModel.instructions.append(newIngredient)
-                cookingTableView.reloadData()
-            }
-        }
-        dismiss(animated: true, completion: nil)
-    }
-}
 
 
-//MARK: - Delegate cell
-
-extension AddViewController: CookingTableViewCellDelegate {
-    func didTappedImage(cell: CookingTableViewCell) {
-        guard let image = cell.photoImageView.image else { return }
-        let images = viewModel.instructions.map{$0.image}
-        if let index = images.firstIndex(of: image) {
-            print(index)
-            self.index = index
-        }
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        present(imagePicker, animated: true, completion: nil)
-    }
-}
 
 
 //MARK: - Delegate Piker view
@@ -425,7 +393,6 @@ extension AddViewController: LabelTextfieldViewDelegate {
             self.present(addCategoryViewController, animated: true)
         }
         }
-        
     }
 }
 extension AddViewController: AddDatePikerViewControllerDelegate {
@@ -444,20 +411,86 @@ extension AddViewController: AddCategoryViewControllerDelegate {
     func puchToViewController(category: String) {
         self.categoryView.textField.text = category
     }
+}
+
+//MARK: - extention, ImagePiker
+extension AddViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if isMainImage, let selectedImage = info[.originalImage] as? UIImage {
+            bestImageView.image = selectedImage
+            isMainImage = false
+        } else if let selectedImage = info[.originalImage] as? UIImage  {
+            if let index = index {
+                
+                viewModel.instructions[index].updateImage(image: selectedImage)
+                cookingTableView.reloadData()
+            } else {
+                let newIngredient = CookingTableViewCellViewModel(instruction: "", image: selectedImage)
+                viewModel.instructions.append(newIngredient)
+                cookingTableView.reloadData()
+            }
+        }
+        dismiss(animated: true, completion: nil)
+    }
+}
+//MARK: - Delegate cell
+
+
+extension AddViewController: AddIngredientTableViewCellDelegate {
+    func updateData(ingredient: String, viewModel: AddIngredientTableViewCellViewModel) {
+        if let index = self.viewModel.ingregients.firstIndex(where: { $0.id == viewModel.id }) {
+            self.viewModel.ingregients[index] = viewModel
+           } else {
+               self.viewModel.ingregients.append(viewModel)
+           }
+    }
+}
+
+extension AddViewController: CookingTableViewCellDelegate {
+    func updateData(instruction: String, viewModel: CookingTableViewCellViewModel) {
+        if let index = self.viewModel.instructions.firstIndex(where: { $0.id == viewModel.id }) {
+            self.viewModel.instructions[index] = viewModel
+           } else {
+               self.viewModel.instructions.append(viewModel)
+           }
+    }
     
-    
+    func didTappedImage(cell: CookingTableViewCell) {
+        self.index = viewModel.getIndex(cell: cell) 
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+    }
 }
 
 //MARK: - extension TopHeader
 
 extension AddViewController: TopBarViewDelegate {
-    func saveRecipe() {
-        print("Save")
-        //TODO: - verification and make to save
-        
-    }
+   
     
+    func saveRecipe() {
+        //TODO: - verification and make to save
+        guard let title = titleRecipeTeactsField.text,  !title.isEmpty, let description = descriptionTextView.text, !description.isEmpty,
+              let category = categoryView.textField.text, !category.isEmpty, let quantity = quantityView.textField.text, !quantity.isEmpty,
+              let time = cookigTimeView.textField.text, !time.isEmpty else { return }
+
+        let ingredients: [Ingredient] = viewModel.ingregients.map { viewModel in
+            return Ingredient(title: viewModel.ingredient)
+        }
+        let steps: [Step] = viewModel.instructions.map { viewModel in
+            return Step(title: viewModel.instruction, imageUrl: viewModel.imageUrlString)
+        }
+        viewModel.addToFirebase(mainImage: bestImageView.image, title: title, description: description, category: category, quantity: quantity, time: time, ingredient: ingredients , step: steps) {[weak self] in
+            self?.dismiss(animated: true)
+        }
+        dismiss(animated: true)
+
+    }
     func closeView() {
         dismiss(animated: true)
     }
 }
+
+
+
+

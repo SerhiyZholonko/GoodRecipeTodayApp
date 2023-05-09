@@ -7,6 +7,12 @@
 
 import Foundation
 
-struct AddIngredientTableViewCellViewModel {
-    let ingredient: String
+struct AddIngredientTableViewCellViewModel: Equatable {
+    let id = UUID().uuidString
+    var ingredient: String
+        
+    mutating func updateIngredient(newValve: String) {
+        ingredient = newValve
+    }
+
 }

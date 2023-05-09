@@ -7,15 +7,22 @@
 
 import UIKit
 
+protocol AddIngredientTableViewCellDelegate: AnyObject {
+    func updateData(ingredient: String, viewModel: AddIngredientTableViewCellViewModel)
+}
+
 class AddIngredientTableViewCell: UITableViewCell {
+
+    
     //MARK: - Properties
+weak var delegate: AddIngredientTableViewCellDelegate?
 static let identifier = "AddIngredientTableViewCell"
-    
+    var viewModel: AddIngredientTableViewCellViewModel?
     static let height: CGFloat = 80
-    
-    let textField: UITextField = {
+    lazy var textField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "quantity / product"
+        tf.delegate = self
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -26,6 +33,7 @@ static let identifier = "AddIngredientTableViewCell"
         setupSettingContentView()
         contentView.addSubview(textField)
         addConstraints()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -37,6 +45,10 @@ static let identifier = "AddIngredientTableViewCell"
     }
     
     //MARK: - Functions
+    public func configure(viewModel: AddIngredientTableViewCellViewModel) {
+        self.viewModel = viewModel
+        textField.placeholder = viewModel.ingredient
+    }
     private func setupSettingContentView() {
         contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 10
@@ -52,3 +64,21 @@ static let identifier = "AddIngredientTableViewCell"
     }
 
 }
+
+
+extension AddIngredientTableViewCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            guard var viewModel = self.viewModel else { return }
+            viewModel.updateIngredient(newValve: text)
+            delegate?.updateData(ingredient: text,viewModel: viewModel)
+        }
+    }
+ 
+}
+
+

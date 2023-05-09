@@ -9,17 +9,21 @@ import UIKit
 
 protocol CookingTableViewCellDelegate: AnyObject {
     func didTappedImage(cell: CookingTableViewCell)
+    func updateData(instruction: String, viewModel: CookingTableViewCellViewModel)
+
 }
 
 class CookingTableViewCell: UITableViewCell {
     //MARK: - Properties
     weak var delegate: CookingTableViewCellDelegate?
+    var viewModel: CookingTableViewCellViewModel?
     static let identifier = "CookingTableViewCell"
     static let height: CGFloat = 150
     
-    let textField: UITextField = {
+    lazy var textField: UITextField = {
        let tf = UITextField()
         tf.placeholder = "Give intructions"
+        tf.delegate = self
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
@@ -47,7 +51,12 @@ class CookingTableViewCell: UITableViewCell {
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
     //MARK: - Functions
-    
+    public func configure(viewModel: CookingTableViewCellViewModel) {
+        self.viewModel = viewModel
+        self.textField.text = viewModel.instruction
+        self.photoImageView.image = viewModel.image
+        //TODO: - image to firefase
+    }
     private func setupContentView() {
         contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 10
@@ -70,8 +79,25 @@ class CookingTableViewCell: UITableViewCell {
     }
     
     @objc func didTapImage() {
-        print("Tap cell")
         delegate?.didTappedImage(cell: self)
     }
             
+}
+
+
+
+//MARK: - extention textField delegate
+extension CookingTableViewCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            guard let viewModel = self.viewModel else { return }
+            viewModel.updateInstruction(newValve: text)
+            delegate?.updateData(instruction: text, viewModel: viewModel)
+        }
+    }
+ 
 }
