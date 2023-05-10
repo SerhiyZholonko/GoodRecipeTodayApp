@@ -62,6 +62,15 @@
 		18CE673D29FC275F0057BE58 /* SearchViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE673C29FC275F0057BE58 /* SearchViewControllerViewModel.swift */; };
 		18CE674229FC2FAD0057BE58 /* HeaderHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE674129FC2FAD0057BE58 /* HeaderHomeView.swift */; };
 		18CE674429FC3B890057BE58 /* MainSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE674329FC3B890057BE58 /* MainSearchView.swift */; };
+		18E86D182A0B5429006BDA6E /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D172A0B5429006BDA6E /* SignUpViewController.swift */; };
+		18E86D1A2A0B56F3006BDA6E /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D192A0B56F3006BDA6E /* AuthButton.swift */; };
+		18E86D1D2A0B58E1006BDA6E /* AuthTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D1C2A0B58E1006BDA6E /* AuthTextField.swift */; };
+		18E86D1F2A0B5B4B006BDA6E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D1E2A0B5B4B006BDA6E /* AuthView.swift */; };
+		18E86D222A0B60DC006BDA6E /* AuthViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D212A0B60DC006BDA6E /* AuthViewType.swift */; };
+		18E86D252A0B8BED006BDA6E /* IsViewAgree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D242A0B8BED006BDA6E /* IsViewAgree.swift */; };
+		18E86D272A0B8C12006BDA6E /* CheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D262A0B8C12006BDA6E /* CheckView.swift */; };
+		18E86D2A2A0BC84E006BDA6E /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D292A0BC84E006BDA6E /* SignInViewController.swift */; };
+		18E86D2D2A0BE1E3006BDA6E /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D2C2A0BE1E3006BDA6E /* Recipe.swift */; };
 		18F6B06F2A079AE700F2BD9D /* FirebaseImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F6B06E2A079AE700F2BD9D /* FirebaseImageManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +131,15 @@
 		18CE673C29FC275F0057BE58 /* SearchViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerViewModel.swift; sourceTree = "<group>"; };
 		18CE674129FC2FAD0057BE58 /* HeaderHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderHomeView.swift; sourceTree = "<group>"; };
 		18CE674329FC3B890057BE58 /* MainSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSearchView.swift; sourceTree = "<group>"; };
+		18E86D172A0B5429006BDA6E /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		18E86D192A0B56F3006BDA6E /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
+		18E86D1C2A0B58E1006BDA6E /* AuthTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTextField.swift; sourceTree = "<group>"; };
+		18E86D1E2A0B5B4B006BDA6E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		18E86D212A0B60DC006BDA6E /* AuthViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewType.swift; sourceTree = "<group>"; };
+		18E86D242A0B8BED006BDA6E /* IsViewAgree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsViewAgree.swift; sourceTree = "<group>"; };
+		18E86D262A0B8C12006BDA6E /* CheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckView.swift; sourceTree = "<group>"; };
+		18E86D292A0BC84E006BDA6E /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		18E86D2C2A0BE1E3006BDA6E /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		18F6B06E2A079AE700F2BD9D /* FirebaseImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseImageManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,8 +161,9 @@
 		180135422A09FCEE008B7BFF /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				180135432A09FD76008B7BFF /* AuthViewController.swift */,
-				180135452A09FE37008B7BFF /* CustomElements */,
+				18E86D282A0BC820006BDA6E /* SignInController */,
+				18E86D162A0B53C4006BDA6E /* SignUpController */,
+				18E86D152A0B53AD006BDA6E /* AuthViewController */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -181,6 +200,7 @@
 		180A2B412A061D82001DC4EB /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				18E86D2B2A0BE1CE006BDA6E /* ModelsFirebase */,
 				180A2B422A061D9E001DC4EB /* FirebaseManager.swift */,
 				18F6B06E2A079AE700F2BD9D /* FirebaseImageManager.swift */,
 			);
@@ -467,6 +487,69 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		18E86D152A0B53AD006BDA6E /* AuthViewController */ = {
+			isa = PBXGroup;
+			children = (
+				180135452A09FE37008B7BFF /* CustomElements */,
+				180135432A09FD76008B7BFF /* AuthViewController.swift */,
+			);
+			path = AuthViewController;
+			sourceTree = "<group>";
+		};
+		18E86D162A0B53C4006BDA6E /* SignUpController */ = {
+			isa = PBXGroup;
+			children = (
+				18E86D172A0B5429006BDA6E /* SignUpViewController.swift */,
+				18E86D1B2A0B584B006BDA6E /* CustomElements */,
+			);
+			path = SignUpController;
+			sourceTree = "<group>";
+		};
+		18E86D1B2A0B584B006BDA6E /* CustomElements */ = {
+			isa = PBXGroup;
+			children = (
+				18E86D192A0B56F3006BDA6E /* AuthButton.swift */,
+				18E86D1C2A0B58E1006BDA6E /* AuthTextField.swift */,
+				18E86D232A0B8B91006BDA6E /* IsViewAgree */,
+				18E86D202A0B60C9006BDA6E /* AuthView */,
+			);
+			path = CustomElements;
+			sourceTree = "<group>";
+		};
+		18E86D202A0B60C9006BDA6E /* AuthView */ = {
+			isa = PBXGroup;
+			children = (
+				18E86D1E2A0B5B4B006BDA6E /* AuthView.swift */,
+				18E86D212A0B60DC006BDA6E /* AuthViewType.swift */,
+			);
+			path = AuthView;
+			sourceTree = "<group>";
+		};
+		18E86D232A0B8B91006BDA6E /* IsViewAgree */ = {
+			isa = PBXGroup;
+			children = (
+				18E86D242A0B8BED006BDA6E /* IsViewAgree.swift */,
+				18E86D262A0B8C12006BDA6E /* CheckView.swift */,
+			);
+			path = IsViewAgree;
+			sourceTree = "<group>";
+		};
+		18E86D282A0BC820006BDA6E /* SignInController */ = {
+			isa = PBXGroup;
+			children = (
+				18E86D292A0BC84E006BDA6E /* SignInViewController.swift */,
+			);
+			path = SignInController;
+			sourceTree = "<group>";
+		};
+		18E86D2B2A0BE1CE006BDA6E /* ModelsFirebase */ = {
+			isa = PBXGroup;
+			children = (
+				18E86D2C2A0BE1E3006BDA6E /* Recipe.swift */,
+			);
+			path = ModelsFirebase;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -551,6 +634,7 @@
 				1816E71329FC171400A87487 /* MainViewControllerViewModel.swift in Sources */,
 				18A0A3992A00E03400DA6FAB /* Extension+TextView.swift in Sources */,
 				180135442A09FD76008B7BFF /* AuthViewController.swift in Sources */,
+				18E86D182A0B5429006BDA6E /* SignUpViewController.swift in Sources */,
 				18C5986C29FE9EF7001506D7 /* RecomendViewCellViewModel.swift in Sources */,
 				180A2B432A061D9E001DC4EB /* FirebaseManager.swift in Sources */,
 				1816E70A29FC0F8300A87487 /* SearchViewController.swift in Sources */,
@@ -567,14 +651,18 @@
 				18CE673D29FC275F0057BE58 /* SearchViewControllerViewModel.swift in Sources */,
 				1801354A2A0A0624008B7BFF /* ImageTextButtonType.swift in Sources */,
 				18C23E3D29FD657F00B06C53 /* FilterView.swift in Sources */,
+				18E86D1D2A0B58E1006BDA6E /* AuthTextField.swift in Sources */,
 				184BE1992A03E5C400888B9C /* CookingTableViewCellViewModel.swift in Sources */,
+				18E86D2D2A0BE1E3006BDA6E /* Recipe.swift in Sources */,
 				1807B71A2A027FA7001F8F90 /* SNTabBarController.swift in Sources */,
 				18C5986E29FE9F19001506D7 /* WeekViewCellViewModel.swift in Sources */,
 				1816E70E29FC0FA200A87487 /* FavoriteViewController.swift in Sources */,
 				18F6B06F2A079AE700F2BD9D /* FirebaseImageManager.swift in Sources */,
+				18E86D272A0B8C12006BDA6E /* CheckView.swift in Sources */,
 				189C6D1F2A022B9E001EB808 /* AddIngredientTableViewCell.swift in Sources */,
 				180135472A09FE63008B7BFF /* ImageTextButton.swift in Sources */,
 				1816E70429FC0E9500A87487 /* TabBarViewController.swift in Sources */,
+				18E86D222A0B60DC006BDA6E /* AuthViewType.swift in Sources */,
 				18CE673929FC26B30057BE58 /* FavoriteViewControllerViewModel.swift in Sources */,
 				186927D72A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift in Sources */,
 				18CE674429FC3B890057BE58 /* MainSearchView.swift in Sources */,
@@ -587,13 +675,17 @@
 				18C5986529FE7975001506D7 /* CategoryViewCellViewModel.swift in Sources */,
 				18C23E3029FD390100B06C53 /* MainCategoryHeaderView.swift in Sources */,
 				1807B7282A029E80001F8F90 /* AppTabBar.swift in Sources */,
+				18E86D252A0B8BED006BDA6E /* IsViewAgree.swift in Sources */,
 				186927D22A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift in Sources */,
 				1816E71029FC0FBC00A87487 /* ProfileViewController.swift in Sources */,
+				18E86D2A2A0BC84E006BDA6E /* SignInViewController.swift in Sources */,
 				1807B71E2A027FBE001F8F90 /* SNTabBarItem.swift in Sources */,
 				1807B71C2A027FB2001F8F90 /* SNTabBar.swift in Sources */,
 				18CE674229FC2FAD0057BE58 /* HeaderHomeView.swift in Sources */,
+				18E86D1A2A0B56F3006BDA6E /* AuthButton.swift in Sources */,
 				18C5985C29FE46BD001506D7 /* RecomendViewCell.swift in Sources */,
 				1816E70829FC0F7700A87487 /* MainViewController.swift in Sources */,
+				18E86D1F2A0B5B4B006BDA6E /* AuthView.swift in Sources */,
 				18C23E2929FCF80700B06C53 /* MainCollectionView.swift in Sources */,
 				18C23E2D29FCF89500B06C53 /* RecipeModel.swift in Sources */,
 			);
@@ -739,8 +831,7 @@
 				INFOPLIST_FILE = GoodRecipeToDay/Resurces/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -766,8 +857,7 @@
 				INFOPLIST_FILE = GoodRecipeToDay/Resurces/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

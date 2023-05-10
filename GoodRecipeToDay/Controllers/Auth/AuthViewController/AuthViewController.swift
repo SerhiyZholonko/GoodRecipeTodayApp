@@ -26,17 +26,17 @@ class AuthViewController: UIViewController {
     }()
     lazy var emailButton: ImageTextButton = {
         let button = ImageTextButton(type: .email)
-        button.addTarget(self, action: #selector(didTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTappedEmail), for: .touchUpInside)
         return button
     }()
     lazy var googleButton: ImageTextButton = {
         let button = ImageTextButton(type: .google)
-        button.addTarget(self, action: #selector(didTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTappedGoogle), for: .touchUpInside)
         return button
     }()
     lazy var appleButton: ImageTextButton = {
         let button = ImageTextButton(type: .apple)
-        button.addTarget(self, action: #selector(didTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTappedApple), for: .touchUpInside)
         return button
     }()
     let orUseLabel: UILabel = {
@@ -108,7 +108,7 @@ class AuthViewController: UIViewController {
             orUseLabel.topAnchor.constraint(equalTo: emailButton.bottomAnchor),
             orUseLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
             orUseLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
-            orUseLabel.heightAnchor.constraint(equalToConstant: 50)
+            orUseLabel.heightAnchor.constraint(equalToConstant: 40)
         ]
         NSLayoutConstraint.activate(orUseLabelConstraints)
         let googleButtonConstraints = [
@@ -139,7 +139,12 @@ class AuthViewController: UIViewController {
        NSLayoutConstraint.activate(signInLabelConstraints)
     }
     
-    @objc private func didTapped() {
-        print("Tap")
+    @objc private func didTappedEmail() {
+      let vc = SignUpViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc private func didTappedGoogle() {
+    }
+    @objc private func didTappedApple() {
     }
 }

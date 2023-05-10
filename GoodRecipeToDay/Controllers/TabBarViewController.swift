@@ -9,6 +9,7 @@ import UIKit
 
 class TabBarViewController: UITabBarController {
     //MARK: - Properties
+    var isAuth: Bool = false
     lazy var addButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBackground
@@ -29,6 +30,14 @@ class TabBarViewController: UITabBarController {
     let profileViewController = UINavigationController(rootViewController: ProfileViewController())
 
     //MARK: - Lovecycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isAuth {
+            let vc = UINavigationController(rootViewController: AuthViewController()) 
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true)
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(addButton)

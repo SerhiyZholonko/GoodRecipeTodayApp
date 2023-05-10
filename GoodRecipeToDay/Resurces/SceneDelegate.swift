@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         window.makeKeyAndVisible()
-        let authController = UINavigationController(rootViewController: AuthViewController())
+        let authController = UINavigationController(rootViewController: TabBarViewController())
         window.rootViewController = authController
     }
 
