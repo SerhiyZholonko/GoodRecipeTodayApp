@@ -5,7 +5,7 @@
 //  Created by apple on 10.05.2023.
 //
 
-import Foundation
+import UIKit
 
 
 enum AuthViewType {
@@ -39,7 +39,17 @@ enum AuthViewType {
 
         case .password:
             return "Enter your password"
-
+        }
+       
+        }
+    var keybourdType: UIKeyboardType {
+        switch self {
+        case .name:
+            return  .default
+        case .email:
+            return .emailAddress
+        case .password:
+            return .default
         }
     }
     //TODO: - //    var textProperties:

@@ -7,8 +7,16 @@
 
 import UIKit
 
+protocol AuthViewdelegate: AnyObject {
+    func usernameDidChange(name: String?)
+    func emailDidChange(email: String?)
+    func passwordDidChange(password: String?)
+
+}
+
 class AuthView: UIView {
     //MARK: - Properties
+    weak var delegate: AuthViewdelegate?
     private var type: AuthViewType
     lazy var titleLabel: UILabel = {
        let label = UILabel()
@@ -17,8 +25,10 @@ class AuthView: UIView {
         return label
     }()
     lazy var textField: AuthTextField = {
-       let tf = AuthTextField()
+        let tf = AuthTextField(isSecure: type.isSecurityText)
         tf.placeholder = type.placeholder
+        tf.delegate = self
+        tf.keyboardType = type.keybourdType
         tf.isSecureTextEntry = type.isSecurityText
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
@@ -52,4 +62,19 @@ class AuthView: UIView {
         NSLayoutConstraint.activate(textFieldConstraints)
     }
     
+}
+
+
+extension AuthView: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        switch type {
+        case .name:
+           delegate?.usernameDidChange(name: textField.text)
+        case .email:
+            delegate?.emailDidChange(email: textField.text )
+        case .password:
+            delegate?.passwordDidChange(password: textField.text)
+        }
+    }
+
 }

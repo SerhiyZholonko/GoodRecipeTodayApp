@@ -6,10 +6,11 @@
 //
 
 import UIKit
-
+import FirebaseAuth
 class TabBarViewController: UITabBarController {
     //MARK: - Properties
-    var isAuth: Bool = false
+    let firebaseManager = FirebaseManager.shared
+    let viewModel = TabBarViewControllerViewModel()
     lazy var addButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBackground
@@ -28,28 +29,29 @@ class TabBarViewController: UITabBarController {
     let addViewController = AddViewController()
     let favoriteController = UINavigationController(rootViewController: FavoriteViewController())
     let profileViewController = UINavigationController(rootViewController: ProfileViewController())
-
+    
     //MARK: - Lovecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if !isAuth {
-            let vc = UINavigationController(rootViewController: AuthViewController()) 
-            vc.modalPresentationStyle = .fullScreen
-            self.present(vc, animated: true)
-        }
+        isShowAuthController()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupObserver()
         view.addSubview(addButton)
         setControllers()
-      viewControllers = [
-        mainViewController,
-        searchViewController ,
-        addViewController,
-        favoriteController,
-        profileViewController
-      ]
+        viewControllers = [
+            mainViewController,
+            searchViewController ,
+            addViewController,
+            favoriteController,
+            profileViewController
+        ]
         addConstraints()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     //MARK: Functions
     private func setControllers() {
@@ -61,10 +63,10 @@ class TabBarViewController: UITabBarController {
         tabBar.tintColor = UIColor.red
         tabBar.barTintColor = UIColor.white
         tabBar.backgroundColor = .systemBackground
-
+        
     }
     private func addConstraints() {
-       let addButtonConstraints = [
+        let addButtonConstraints = [
             addButton.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: 60),
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.widthAnchor.constraint(equalToConstant: 80),
@@ -72,10 +74,39 @@ class TabBarViewController: UITabBarController {
         ]
         NSLayoutConstraint.activate(addButtonConstraints)
     }
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didSignUp), name: .signUp, object: nil)
+    }
+    private func isShowAuthController() {
+        if viewModel.isAuth() {
+            let vc = AuthViewController()
+            vc.delegate = self
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.modalPresentationStyle = .fullScreen
+            self.present(navVC, animated: true)
+        }
+    }
     @objc private func didTapAdd() {
         let addViewController = AddViewController()
         addViewController.modalTransitionStyle = .coverVertical
         addViewController.modalPresentationStyle = .fullScreen
         self.present(addViewController, animated: true)
     }
+    @objc func didSignUp(){
+        isShowAuthController()
+        
+    }
+}
+
+
+//MARK: - AuthViewControllerDelegate
+
+extension TabBarViewController: AuthViewControllerDelegate {
+    func didSuccess(isAuth: Bool) {
+        if isAuth {
+            dismiss(animated: true)
+        }
+    }
+    
+    
 }

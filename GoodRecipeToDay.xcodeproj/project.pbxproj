@@ -27,16 +27,21 @@
 		1816E70E29FC0FA200A87487 /* FavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E70D29FC0FA200A87487 /* FavoriteViewController.swift */; };
 		1816E71029FC0FBC00A87487 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E70F29FC0FBC00A87487 /* ProfileViewController.swift */; };
 		1816E71329FC171400A87487 /* MainViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E71229FC171400A87487 /* MainViewControllerViewModel.swift */; };
+		1817E0B32A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1817E0B22A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift */; };
 		184BE1992A03E5C400888B9C /* CookingTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184BE1982A03E5C400888B9C /* CookingTableViewCellViewModel.swift */; };
 		185A31AB29FFF17700D0EAE4 /* TopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A31AA29FFF17700D0EAE4 /* TopBarView.swift */; };
 		186927D02A04C0D300A3A4C7 /* AddDatePikerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927CF2A04C0D300A3A4C7 /* AddDatePikerViewController.swift */; };
 		186927D22A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927D12A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift */; };
 		186927D42A050D6C00A3A4C7 /* QuantityIngredientsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927D32A050D6C00A3A4C7 /* QuantityIngredientsModel.swift */; };
 		186927D72A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927D62A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift */; };
+		186FA35C2A0D293B0050A5A6 /* Extension+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186FA35B2A0D293B0050A5A6 /* Extension+UIViewController.swift */; };
+		186FA35F2A0D32FF0050A5A6 /* AuthAlertViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186FA35E2A0D32FF0050A5A6 /* AuthAlertViewControllerViewModel.swift */; };
 		18951D382A0666D10064DC00 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 18951D372A0666D10064DC00 /* FirebaseAuth */; };
 		18951D3A2A0666D10064DC00 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 18951D392A0666D10064DC00 /* FirebaseDatabase */; };
 		18951D3C2A0666D10064DC00 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 18951D3B2A0666D10064DC00 /* FirebaseFirestore */; };
 		18951D3E2A0666D10064DC00 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 18951D3D2A0666D10064DC00 /* FirebaseStorage */; };
+		18972F5E2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18972F5D2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift */; };
+		18972F612A0C026100D02733 /* AuthAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18972F602A0C026100D02733 /* AuthAlertViewController.swift */; };
 		189A1F0D2A06A7690017B9F3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 189A1F0C2A06A7690017B9F3 /* GoogleService-Info.plist */; };
 		189C6D1F2A022B9E001EB808 /* AddIngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189C6D1E2A022B9E001EB808 /* AddIngredientTableViewCell.swift */; };
 		189C6D212A02527E001EB808 /* CookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189C6D202A02527E001EB808 /* CookingTableViewCell.swift */; };
@@ -62,6 +67,7 @@
 		18CE673D29FC275F0057BE58 /* SearchViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE673C29FC275F0057BE58 /* SearchViewControllerViewModel.swift */; };
 		18CE674229FC2FAD0057BE58 /* HeaderHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE674129FC2FAD0057BE58 /* HeaderHomeView.swift */; };
 		18CE674429FC3B890057BE58 /* MainSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CE674329FC3B890057BE58 /* MainSearchView.swift */; };
+		18D946AB2A0CE60E0008948F /* Extension+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D946AA2A0CE60E0008948F /* Extension+Notification.swift */; };
 		18E86D182A0B5429006BDA6E /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D172A0B5429006BDA6E /* SignUpViewController.swift */; };
 		18E86D1A2A0B56F3006BDA6E /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D192A0B56F3006BDA6E /* AuthButton.swift */; };
 		18E86D1D2A0B58E1006BDA6E /* AuthTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E86D1C2A0B58E1006BDA6E /* AuthTextField.swift */; };
@@ -98,12 +104,17 @@
 		1816E70D29FC0FA200A87487 /* FavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewController.swift; sourceTree = "<group>"; };
 		1816E70F29FC0FBC00A87487 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1816E71229FC171400A87487 /* MainViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerViewModel.swift; sourceTree = "<group>"; };
+		1817E0B22A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewControllerViewModel.swift; sourceTree = "<group>"; };
 		184BE1982A03E5C400888B9C /* CookingTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		185A31AA29FFF17700D0EAE4 /* TopBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBarView.swift; sourceTree = "<group>"; };
 		186927CF2A04C0D300A3A4C7 /* AddDatePikerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDatePikerViewController.swift; sourceTree = "<group>"; };
 		186927D12A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPersonsPikerViewController.swift; sourceTree = "<group>"; };
 		186927D32A050D6C00A3A4C7 /* QuantityIngredientsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantityIngredientsModel.swift; sourceTree = "<group>"; };
 		186927D62A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		186FA35B2A0D293B0050A5A6 /* Extension+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIViewController.swift"; sourceTree = "<group>"; };
+		186FA35E2A0D32FF0050A5A6 /* AuthAlertViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAlertViewControllerViewModel.swift; sourceTree = "<group>"; };
+		18972F5D2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerViewModel.swift; sourceTree = "<group>"; };
+		18972F602A0C026100D02733 /* AuthAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAlertViewController.swift; sourceTree = "<group>"; };
 		189A1F0C2A06A7690017B9F3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		189C6D1E2A022B9E001EB808 /* AddIngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientTableViewCell.swift; sourceTree = "<group>"; };
 		189C6D202A02527E001EB808 /* CookingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTableViewCell.swift; sourceTree = "<group>"; };
@@ -131,6 +142,7 @@
 		18CE673C29FC275F0057BE58 /* SearchViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerViewModel.swift; sourceTree = "<group>"; };
 		18CE674129FC2FAD0057BE58 /* HeaderHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderHomeView.swift; sourceTree = "<group>"; };
 		18CE674329FC3B890057BE58 /* MainSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSearchView.swift; sourceTree = "<group>"; };
+		18D946AA2A0CE60E0008948F /* Extension+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Notification.swift"; sourceTree = "<group>"; };
 		18E86D172A0B5429006BDA6E /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		18E86D192A0B56F3006BDA6E /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		18E86D1C2A0B58E1006BDA6E /* AuthTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTextField.swift; sourceTree = "<group>"; };
@@ -242,7 +254,7 @@
 			children = (
 				180135422A09FCEE008B7BFF /* Auth */,
 				1807B7202A02826C001F8F90 /* TestTabBar */,
-				1816E70329FC0E9500A87487 /* TabBarViewController.swift */,
+				1817E0B12A0CD19400F23009 /* TabBarViewController */,
 				1816E71129FC16FF00A87487 /* MainViewController */,
 				18CE673229FC26600057BE58 /* SearchViewController */,
 				18CE673329FC266C0057BE58 /* AddViewController */,
@@ -272,6 +284,15 @@
 				18CE673E29FC2F480057BE58 /* Views */,
 			);
 			path = MainViewController;
+			sourceTree = "<group>";
+		};
+		1817E0B12A0CD19400F23009 /* TabBarViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1816E70329FC0E9500A87487 /* TabBarViewController.swift */,
+				1817E0B22A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift */,
+			);
+			path = TabBarViewController;
 			sourceTree = "<group>";
 		};
 		184BE1972A03E58A00888B9C /* AddView */ = {
@@ -329,6 +350,33 @@
 			path = AddIngredientTableViewCell;
 			sourceTree = "<group>";
 		};
+		186FA35D2A0D32F00050A5A6 /* AuthAlertViewController */ = {
+			isa = PBXGroup;
+			children = (
+				18972F602A0C026100D02733 /* AuthAlertViewController.swift */,
+				186FA35E2A0D32FF0050A5A6 /* AuthAlertViewControllerViewModel.swift */,
+			);
+			path = AuthAlertViewController;
+			sourceTree = "<group>";
+		};
+		18972F5C2A0BFFA500D02733 /* SignUpViewController */ = {
+			isa = PBXGroup;
+			children = (
+				18972F5F2A0C023900D02733 /* AlertControler */,
+				18E86D172A0B5429006BDA6E /* SignUpViewController.swift */,
+				18972F5D2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift */,
+			);
+			path = SignUpViewController;
+			sourceTree = "<group>";
+		};
+		18972F5F2A0C023900D02733 /* AlertControler */ = {
+			isa = PBXGroup;
+			children = (
+				186FA35D2A0D32F00050A5A6 /* AuthAlertViewController */,
+			);
+			path = AlertControler;
+			sourceTree = "<group>";
+		};
 		189C6D1D2A022B5F001EB808 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +409,8 @@
 			isa = PBXGroup;
 			children = (
 				18A0A3982A00E03400DA6FAB /* Extension+TextView.swift */,
+				18D946AA2A0CE60E0008948F /* Extension+Notification.swift */,
+				186FA35B2A0D293B0050A5A6 /* Extension+UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -499,7 +549,7 @@
 		18E86D162A0B53C4006BDA6E /* SignUpController */ = {
 			isa = PBXGroup;
 			children = (
-				18E86D172A0B5429006BDA6E /* SignUpViewController.swift */,
+				18972F5C2A0BFFA500D02733 /* SignUpViewController */,
 				18E86D1B2A0B584B006BDA6E /* CustomElements */,
 			);
 			path = SignUpController;
@@ -652,6 +702,7 @@
 				1801354A2A0A0624008B7BFF /* ImageTextButtonType.swift in Sources */,
 				18C23E3D29FD657F00B06C53 /* FilterView.swift in Sources */,
 				18E86D1D2A0B58E1006BDA6E /* AuthTextField.swift in Sources */,
+				186FA35F2A0D32FF0050A5A6 /* AuthAlertViewControllerViewModel.swift in Sources */,
 				184BE1992A03E5C400888B9C /* CookingTableViewCellViewModel.swift in Sources */,
 				18E86D2D2A0BE1E3006BDA6E /* Recipe.swift in Sources */,
 				1807B71A2A027FA7001F8F90 /* SNTabBarController.swift in Sources */,
@@ -667,16 +718,20 @@
 				186927D72A050EB700A3A4C7 /* AddIngredientTableViewCellViewModel.swift in Sources */,
 				18CE674429FC3B890057BE58 /* MainSearchView.swift in Sources */,
 				1816E6F229FC0DE900A87487 /* SceneDelegate.swift in Sources */,
+				18972F612A0C026100D02733 /* AuthAlertViewController.swift in Sources */,
 				186927D02A04C0D300A3A4C7 /* AddDatePikerViewController.swift in Sources */,
 				18CE673729FC26A00057BE58 /* ProfileViewControllerViewModel.swift in Sources */,
 				18C23E3229FD39E100B06C53 /* MainRecomendHeaderView.swift in Sources */,
 				18C5986829FE79DD001506D7 /* CategoryModel.swift in Sources */,
 				18A0A3BB2A0125D800DA6FAB /* LabelTextfieldView.swift in Sources */,
 				18C5986529FE7975001506D7 /* CategoryViewCellViewModel.swift in Sources */,
+				18972F5E2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift in Sources */,
 				18C23E3029FD390100B06C53 /* MainCategoryHeaderView.swift in Sources */,
 				1807B7282A029E80001F8F90 /* AppTabBar.swift in Sources */,
 				18E86D252A0B8BED006BDA6E /* IsViewAgree.swift in Sources */,
+				18D946AB2A0CE60E0008948F /* Extension+Notification.swift in Sources */,
 				186927D22A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift in Sources */,
+				186FA35C2A0D293B0050A5A6 /* Extension+UIViewController.swift in Sources */,
 				1816E71029FC0FBC00A87487 /* ProfileViewController.swift in Sources */,
 				18E86D2A2A0BC84E006BDA6E /* SignInViewController.swift in Sources */,
 				1807B71E2A027FBE001F8F90 /* SNTabBarItem.swift in Sources */,
@@ -684,6 +739,7 @@
 				18CE674229FC2FAD0057BE58 /* HeaderHomeView.swift in Sources */,
 				18E86D1A2A0B56F3006BDA6E /* AuthButton.swift in Sources */,
 				18C5985C29FE46BD001506D7 /* RecomendViewCell.swift in Sources */,
+				1817E0B32A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift in Sources */,
 				1816E70829FC0F7700A87487 /* MainViewController.swift in Sources */,
 				18E86D1F2A0B5B4B006BDA6E /* AuthView.swift in Sources */,
 				18C23E2929FCF80700B06C53 /* MainCollectionView.swift in Sources */,

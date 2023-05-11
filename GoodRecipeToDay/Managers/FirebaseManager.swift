@@ -22,7 +22,8 @@ class FirebaseManager {
     private let imageManager = FirebaseImageManager() // Instance of FirebaseImageManager
     private let database = Firestore.firestore()
     
-   
+    public var isUser = Auth.auth().currentUser == nil
+
     // MARK: - User management
     
     func currentUser() -> User? {
@@ -124,10 +125,10 @@ extension FirebaseManager {
        
         }
     }
-    func signUp(username: String, email: String, password: String, complition: @escaping (Bool) -> Void) {
+    func signUp(username: String, email: String, password: String, complition: @escaping (Error?) -> Void) {
         auth.createUser(withEmail: email, password: password) { result, error in
             guard result != nil, error == nil else {
-                complition(false)
+                complition(error)
                 return
             }
             let data = [
@@ -135,10 +136,10 @@ extension FirebaseManager {
                 "user": username,
             ]
             self.database.collection("users").document(username).setData(data) { error in
-                guard error == nil else {complition(false)
+                guard error == nil else { complition(error)
                     return  }
             }
-            complition(true)
+            complition(nil)
         }
     }
      func signOut() {

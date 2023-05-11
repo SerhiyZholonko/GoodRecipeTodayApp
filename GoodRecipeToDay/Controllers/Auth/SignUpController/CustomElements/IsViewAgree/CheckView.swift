@@ -9,7 +9,7 @@ import UIKit
 
 class CheckView: UIView {
 //MARK: - Properties
-    private var isCheckmark: Bool = true
+     var isCheckmark: Bool = true
     lazy var checkImage: UIImageView = {
        let iv = UIImageView()
         iv.tintColor = .label

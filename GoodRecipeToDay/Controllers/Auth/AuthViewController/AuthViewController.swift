@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol AuthViewControllerDelegate: AnyObject {
+    func didSuccess(isAuth: Bool)
+}
+
 class AuthViewController: UIViewController {
+    //MARK: - Properties
+    weak var delegate: AuthViewControllerDelegate?
     let mainImageView: UIImageView = {
        let iv = UIImageView()
         iv.image = UIImage(named: "platter")
@@ -141,10 +147,20 @@ class AuthViewController: UIViewController {
     
     @objc private func didTappedEmail() {
       let vc = SignUpViewController()
+        vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
     @objc private func didTappedGoogle() {
     }
     @objc private func didTappedApple() {
     }
+}
+
+
+extension AuthViewController: SignUpViewControllerDelegate {
+    func isDismissVC(isAuth: Bool) {
+            delegate?.didSuccess(isAuth: isAuth)
+    }
+
+
 }

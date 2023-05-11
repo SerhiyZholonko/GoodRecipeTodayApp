@@ -12,7 +12,6 @@ class FirebaseImageManager {
     
     static let shared = FirebaseImageManager()
     private let storageRef = Storage.storage().reference()
-    
      init() {}
     
     func uploadImage(_ image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {

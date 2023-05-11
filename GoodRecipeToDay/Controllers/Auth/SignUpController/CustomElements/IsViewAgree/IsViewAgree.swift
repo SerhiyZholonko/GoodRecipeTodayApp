@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol IsViewAgreeDelegtae: AnyObject {
+    func isAgree(agree: Bool)
+}
+
 class IsViewAgree: UIView {
 
   //MARK: - Properties
+    weak var delegate: IsViewAgreeDelegtae?
     lazy var checkmarkView: CheckView = {
        let view = CheckView()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedCheck)))
@@ -68,5 +73,6 @@ class IsViewAgree: UIView {
     }
     @objc private func didTappedCheck() {
         checkmarkView.changeCheckmark()
+        delegate?.isAgree(agree: !checkmarkView.isCheckmark)
     }
 }

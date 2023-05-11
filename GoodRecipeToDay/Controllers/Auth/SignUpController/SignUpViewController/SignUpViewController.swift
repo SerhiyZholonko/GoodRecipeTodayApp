@@ -7,8 +7,16 @@
 
 import UIKit
 
+protocol SignUpViewControllerDelegate: AnyObject {
+    func isDismissVC(isAuth: Bool)
+}
+
 class SignUpViewController: UIViewController {
+  
+    
     //MARK: - Properties
+    let viewModel = SignUpViewControllerViewModel()
+    weak var delegate: SignUpViewControllerDelegate?
     let titleLabel: UILabel = {
        let label = UILabel()
         label.text = "Sign Up"
@@ -26,6 +34,7 @@ class SignUpViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
     }
     lazy var authViewStack: UIStackView = {
+        viewModel.delegate = self
        let stack = UIStackView(arrangedSubviews: [
        nameView,
        emailView,
@@ -37,8 +46,9 @@ class SignUpViewController: UIViewController {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-    let signUpButton: AuthButton = {
+    lazy var signUpButton: AuthButton = {
         let button = AuthButton(backgroundColor: .systemGreen, title: "Sign Up")
+        button.addTarget(self, action: #selector(didTappedSignUp), for: .touchUpInside)
         return button
     }()
     let haveAccountLabel : UILabel = {
@@ -59,7 +69,6 @@ class SignUpViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -67,6 +76,12 @@ class SignUpViewController: UIViewController {
     }
     //MARK: - Functions
     private func configure() {
+        agreeView.delegate = self
+        nameView.delegate = self
+        emailView.delegate = self
+        passwordView.delegate = self
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
         view.backgroundColor = .systemBackground
         view.addSubview(titleLabel)
         view.addSubview(authViewStack)
@@ -83,7 +98,7 @@ class SignUpViewController: UIViewController {
         NSLayoutConstraint.activate(titleLabelConstraints)
         
         let authViewStackConstraints = [
-            authViewStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+            authViewStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             authViewStack.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
             authViewStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
             authViewStack.heightAnchor.constraint(equalToConstant: 260)
@@ -117,9 +132,58 @@ class SignUpViewController: UIViewController {
       ]
       NSLayoutConstraint.activate(signInLabelConstraints)
     }
+    @objc private func didTappedSignUp() {
+        if viewModel.isAgree {
+            viewModel.signUp { [weak self] isSuccess in
+                if isSuccess {
+                    self?.delegate?.isDismissVC(isAuth: isSuccess)
+                } else {
+                    print("Some thing wrong")
+                }
+            }
+        } 
+    }
     @objc private func didTappedSignIn() {
-        print("Tappp")
+        passwordView.resignFirstResponder()
         let vc = SignInViewController()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+      }
+}
+
+
+
+//MARK: - Delegate
+extension SignUpViewController: AuthViewdelegate {
+    func usernameDidChange(name: String?) {
+        guard let name = name else { return }
+        viewModel.username = name
+    }
+    func emailDidChange(email: String?) {
+        guard let email = email else { return }
+        viewModel.email = email
+    }
+    func passwordDidChange(password: String?) {
+        guard let password = password else { return }
+        viewModel.password = password
+    }
+    
+    
+}
+
+
+extension SignUpViewController: SignUpViewControllerViewModelDelegate {
+    func forAlertError(error: Error) {
+        print(error.localizedDescription)
+        self.presentAlertViewController(error: error.localizedDescription)
+    }
+}
+
+
+extension SignUpViewController: IsViewAgreeDelegtae {
+    func isAgree(agree: Bool) {
+        viewModel.isAgree = agree
     }
 }
