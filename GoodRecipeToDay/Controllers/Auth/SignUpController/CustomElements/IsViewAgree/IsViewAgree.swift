@@ -22,7 +22,7 @@ class IsViewAgree: UIView {
     }()
     let questionLabel: UILabel = {
        let label = UILabel()
-        label.text = "I agree wit"
+        label.text = "I agree with"
         label.textColor = .systemGray3
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false

@@ -17,6 +17,8 @@ class SignUpViewController: UIViewController {
     //MARK: - Properties
     let viewModel = SignUpViewControllerViewModel()
     weak var delegate: SignUpViewControllerDelegate?
+    let vc = SignInViewController()
+
     let titleLabel: UILabel = {
        let label = UILabel()
         label.text = "Sign Up"

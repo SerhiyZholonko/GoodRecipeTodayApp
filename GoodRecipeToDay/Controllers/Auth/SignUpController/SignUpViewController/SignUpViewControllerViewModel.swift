@@ -25,7 +25,6 @@ final class SignUpViewControllerViewModel {
         firebaseManager.signUp(username: username, email: email, password: password) { [weak self]  error in
             switch error {
             case .none:
-                print("Success")
                 completion(true)
             case .some(let error):
                 completion(false)

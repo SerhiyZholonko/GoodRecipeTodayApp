@@ -10,7 +10,7 @@ import UIKit
 import UIKit
 
 extension UIViewController {
-
+    
     
     func presentAlertViewController(error massage: String) {
         DispatchQueue.main.async {
@@ -19,7 +19,17 @@ extension UIViewController {
             self.present(alertVC, animated: true)
         }
     }
-
+    
+    
+    func addChildViewController(_ childViewController: UIViewController, to containerView: UIView) {
+        addChild(childViewController)
+        containerView.addSubview(childViewController.view)
+        childViewController.view.frame = containerView.bounds
+        childViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        childViewController.didMove(toParent: self)
+    }
+    
+    
 }
 
 

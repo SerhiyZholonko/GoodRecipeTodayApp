@@ -27,7 +27,17 @@ class AuthTextField: UITextField {
     
     //MARK: - functions
     private func configure() {
-        
+        translatesAutoresizingMaskIntoConstraints = false
+        layer.borderColor = UIColor.systemGray5.cgColor
+        layer.borderWidth = 2
+        layer.cornerRadius = 10
+        clipsToBounds = true
+        autocorrectionType = .no
+        autocapitalizationType = .none
+        isSecurePassword()
+    }
+    
+    private func isSecurePassword() {
         if isSecure {
             showPasswordButton.setImage(UIImage(systemName: "eye"), for: .normal)
             showPasswordButton.setTitle("  ", for: .normal)
@@ -36,13 +46,6 @@ class AuthTextField: UITextField {
                     rightView = showPasswordButton
                     rightViewMode = .always
         }
-        translatesAutoresizingMaskIntoConstraints = false
-        layer.borderColor = UIColor.systemGray5.cgColor
-        layer.borderWidth = 2
-        layer.cornerRadius = 10
-        clipsToBounds = true
-        autocorrectionType = .no
-        autocapitalizationType = .none
     }
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)

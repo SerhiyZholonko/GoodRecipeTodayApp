@@ -19,8 +19,12 @@ struct Recipe {
     let key: String?
     let steps: [Step]
     let ingredients: [Ingredient]
-    
-    init(mainImage: String, title: String, description: String, category: String, quantity: String, time: String, steps: [Step], ingredients: [Ingredient], key: String? = nil) {
+    let username: String
+    let createdAt: Timestamp?
+
+//    let user:
+
+    init(mainImage: String, title: String, description: String, category: String, quantity: String, time: String, steps: [Step], ingredients: [Ingredient], key: String? = nil, username: String, createdAt: Timestamp? = nil) {
         self.mainImage = mainImage
         self.title = title
         self.description = description
@@ -30,6 +34,8 @@ struct Recipe {
         self.steps = steps
         self.ingredients = ingredients
         self.key = key
+        self.username = username
+        self.createdAt = createdAt
     }
     
     init?(snapshot: DataSnapshot) {
@@ -41,7 +47,10 @@ struct Recipe {
               let quantity = dict["quantity"] as? String,
               let time = dict["time"] as? String,
               let stepsDict = dict["steps"] as? [[String: Any]],
-              let ingredientsDict = dict["ingredients"] as? [[String: Any]] else {
+              let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+            let usernameDict = dict["username"] as? String,
+              let createdAt = dict["createdAt"] as? Timestamp
+                                            else {
                   return nil
               }
         
@@ -68,6 +77,51 @@ struct Recipe {
         self.steps = steps
         self.ingredients = ingredients
         self.key = snapshot.key
+        self.username = usernameDict
+        self.createdAt = createdAt
+    }
+    init?(snapshot: QueryDocumentSnapshot) {
+        let dict = snapshot.data()
+        guard
+              let mainImage = dict["mainImage"] as? String,
+              let title = dict["title"] as? String,
+              let description = dict["description"] as? String,
+              let category = dict["category"] as? String,
+              let quantity = dict["quantity"] as? String,
+              let time = dict["time"] as? String,
+              let stepsDict = dict["steps"] as? [[String: Any]],
+              let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+        let usernameDict = dict["username"] as? String,
+              let createdAt = dict["createdAt"] as? Timestamp
+
+        else {
+                  return nil
+              }
+        var steps: [Step] = []
+        for stepDict in stepsDict {
+            if let step = Step(dict: stepDict) {
+                steps.append(step)
+            }
+        }
+        
+        var ingredients: [Ingredient] = []
+        for ingredientDict in ingredientsDict {
+            if let ingredient = Ingredient(dict: ingredientDict) {
+                ingredients.append(ingredient)
+            }
+        }
+        
+        self.mainImage = mainImage
+        self.title = title
+        self.description = description
+        self.category = category
+        self.quantity = quantity
+        self.time = time
+        self.steps = steps
+        self.ingredients = ingredients
+        self.key = snapshot.documentID
+        self.username = usernameDict
+        self.createdAt = createdAt
     }
     
     func toDictionary() -> [String: Any] {
@@ -89,7 +143,9 @@ struct Recipe {
             "quantity": quantity,
             "time": time,
             "steps": stepsDict,
-            "ingredients": ingredientsDict
+            "ingredients": ingredientsDict,
+            "createdAt": createdAt ?? FieldValue.serverTimestamp()
+
         ] as [String : Any]
         if let key = key {
             dict["key"] = key

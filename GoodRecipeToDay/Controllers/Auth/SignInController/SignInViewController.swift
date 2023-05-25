@@ -7,8 +7,10 @@
 
 import UIKit
 
+
 class SignInViewController: UIViewController {
     //MARK: - Properties
+    let viewModel = SignInViewControllerViewModel()
     lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .default)
@@ -27,8 +29,9 @@ class SignInViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    let signUpButton: AuthButton = {
+    lazy var signUpButton: AuthButton = {
         let button = AuthButton(backgroundColor: .systemGreen, title: "Sign In")
+        button.addTarget(self, action: #selector(didTappedSignIn), for: .touchUpInside)
         return button
     }()
     let nameView = AuthView(type: .name)
@@ -63,41 +66,73 @@ class SignInViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(authViewStack)
         view.addSubview(signUpButton)
+        nameView.delegate = self
+        passwordView.delegate = self
     }
     private func addConstraints() {
         let titleLabelConstraints = [
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20)
-        ]
-        NSLayoutConstraint.activate(titleLabelConstraints)
-        
-        let authViewStackConstraints = [
-            authViewStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
-            authViewStack.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
-            authViewStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
-            authViewStack.heightAnchor.constraint(equalToConstant: 200)
-        ]
-        NSLayoutConstraint.activate(authViewStackConstraints)
-     
-        
-        let signUpButtonConstraints = [
-            signUpButton.topAnchor.constraint(equalTo: authViewStack.bottomAnchor, constant: 20),
-            signUpButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40),
-            signUpButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -40),
-            signUpButton.heightAnchor.constraint(equalToConstant: 50)
-        ]
-        NSLayoutConstraint.activate(signUpButtonConstraints)
-        
-        let backButtonConstraints = [
-            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
-            backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            backButton.widthAnchor.constraint(equalToConstant: 30),
-            backButton.heightAnchor.constraint(equalToConstant: 30)
-        ]
-        NSLayoutConstraint.activate(backButtonConstraints)
+                   titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+                   titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20)
+               ]
+               NSLayoutConstraint.activate(titleLabelConstraints)
+               
+               let authViewStackConstraints = [
+                   authViewStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
+                   authViewStack.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
+                   authViewStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
+                   authViewStack.heightAnchor.constraint(equalToConstant: 200)
+               ]
+               NSLayoutConstraint.activate(authViewStackConstraints)
+            
+               
+               let signUpButtonConstraints = [
+                   signUpButton.topAnchor.constraint(equalTo: authViewStack.bottomAnchor, constant: 20),
+                   signUpButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40),
+                   signUpButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -40),
+                   signUpButton.heightAnchor.constraint(equalToConstant: 50)
+               ]
+               NSLayoutConstraint.activate(signUpButtonConstraints)
+               
+               let backButtonConstraints = [
+                   backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+                   backButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+                   backButton.widthAnchor.constraint(equalToConstant: 30),
+                   backButton.heightAnchor.constraint(equalToConstant: 30)
+               ]
+               NSLayoutConstraint.activate(backButtonConstraints)
     }
 
     @objc private func didTappedBack() {
         navigationController?.popViewController(animated: true)
     }
+    @objc private func didTappedSignIn() {
+        viewModel.signIn{ [weak self] isSuccess in
+                if isSuccess {
+                    self?.navigationController?.popToRootViewController(animated: false)
+                    NotificationCenter.default.post(name: .authVCClose, object: nil, userInfo: nil)
+                    NotificationCenter.default.post(name: .reloadMainViewControlelr, object: nil, userInfo: nil)
+                } else {
+                    print("Some thing wrong")
+                }
+            }
+        
+    }
+}
+
+
+//MARK: - Delegate
+extension SignInViewController: AuthViewdelegate {
+    func usernameDidChange(name: String?) {
+        guard let name = name else { return }
+        viewModel.username = name
+    }
+    func emailDidChange(email: String?) {
+        
+    }
+    func passwordDidChange(password: String?) {
+        guard let password = password else { return }
+        viewModel.password = password
+    }
+    
+    
 }

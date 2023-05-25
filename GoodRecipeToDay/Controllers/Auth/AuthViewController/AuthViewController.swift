@@ -62,11 +62,13 @@ class AuthViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    let signInLabel : UILabel = {
+    lazy var signInLabel : UILabel = {
         let label = UILabel()
         label.text = "Sign In"
         label.font = .systemFont(ofSize: 16, weight: .semibold)
         label.textColor = .label
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapSignIn)))
+        label.isUserInteractionEnabled = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -84,8 +86,15 @@ class AuthViewController: UIViewController {
         view.addSubview(signInLabel)
 
         addConstraints()
+        configure()
     }
+    deinit {
+         NotificationCenter.default.removeObserver(self)
+     }
     //MARK: - Functions
+    private func configure() {
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissAuthVC), name: .authVCClose, object: nil)
+    }
     private func addConstraints() {
         let mainImageViewConstraints = [
             mainImageView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -154,13 +163,26 @@ class AuthViewController: UIViewController {
     }
     @objc private func didTappedApple() {
     }
+    @objc func dismissAuthVC(){
+          dismiss(animated: true)
+      }
+    @objc private func didTapSignIn() {
+        let vc = SignInViewController()
+          navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 
+
+//MARK: - Delegate
 
 extension AuthViewController: SignUpViewControllerDelegate {
     func isDismissVC(isAuth: Bool) {
+        NotificationCenter.default.post(name: .reloadMainViewControlelr, object: nil, userInfo: nil)
             delegate?.didSuccess(isAuth: isAuth)
+        
     }
-
-
 }
+
+
+

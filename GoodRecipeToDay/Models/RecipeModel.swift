@@ -12,7 +12,14 @@ struct RecipeModel {
     let title: String
     let category: String
     let description: String
-    let ceator: String
-    let createdDate: Date
+    let creator: String
+    let createdDate: Date = Date.now
     let image: String
+    init(recipe: Recipe) {
+        self.title = recipe.title
+        self.category = recipe.category
+        self.description = recipe.description
+        self.creator = "Username"
+        self.image = recipe.mainImage
+    }
 }
