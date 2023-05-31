@@ -15,7 +15,6 @@ class MainViewController: UIViewController {
         view.delegate = self
         return view
     }()
-    
      var detailView: MainCollectionView
     private lazy var searchCollectionView: UIView = {
         let collectionView = UIView()
@@ -24,7 +23,7 @@ class MainViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    let searchCollectionViewController = SearchCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    let searchCollectionViewController = MainSearchCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
     init() {
         viewModel = MainViewControllerViewModel()
         detailView = MainCollectionView(frame: .zero, viewModel: viewModel)
@@ -34,7 +33,6 @@ class MainViewController: UIViewController {
         viewModel.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDataMainController), name: .reloadMainViewControlelr, object: nil)
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,13 +48,11 @@ class MainViewController: UIViewController {
         detailView.collectionView?.dataSource = self
         
         addChildViewController(searchCollectionViewController, to: searchCollectionView)
-        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-    
     private func setupBasicUI() {
         view.backgroundColor = .secondarySystemBackground
     }
@@ -134,9 +130,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekViewCell.identiofier, for: indexPath) as? WeekViewCell else { return UICollectionViewCell() }
             cell.configure(viewModel: viewModel[indexPath.item])
             return cell
-
         }
-
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
@@ -156,9 +150,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return headerView
         default:
                 return UICollectionReusableView()
-
         }
-
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let sectionType = viewModel.sections[indexPath.section]
@@ -176,17 +168,18 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .recomend(viewModel: let viewModel):
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
+            vc.delegate = self
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
                 self.present(vc, animated: true)
             }
-            
-           
         case .oftheWeek(viewModel: let viewModel):
             print(viewModel[indexPath.item].title)
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
+            vc.delegate = self
+
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
@@ -194,11 +187,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             }
         }
     }
-    
 }
-
-
-
 //MARK: - Delegate Header
 extension MainViewController: MainWeekHeaderViewDelegate {
     func didTapWeek() {
@@ -223,11 +212,7 @@ extension MainViewController: MainViewControllerViewModelDelegate {
     func reloadCollection() {
         detailView.collectionView?.reloadData()
     }
-    
-    
 }
-
-
 
 //MARK: - Delegate search view
 
@@ -237,7 +222,6 @@ extension MainViewController: MainSearchViewDelegate {
             self.searchCollectionView.alpha = 0
         }
     }
-    
     func passSearchText(text: String) {
         UIView.animate(withDuration: 0.4, delay: 0) {
             self.searchCollectionView.alpha = 1
@@ -246,4 +230,13 @@ extension MainViewController: MainSearchViewDelegate {
     }
 }
 
+//MARK: - Delegate mainView
 
+extension MainViewController: RecipeDetailViewControllerDelegate {
+    func reloadCollectionView() {
+        DispatchQueue.main.async {[weak self] in
+        self?.viewModel = MainViewControllerViewModel()
+        }
+
+    }
+}

@@ -21,8 +21,7 @@ class AddViewController: UIViewController {
     var index: Int?
     lazy var bestImageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .systemGray
-        iv.image = UIImage(named: "food")
+        iv.image = UIImage(named: "add 1")
         iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapBestImageView)))
         iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false

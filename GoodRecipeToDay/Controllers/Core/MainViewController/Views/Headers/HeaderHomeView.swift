@@ -28,7 +28,7 @@ class HeaderHomeView: UIView {
         iv.image = UIImage(named: "woman")
         iv.layer.cornerRadius = 25
         iv.clipsToBounds = true
-        iv.layer.borderColor = UIColor.red.cgColor
+        iv.layer.borderColor = UIColor.systemGray.cgColor
         iv.layer.borderWidth = 3
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv

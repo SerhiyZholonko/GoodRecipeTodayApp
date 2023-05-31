@@ -59,7 +59,8 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
             complition(guser)
         }
     }
-    @objc private func getingRecipes() {
+
+    @objc  private func getingRecipes() {
         firebaseManager.getAllRecipes { result in
             switch result {
             case .success(let recipes):
@@ -119,7 +120,7 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
 
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(250)), subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
+        section.orthogonalScrollingBehavior = .groupPaging
         
         // Create the header item and add it to the section
          let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(30))

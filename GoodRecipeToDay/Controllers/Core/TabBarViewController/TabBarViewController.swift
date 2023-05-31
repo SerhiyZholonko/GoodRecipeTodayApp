@@ -67,9 +67,9 @@ class TabBarViewController: UITabBarController {
         mainViewController.tabBarItem = UITabBarItem(title: "home", image: UIImage(systemName: "house"), tag: 1)
         searchViewController.tabBarItem = UITabBarItem(title: "search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
         addViewController.tabBarItem = UITabBarItem(title: "Add", image: UIImage(systemName: "plus"), tag: 3)
-        favoriteController.tabBarItem = UITabBarItem(title: "favorite", image: UIImage(systemName: "heart"), tag: 4)
+        favoriteController.tabBarItem = UITabBarItem(title: "favorite", image: UIImage(systemName: "bookmark"), tag: 4)
         profileViewController.tabBarItem = UITabBarItem(title: "profile", image: UIImage(systemName: "person"), tag: 5)
-        tabBar.tintColor = UIColor.red
+        tabBar.tintColor = UIColor.systemGreen
         tabBar.barTintColor = UIColor.white
         tabBar.backgroundColor = .systemBackground
         

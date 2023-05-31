@@ -8,11 +8,11 @@
 import UIKit
 import SDWebImage
 
-class SearchCollectionViewCell: UICollectionViewCell {
+class MainSearchCollectionViewCell: UICollectionViewCell {
     //MARK: - Properties
     static let identifier = "SearchCollectionViewCell"
     
-    private var viewModel: SearchCollectionViewCellViewModel? {
+    private var viewModel: MainSearchCollectionViewCellViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
             DispatchQueue.main.async { [weak self] in
@@ -82,7 +82,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     //MARK: - Functions
-    public func configure(viewModel: SearchCollectionViewCellViewModel) {
+    public func configure(viewModel: MainSearchCollectionViewCellViewModel) {
         self.viewModel = viewModel
     }
     private func addConstraints() {

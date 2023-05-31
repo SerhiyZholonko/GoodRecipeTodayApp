@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol SearchCollectionViewControllerViewModelDelegate: AnyObject {
+protocol MainSearchCollectionViewControllerViewModelDelegate: AnyObject {
     func reloadCollectionView()
 }
 
-final class SearchCollectionViewControllerViewModel {
+final class MainSearchCollectionViewControllerViewModel {
     //MARK: - Properties
-    weak var delegate: SearchCollectionViewControllerViewModelDelegate?
+    weak var delegate: MainSearchCollectionViewControllerViewModelDelegate?
     let firebaseManager = FirebaseManager.shared
 
     var searchText: String? {

@@ -12,7 +12,7 @@ class FilterView: UIView {
     let filterButtons: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "checklist.unchecked"), for: .normal)
-        button.tintColor = .systemGray3
+        button.tintColor = .systemGreen
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

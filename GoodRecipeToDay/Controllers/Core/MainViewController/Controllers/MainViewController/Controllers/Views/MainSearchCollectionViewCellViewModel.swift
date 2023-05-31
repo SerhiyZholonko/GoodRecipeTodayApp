@@ -8,7 +8,7 @@
 import Foundation
 
 
-final class SearchCollectionViewCellViewModel {
+final class MainSearchCollectionViewCellViewModel {
     public var mainImageUrl: URL? {
         let url = URL(string: recipe.mainImage)
         return url

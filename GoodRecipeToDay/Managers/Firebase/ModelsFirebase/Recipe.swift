@@ -16,7 +16,9 @@ struct Recipe {
     let category: String
     let quantity: String
     let time: String
-    let key: String?
+    let key: String? 
+    var rate: Double? = nil
+    var rateCounter: Int = 0
     let steps: [Step]
     let ingredients: [Ingredient]
     let username: String
@@ -38,21 +40,24 @@ struct Recipe {
         self.createdAt = createdAt
     }
     
-    init?(snapshot: DataSnapshot) {
-        guard let dict = snapshot.value as? [String: Any],
-              let mainImage = dict["mainImage"] as? String,
-              let title = dict["title"] as? String,
-              let description = dict["description"] as? String,
-              let category = dict["category"] as? String,
-              let quantity = dict["quantity"] as? String,
-              let time = dict["time"] as? String,
-              let stepsDict = dict["steps"] as? [[String: Any]],
-              let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+
+    init?(snapshot: Any) {
+        guard let dict = snapshot as? [String: Any],
+            let mainImage = dict["mainImage"] as? String,
+            let title = dict["title"] as? String,
+            let description = dict["description"] as? String,
+            let category = dict["category"] as? String,
+            let quantity = dict["quantity"] as? String,
+            let time = dict["time"] as? String,
+            let stepsDict = dict["steps"] as? [[String: Any]],
+            let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+            let rateDict = dict["rate"] as? Double?,
+            let rateCounterDict = dict["rateCounter"] as? Int?, // Retrieve rateCounter
             let usernameDict = dict["username"] as? String,
-              let createdAt = dict["createdAt"] as? Timestamp
-                                            else {
-                  return nil
-              }
+            let createdAt = dict["createdAt"] as? Timestamp
+            else {
+                return nil
+        }
         
         var steps: [Step] = []
         for stepDict in stepsDict {
@@ -76,41 +81,42 @@ struct Recipe {
         self.time = time
         self.steps = steps
         self.ingredients = ingredients
-        self.key = snapshot.key
+        self.rate = rateDict
+        self.rateCounter = rateCounterDict ?? 0 // Assign rateCounter
+        self.key = (snapshot as AnyObject).key
         self.username = usernameDict
         self.createdAt = createdAt
     }
     init?(snapshot: QueryDocumentSnapshot) {
         let dict = snapshot.data()
         guard
-              let mainImage = dict["mainImage"] as? String,
-              let title = dict["title"] as? String,
-              let description = dict["description"] as? String,
-              let category = dict["category"] as? String,
-              let quantity = dict["quantity"] as? String,
-              let time = dict["time"] as? String,
-              let stepsDict = dict["steps"] as? [[String: Any]],
-              let ingredientsDict = dict["ingredients"] as? [[String: Any]],
-        let usernameDict = dict["username"] as? String,
-              let createdAt = dict["createdAt"] as? Timestamp
-
+            let mainImage = dict["mainImage"] as? String,
+            let title = dict["title"] as? String,
+            let description = dict["description"] as? String,
+            let category = dict["category"] as? String,
+            let quantity = dict["quantity"] as? String,
+            let time = dict["time"] as? String,
+            let stepsDict = dict["steps"] as? [[String: Any]],
+            let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+            let rateDict = dict["rate"] as? Double?,
+            let rateCounterDict = dict["rateCounter"] as? Int?, // Retrieve rateCounter
+            let usernameDict = dict["username"] as? String,
+            let createdAt = dict["createdAt"] as? Timestamp
         else {
-                  return nil
-              }
+            return nil
+        }
         var steps: [Step] = []
         for stepDict in stepsDict {
             if let step = Step(dict: stepDict) {
                 steps.append(step)
             }
         }
-        
         var ingredients: [Ingredient] = []
         for ingredientDict in ingredientsDict {
             if let ingredient = Ingredient(dict: ingredientDict) {
                 ingredients.append(ingredient)
             }
         }
-        
         self.mainImage = mainImage
         self.title = title
         self.description = description
@@ -120,10 +126,87 @@ struct Recipe {
         self.steps = steps
         self.ingredients = ingredients
         self.key = snapshot.documentID
+        self.rate = rateDict
+        self.rateCounter = rateCounterDict ?? 0 // Assign rateCounter
         self.username = usernameDict
         self.createdAt = createdAt
     }
+//    init?(snapshot: QueryDocumentSnapshot) {
+//        let dict = snapshot.data()
+//        guard
+//              let mainImage = dict["mainImage"] as? String,
+//              let title = dict["title"] as? String,
+//              let description = dict["description"] as? String,
+//              let category = dict["category"] as? String,
+//              let quantity = dict["quantity"] as? String,
+//              let time = dict["time"] as? String,
+//              let stepsDict = dict["steps"] as? [[String: Any]],
+//              let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+//              let rateDict = dict["rate"] as? Double?,
+//        let usernameDict = dict["username"] as? String,
+//              let createdAt = dict["createdAt"] as? Timestamp
+//
+//        else {
+//                  return nil
+//              }
+//        var steps: [Step] = []
+//        for stepDict in stepsDict {
+//            if let step = Step(dict: stepDict) {
+//                steps.append(step)
+//            }
+//        }
+//
+//        var ingredients: [Ingredient] = []
+//        for ingredientDict in ingredientsDict {
+//            if let ingredient = Ingredient(dict: ingredientDict) {
+//                ingredients.append(ingredient)
+//            }
+//        }
+//
+//        self.mainImage = mainImage
+//        self.title = title
+//        self.description = description
+//        self.category = category
+//        self.quantity = quantity
+//        self.time = time
+//        self.steps = steps
+//        self.ingredients = ingredients
+//        self.key = snapshot.documentID
+//        self.rate = rateDict
+//        self.username = usernameDict
+//        self.createdAt = createdAt
+//    }
     
+//    func toDictionary() -> [String: Any] {
+//        var stepsDict: [[String: Any]] = []
+//        for step in steps {
+//            stepsDict.append(step.toDictionary())
+//        }
+//
+//        var ingredientsDict: [[String: Any]] = []
+//        for ingredient in ingredients {
+//            ingredientsDict.append(ingredient.toDictionary())
+//        }
+//
+//        var dict = [
+//            "mainImage": mainImage,
+//            "title": title,
+//            "description": description,
+//            "category": category,
+//            "quantity": quantity,
+//            "time": time,
+//            "steps": stepsDict,
+//            "ingredients": ingredientsDict,
+//            "createdAt": createdAt ?? FieldValue.serverTimestamp(),
+//            "rate": rate ?? 0.0,
+//            "rateCounter": rateCounter // Add rateCounter to the dictionary
+//
+//        ] as [String : Any]
+//        if let key = key {
+//            dict["key"] = key
+//        }
+//        return dict
+//    }
     func toDictionary() -> [String: Any] {
         var stepsDict: [[String: Any]] = []
         for step in steps {
@@ -144,7 +227,9 @@ struct Recipe {
             "time": time,
             "steps": stepsDict,
             "ingredients": ingredientsDict,
-            "createdAt": createdAt ?? FieldValue.serverTimestamp()
+            "createdAt": createdAt ?? FieldValue.serverTimestamp(),
+            "rate": rate ?? 0.0,
+            "rateCounter": NSNumber(value: rateCounter) // Convert rateCounter to NSNumber
 
         ] as [String : Any]
         if let key = key {
@@ -152,6 +237,10 @@ struct Recipe {
         }
         return dict
     }
+    //MARK: - Functions
+    mutating func incrementRateCounter() {
+           rateCounter += 1
+       }
 }
 
 

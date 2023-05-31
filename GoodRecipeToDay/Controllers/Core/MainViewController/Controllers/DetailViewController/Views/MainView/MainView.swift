@@ -3,7 +3,7 @@
 
 import UIKit
 import SDWebImage
-
+import Cosmos
 
 protocol MainViewDelegate: AnyObject {
     func presentImage(viewModel: InstructionTableViewCellViewModel)
@@ -14,7 +14,15 @@ class MainView: UIView {
  
     
     weak var delegate: MainViewDelegate?
-    var viewModel: MainViewViewModel?
+    var viewModel: MainViewViewModel? {
+        didSet {
+            guard let viewModel = viewModel else { return }
+            print("controller rate - ", viewModel.rate)
+            
+            rateView.rating = viewModel.rate
+
+        }
+    }
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
 
@@ -30,6 +38,27 @@ class MainView: UIView {
     lazy var contentView: UIView = {
         let view = UIView()
 
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    lazy var rateView: CosmosView = {
+        let view = CosmosView()
+        view.settings.filledImage = UIImage(systemName: "star.fill")
+        view.settings.emptyImage = UIImage(systemName: "star")
+        view.settings.totalStars = 5
+        view.settings.starSize = 20
+        //TODO: - get rate from server
+        view.settings.starMargin = 3.3
+        view.settings.fillMode = .precise
+        view.text = "Rate me"
+        view.didTouchCosmos = {[weak self] rating in
+           let rateString = "You rate: \(rating.rounded(toDecimalPlaces: 1))"
+            guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
+            viewModel.updateRecipeRate(rate: rating)
+            view.text = rateString
+        }
+        view.settings.textColor = .systemGreen
+        view.settings.textMargin = 14
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -88,6 +117,7 @@ class MainView: UIView {
         setupScrollView()
         setupContentView()
         contentView.addSubview(topGayView)
+        contentView.addSubview(rateView)
         contentView.addSubview(title)
         contentView.addSubview(userLabel)
         contentView.addSubview(timeView)
@@ -97,7 +127,6 @@ class MainView: UIView {
         addConstraints()
         calculateIngredientTableViewHeight()
         calculateInstructionTableViewHeight()
-//        timeView.configure(time: "2:00h")
         ingredientTableView.delegate = self
         ingredientTableView.dataSource = self
         instructionTableView.delegate = self
@@ -106,6 +135,7 @@ class MainView: UIView {
         UIView.performWithoutAnimation {
                   scrollView.setContentOffset(CGPoint(x: 0, y: 200), animated: false)
               }
+        
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -162,8 +192,15 @@ class MainView: UIView {
             topGayView.heightAnchor.constraint(equalToConstant: 3)
         ]
         NSLayoutConstraint.activate(topGayViewConstraints)
+        let  rateViewConstraints = [
+            rateView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 50),
+//            rateView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            rateView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 40),
+            rateView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -40)
+        ]
+        NSLayoutConstraint.activate(rateViewConstraints)
         let titleConstraints = [
-            title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 50),
+            title.topAnchor.constraint(equalTo: rateView.bottomAnchor, constant: 20),
             title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
         ]

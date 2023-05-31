@@ -8,9 +8,9 @@
 import UIKit
 
 
-class SearchCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class MainSearchCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    var viewModel = SearchCollectionViewControllerViewModel() {
+    var viewModel = MainSearchCollectionViewControllerViewModel() {
         didSet{
             collectionView.reloadData()
         }
@@ -23,7 +23,7 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: SearchCollectionViewCell.identifier)
+        self.collectionView!.register(MainSearchCollectionViewCell.self, forCellWithReuseIdentifier: MainSearchCollectionViewCell.identifier)
         collectionView.backgroundColor = .secondarySystemBackground
         // Do any additional setup after loading the view.
         viewModel.delegate = self
@@ -40,8 +40,8 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(viewModel: SearchCollectionViewCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainSearchCollectionViewCell.identifier, for: indexPath) as? MainSearchCollectionViewCell else { return UICollectionViewCell() }
+        cell.configure(viewModel: MainSearchCollectionViewCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
         // Configure the cell
         return cell
     }
@@ -69,7 +69,7 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
 
 }
 
-extension SearchCollectionViewController: SearchCollectionViewControllerViewModelDelegate {
+extension MainSearchCollectionViewController: MainSearchCollectionViewControllerViewModelDelegate {
     func reloadCollectionView() {
         collectionView.reloadData()
     }

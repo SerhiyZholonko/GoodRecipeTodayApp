@@ -7,8 +7,14 @@
 
 import UIKit
 
+protocol RecipeDetailViewControllerDelegate: AnyObject {
+    func reloadCollectionView()
+}
+
 class RecipeDetailViewController: UIViewController {
     
+    
+    weak var delegate: RecipeDetailViewControllerDelegate?
     let viewModel: RecipeDetailViewControllerViewModel
     lazy var mainImageView: UIImageView = {
        let iv = UIImageView()
@@ -24,19 +30,20 @@ class RecipeDetailViewController: UIViewController {
         let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         button.setImage(UIImage(systemName: "arrow.left", withConfiguration: configuration), for: .normal)
         button.backgroundColor = .white
-        button.tintColor = .label
+        button.tintColor = .black
         button.layer.cornerRadius = 25
         button.addTarget(self, action: #selector(didTappedBack), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    let favoriteButton: UIButton = {
+    lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         button.setImage(UIImage(systemName: "bookmark", withConfiguration: configuration), for: .normal)
         button.backgroundColor = .white
-        button.tintColor = .label
+        button.tintColor = .black
         button.layer.cornerRadius = 25
+        button.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -65,6 +72,7 @@ class RecipeDetailViewController: UIViewController {
         setupUI()
         addConstraints()
         configure()
+        
     }
 //MARK: - Functions
 
@@ -117,10 +125,17 @@ class RecipeDetailViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(mainViewConstraints)
     }
-    @objc func didTappedBack() {
+    @objc private func didTappedBack() {
         UIView.animate(withDuration: 0.5, delay: 0) {
+            self.delegate?.reloadCollectionView()
             self.dismiss(animated: true)
         }
+    }
+    @objc private func didTapFavorite() {
+        print("added to Favorite")
+        //TODO: - will save in coredata
+        viewModel.saveInCoredata()
+        
     }
     @objc func didTappedMainImage() {
         let vc = PresentImageViewController()
