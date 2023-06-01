@@ -41,7 +41,7 @@ class RecipeDetailViewController: UIViewController {
         let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         button.setImage(UIImage(systemName: "bookmark", withConfiguration: configuration), for: .normal)
         button.backgroundColor = .white
-        button.tintColor = .black
+        button.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
         button.layer.cornerRadius = 25
         button.addTarget(self, action: #selector(didTapFavorite), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -132,9 +132,24 @@ class RecipeDetailViewController: UIViewController {
         }
     }
     @objc private func didTapFavorite() {
-        print("added to Favorite")
         //TODO: - will save in coredata
-        viewModel.saveInCoredata()
+        if viewModel.checkIsFavorite() {
+            viewModel.deleteWithFavorite()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+
+
+        } else {
+            viewModel.saveInCoredata()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+
+        }
+
         
     }
     @objc func didTappedMainImage() {

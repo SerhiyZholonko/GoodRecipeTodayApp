@@ -10,6 +10,7 @@ import SDWebImage
 
 protocol FavoriteCollectionViewCellDelegate: AnyObject {
     func reloadCollectionView()
+    func deleteCell(cell: FavoriteCollectionViewCell)
 }
 
 class FavoriteCollectionViewCell: UICollectionViewCell {
@@ -20,11 +21,15 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
     
     var viewModel: FavoriteCollectionViewCellViewModel? {
         didSet {
-            DispatchQueue.main.async {
-                guard let viewModel = self.viewModel, let url = URL(string: viewModel.stringUrl) else { return }
-                self.recipeImageView.sd_setImage(with: url)
-                self.nameLabel.text = viewModel.title
-                self.delegate?.reloadCollectionView()
+            DispatchQueue.main.async {[weak self] in
+                guard let viewModel = self?.viewModel, let url = URL(string: viewModel.stringUrl) else { return }
+                self?.recipeImageView.sd_setImage(with: url)
+                self?.nameLabel.text = viewModel.title
+                self?.rateView.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: viewModel.rate))
+                self?.timeView.configure(viewModel: ImageTextViewViewModel(imageName: "fast-time", titleText: viewModel.time))
+                self?.stepsView.titleLabel.text = viewModel.numberOfSteps
+                self?.complicationView.titleLabel.text = viewModel.complexity
+//                self.delegate?.reloadCollectionView()
             }
         }
     }
@@ -73,10 +78,11 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         view.configure(color: .systemGreen.withAlphaComponent(0.3), textColor: .systemGreen, title: "4 steps")
         return view
     }()
-    let favoriteButton: UIButton = {
+    lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .systemGreen
-        button.setImage( UIImage(systemName: "bookmark"), for: .normal)
+        button.setImage( UIImage(systemName: "trash"), for: .normal)
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
         
@@ -97,6 +103,14 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        // Reset any content that needs to be updated
+//        // For example, reset the text label
+//        recipeImageView.image = nil
+//        nameLabel.text = nil
+//        
+//    }
     //MARK: - Functions
     public func configure(viewModel: FavoriteCollectionViewCellViewModel) {
         self.viewModel = viewModel
@@ -163,5 +177,11 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(favoriteButtonConstraints)
     }
-            
+       @objc private func deleteButtonTapped() {
+         // Perform deletion logic
+           
+           delegate?.deleteCell(cell: self)
+      
+     }
+
 }

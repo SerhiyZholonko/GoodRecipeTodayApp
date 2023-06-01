@@ -19,6 +19,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
                 self?.searchImage.sd_setImage(with: viewModel.mainImageUrl)
                 self?.titleLabel.text = viewModel.title
                 self?.usernameLabel.text = viewModel.username
+                self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .label
             }
         }
     }
@@ -31,7 +32,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    let favoriteButton: UIButton = {
+    lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .gray
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold, scale: .default)
@@ -40,6 +41,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
         button.layer.cornerRadius = 15
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapFavoriteButton), for: .touchUpInside)
         return button
     }()
     let titleLabel: UILabel = {
@@ -120,5 +122,22 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(usernameLabelConstraints)
     }
+    @objc private func didTapFavoriteButton() {
+        guard let viewModel = viewModel else { return }
+        if viewModel.checkIsFavorite() {
+            viewModel.deleteWithFavorite()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
 
+
+        } else {
+            viewModel.saveInCoredata()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+        }
+    }
 }

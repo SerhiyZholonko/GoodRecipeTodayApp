@@ -20,7 +20,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
                 self?.titleLabel.text = viewModel.title
                 self?.rateView.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: "\(viewModel.rate)"))
                 self?.timeView.configure(viewModel: ImageTextViewViewModel(imageName: "fast-time", titleText: "\(viewModel.time)"))
-
+                self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .label
+                NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
             }
         }
     }
@@ -54,11 +55,12 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }()
     lazy var favoriteButton: UIButton = {
         let button = UIButton()
-        button.tintColor = .label
+
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold, scale: .default)
         button.setImage(UIImage(systemName: "bookmark", withConfiguration: imageConfig), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.addTarget(self, action: #selector(didTapFavoriteButton), for: .touchUpInside)
         return button
     }()
     lazy var bottonStackView: UIStackView = {
@@ -72,6 +74,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -115,5 +118,23 @@ class SearchCollectionViewCell: UICollectionViewCell {
             bottonStackView.heightAnchor.constraint(equalToConstant: 50)
         ]
         NSLayoutConstraint.activate(bottonStackViewConstraints)
+    }
+    @objc private func didTapFavoriteButton() {
+        print("Added to favorite")
+        guard let viewModel = viewModel else { return }
+        if viewModel.checkIsFavorite() {
+            viewModel.deleteWithFavorite()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+
+        } else {
+            viewModel.saveInCoredata()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+        }
     }
 }

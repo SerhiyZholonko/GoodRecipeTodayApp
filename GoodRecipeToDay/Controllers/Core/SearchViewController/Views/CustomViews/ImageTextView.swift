@@ -45,6 +45,7 @@ class ImageTextView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     //MARK: - Functions
     public func configure(viewModel: ImageTextViewViewModel) {
         self.viewModel = viewModel

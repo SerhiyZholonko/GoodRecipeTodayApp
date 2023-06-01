@@ -19,6 +19,7 @@ class CategoryCell: UICollectionViewCell {
                 self?.categoryImage.sd_setImage(with: viewModel.mainImageUrl)
                 self?.titleLabel.text = viewModel.title
                 self?.usernameLabel.text = viewModel.username
+                self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .label
             }
         }
     }
@@ -40,6 +41,7 @@ class CategoryCell: UICollectionViewCell {
         button.layer.cornerRadius = 15
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapFavoriteButton), for: .touchUpInside)
         return button
     }()
     let titleLabel: UILabel = {
@@ -119,5 +121,23 @@ class CategoryCell: UICollectionViewCell {
             usernameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10)
         ]
         NSLayoutConstraint.activate(usernameLabelConstraints)
+    }
+    @objc private func didTapFavoriteButton() {
+        guard let viewModel = viewModel else { return }
+        if viewModel.checkIsFavorite() {
+            viewModel.deleteWithFavorite()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+
+
+        } else {
+            viewModel.saveInCoredata()
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+        }
     }
 }

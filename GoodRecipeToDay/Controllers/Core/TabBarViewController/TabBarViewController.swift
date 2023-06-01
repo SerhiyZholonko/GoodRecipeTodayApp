@@ -57,6 +57,7 @@ class TabBarViewController: UITabBarController {
             profileViewController
         ]
         addConstraints()
+        
     }
     
     deinit {
@@ -72,7 +73,6 @@ class TabBarViewController: UITabBarController {
         tabBar.tintColor = UIColor.systemGreen
         tabBar.barTintColor = UIColor.white
         tabBar.backgroundColor = .systemBackground
-        
     }
     private func addConstraints() {
         let addButtonConstraints = [

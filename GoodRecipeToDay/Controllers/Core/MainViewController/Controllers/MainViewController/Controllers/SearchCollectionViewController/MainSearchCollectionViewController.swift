@@ -27,6 +27,8 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
         collectionView.backgroundColor = .secondarySystemBackground
         // Do any additional setup after loading the view.
         viewModel.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(relosdMainSearchView), name: .reloadMainSearchController, object: nil)
+
     }
 
 
@@ -66,7 +68,9 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
 
            return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
        }
-
+    @objc private func relosdMainSearchView() {
+        collectionView.reloadData()
+    }
 }
 
 extension MainSearchCollectionViewController: MainSearchCollectionViewControllerViewModelDelegate {

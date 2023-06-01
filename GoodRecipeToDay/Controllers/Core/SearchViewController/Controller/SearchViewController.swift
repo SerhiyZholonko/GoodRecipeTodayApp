@@ -42,6 +42,7 @@ class SearchViewController: UIViewController {
         setupBasicUI()
         addConstraints()
         addChildViewController(searchCollectionViewController, to: collectionView)
+        NotificationCenter.default.addObserver(self, selector: #selector(relosdSearchView), name: .reloadSearchController, object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -78,7 +79,9 @@ class SearchViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(collectionImageViewConstraints)
     }
-
+    @objc private func relosdSearchView() {
+        searchCollectionViewController.reloadCollectionView()
+    }
 }
 
 

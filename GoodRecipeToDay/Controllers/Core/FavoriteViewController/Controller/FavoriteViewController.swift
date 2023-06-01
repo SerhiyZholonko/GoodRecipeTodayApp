@@ -9,8 +9,7 @@ import UIKit
 
 class FavoriteViewController: UIViewController {
     //MARK: - Properties
-    let viewModel = FavoriteViewControllerViewModel()
-
+    var viewModel = FavoriteViewControllerViewModel()
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -38,7 +37,10 @@ class FavoriteViewController: UIViewController {
         addConstraints()
         collectionView.dataSource = self
         collectionView.delegate = self
+        viewModel.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadFavoriteCollection), name: .reloadFavoriteController, object: nil)
     }
+  
     //MARK: - Functions
     private func setupBasicUI() {
         view.backgroundColor = .systemBackground
@@ -54,6 +56,9 @@ class FavoriteViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(collectionViewConstraints)
     }
+    @objc func reloadFavoriteCollection() {
+        viewModel.configure()
+    }
 }
 
 //MARK: - delegate collection view
@@ -65,7 +70,9 @@ extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCollectionViewCell.identifier, for: indexPath) as? FavoriteCollectionViewCell else { return UICollectionViewCell()}
         cell.delegate = self
-        cell.configure(viewModel: FavoriteCollectionViewCellViewModel(recipe: viewModel.recipes[indexPath.item]))
+        
+        let recipe = viewModel.recipes[indexPath.item]
+            cell.configure(viewModel: FavoriteCollectionViewCellViewModel(recipe: recipe))
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -76,8 +83,23 @@ extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewData
 }
 
 
+
+//MARK: - delegate
 extension FavoriteViewController: FavoriteCollectionViewCellDelegate {
+    func deleteCell(cell: FavoriteCollectionViewCell) {
+        if let cellIndexPath = collectionView.indexPath(for: cell) {
+            viewModel.delete(indexPath: cellIndexPath)
+            NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+
+         }
+    }
+    
     func reloadCollectionView() {
         collectionView.reloadData()
     }
+}
+extension FavoriteViewController: FavoriteViewControllerViewModelDelegate {
+    
 }
