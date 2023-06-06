@@ -34,6 +34,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
+
     let titleLabel: UILabel = {
        let label = UILabel()
         label.text = "Title"
@@ -45,7 +46,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
     }()
     let rateView: ImageTextView = {
         let view = ImageTextView()
-//        view.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: "4.5"))
         return view
     }()
     let timeView: ImageTextView = {
@@ -80,6 +80,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupUI()
         contentView.addSubview(recipeImageView)
+        
         contentView.addSubview(titleLabel)
         contentView.addSubview(bottonStackView)
         addConstraints()
@@ -128,7 +129,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
             NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
-
         } else {
             viewModel.saveInCoredata()
             favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black

@@ -70,6 +70,16 @@ class WeekViewCell: UICollectionViewCell {
 
         }
     }
+    override func prepareForReuse() {
+          super.prepareForReuse()
+          
+          // Reset any content that needs to be updated
+          // For example, reset the image and label text
+          recipeImageView.image = nil
+        titleLabel.text = nil
+        dateLabel.text = nil
+        userLabel.text = nil
+      }
     private func addConstraints() {
         let recipeImageViewConstraints = [
             recipeImageView.topAnchor.constraint(equalTo: topAnchor),

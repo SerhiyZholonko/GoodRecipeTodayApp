@@ -24,7 +24,6 @@ struct Recipe {
     let username: String
     let createdAt: Timestamp?
 
-//    let user:
 
     init(mainImage: String, title: String, description: String, category: String, quantity: String, time: String, steps: [Step], ingredients: [Ingredient], key: String? = nil, username: String, createdAt: Timestamp? = nil) {
         self.mainImage = mainImage
@@ -41,7 +40,7 @@ struct Recipe {
     }
     
 
-    init?(snapshot: Any) {
+    init?(snapshot: Any?) {
         guard let dict = snapshot as? [String: Any],
             let mainImage = dict["mainImage"] as? String,
             let title = dict["title"] as? String,
@@ -131,82 +130,7 @@ struct Recipe {
         self.username = usernameDict
         self.createdAt = createdAt
     }
-//    init?(snapshot: QueryDocumentSnapshot) {
-//        let dict = snapshot.data()
-//        guard
-//              let mainImage = dict["mainImage"] as? String,
-//              let title = dict["title"] as? String,
-//              let description = dict["description"] as? String,
-//              let category = dict["category"] as? String,
-//              let quantity = dict["quantity"] as? String,
-//              let time = dict["time"] as? String,
-//              let stepsDict = dict["steps"] as? [[String: Any]],
-//              let ingredientsDict = dict["ingredients"] as? [[String: Any]],
-//              let rateDict = dict["rate"] as? Double?,
-//        let usernameDict = dict["username"] as? String,
-//              let createdAt = dict["createdAt"] as? Timestamp
-//
-//        else {
-//                  return nil
-//              }
-//        var steps: [Step] = []
-//        for stepDict in stepsDict {
-//            if let step = Step(dict: stepDict) {
-//                steps.append(step)
-//            }
-//        }
-//
-//        var ingredients: [Ingredient] = []
-//        for ingredientDict in ingredientsDict {
-//            if let ingredient = Ingredient(dict: ingredientDict) {
-//                ingredients.append(ingredient)
-//            }
-//        }
-//
-//        self.mainImage = mainImage
-//        self.title = title
-//        self.description = description
-//        self.category = category
-//        self.quantity = quantity
-//        self.time = time
-//        self.steps = steps
-//        self.ingredients = ingredients
-//        self.key = snapshot.documentID
-//        self.rate = rateDict
-//        self.username = usernameDict
-//        self.createdAt = createdAt
-//    }
-    
-//    func toDictionary() -> [String: Any] {
-//        var stepsDict: [[String: Any]] = []
-//        for step in steps {
-//            stepsDict.append(step.toDictionary())
-//        }
-//
-//        var ingredientsDict: [[String: Any]] = []
-//        for ingredient in ingredients {
-//            ingredientsDict.append(ingredient.toDictionary())
-//        }
-//
-//        var dict = [
-//            "mainImage": mainImage,
-//            "title": title,
-//            "description": description,
-//            "category": category,
-//            "quantity": quantity,
-//            "time": time,
-//            "steps": stepsDict,
-//            "ingredients": ingredientsDict,
-//            "createdAt": createdAt ?? FieldValue.serverTimestamp(),
-//            "rate": rate ?? 0.0,
-//            "rateCounter": rateCounter // Add rateCounter to the dictionary
-//
-//        ] as [String : Any]
-//        if let key = key {
-//            dict["key"] = key
-//        }
-//        return dict
-//    }
+
     func toDictionary() -> [String: Any] {
         var stepsDict: [[String: Any]] = []
         for step in steps {

@@ -13,6 +13,7 @@ enum SectionType {
     case recomend(viewModel: [RecomendViewCellViewModel])
     case oftheWeek(viewModel: [WeekViewCellViewModel])
 }
+
 protocol MainViewControllerViewModelProtocol: AnyObject {
     var sections: [SectionType] { get }
     var title: String { get }
@@ -77,7 +78,6 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
      func uploadRecipes() {
          let categoryViewModels = allCategories.map { CategoryViewCellViewModel(category: $0) }
         self.sections = [
-
             .category(viewModel: categoryViewModels),
             .recomend(viewModel: recomendRecipes),
                 .oftheWeek(viewModel: weekRecipe)

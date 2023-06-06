@@ -29,7 +29,6 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
                 self?.timeView.configure(viewModel: ImageTextViewViewModel(imageName: "fast-time", titleText: viewModel.time))
                 self?.stepsView.titleLabel.text = viewModel.numberOfSteps
                 self?.complicationView.titleLabel.text = viewModel.complexity
-//                self.delegate?.reloadCollectionView()
             }
         }
     }
@@ -103,14 +102,14 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        // Reset any content that needs to be updated
-//        // For example, reset the text label
-//        recipeImageView.image = nil
-//        nameLabel.text = nil
-//        
-//    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // Reset any content that needs to be updated
+        // For example, reset the text label
+        recipeImageView.image = nil
+        nameLabel.text = nil
+        
+    }
     //MARK: - Functions
     public func configure(viewModel: FavoriteCollectionViewCellViewModel) {
         self.viewModel = viewModel

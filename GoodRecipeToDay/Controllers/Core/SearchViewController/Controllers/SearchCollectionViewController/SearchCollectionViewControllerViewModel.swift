@@ -82,7 +82,7 @@ final class SearchCollectionViewControllerViewModel {
             firebaseManager.getAllRecipes { [weak self] result in
                 switch result {
                 case .success(let recipes):
-                    var newRecipes = recipes.sorted { recipe1, recipe2 in
+                    let newRecipes = recipes.sorted { recipe1, recipe2 in
                         let rate1 = recipe1.rate ?? 0.0
                         let rate2 = recipe2.rate ?? 0.0
                         let counter1 = recipe1.rateCounter

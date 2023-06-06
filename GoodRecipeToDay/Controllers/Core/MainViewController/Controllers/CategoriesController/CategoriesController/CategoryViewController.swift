@@ -125,7 +125,19 @@ extension CategoryViewController: UICollectionViewDelegate, UICollectionViewData
 
            return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
        }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        
+        let recipe = viewModel.getRecipe(indexParh: indexPath)
+        let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
+        vc.delegate = self
+
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        UIView.animate(withDuration: 0.5) {
+            self.present(vc, animated: true)
+        }
+    }
 }
 
 
@@ -135,4 +147,11 @@ extension CategoryViewController: CategoryViewControllerViewModelDelegate {
             self?.categoriesCollectionView.reloadData()
         }
     }
+}
+
+
+//MARK: - delegate
+
+extension CategoryViewController: RecipeDetailViewControllerDelegate {
+    
 }

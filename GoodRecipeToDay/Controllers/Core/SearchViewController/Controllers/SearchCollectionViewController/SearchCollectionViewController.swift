@@ -7,9 +7,13 @@
 
 import UIKit
 
+protocol SearchCollectionViewControllerDelegate: AnyObject {
+    func stopSppiner()
+}
 
 class SearchCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
    //MARK: - Properties
+    weak var delegate: SearchCollectionViewControllerDelegate?
    public var viewModel = SearchCollectionViewControllerViewModel() {
         didSet{
             collectionView.reloadData()
@@ -26,6 +30,7 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
     //MARK: - Functions
     public func updateviewModel(searchText: String) {
         self.viewModel.updateSearchText(newText: searchText)
+        delegate?.stopSppiner()
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
@@ -35,6 +40,7 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
         // Configure the cell
         cell.configure(viewModel: SearchCollectionViewCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
+        delegate?.stopSppiner()
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -56,6 +62,20 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
 
            return UIEdgeInsets(top: 50, left: spacing, bottom: 50, right: spacing)
        }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+        let recipe = viewModel.getRecipe(indexParh: indexPath)
+        let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
+        vc.delegate = self
+
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        UIView.animate(withDuration: 0.5) {
+            self.present(vc, animated: true)
+        }
+    }
 
 }
 
@@ -65,5 +85,8 @@ extension SearchCollectionViewController: SearchCollectionViewControllerViewMode
         collectionView.reloadData()
     }
     
+    
+}
+extension SearchCollectionViewController: RecipeDetailViewControllerDelegate {
     
 }

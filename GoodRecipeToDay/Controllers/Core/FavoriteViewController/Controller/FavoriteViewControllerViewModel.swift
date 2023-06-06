@@ -25,6 +25,7 @@ final class FavoriteViewControllerViewModel {
     //MARK: - Functions
     public  func configure() {
         self.recipes = coredataManager.fetchData(entityName: "CDRecipe")
+       
         delegate?.reloadCollectionView()
     }
     

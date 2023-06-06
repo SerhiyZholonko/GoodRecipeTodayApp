@@ -10,7 +10,7 @@ import FirebaseAuth
 
 
 
-class TabBarViewController: UITabBarController {
+class TabBarViewController: RecipeTabBar {
     //MARK: - Properties
     let firebaseManager = FirebaseManager.shared
     let viewModel = TabBarViewControllerViewModel()
@@ -31,15 +31,18 @@ class TabBarViewController: UITabBarController {
     let searchViewController =  UINavigationController(rootViewController: SearchViewController())
     let addViewController = AddViewController()
     let favoriteController = UINavigationController(rootViewController: FavoriteViewController())
-    let profileViewController = UINavigationController(rootViewController: ProfileViewController())
+    var profileViewController = UINavigationController(rootViewController: ProfileViewController())
     
     //MARK: - Lovecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         isShowAuthController()
+        profileViewController = UINavigationController(rootViewController: ProfileViewController())
+        viewDidLoad()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        favoriteController.viewDidLoad()
         FirebaseManager.shared.getAllUsers { users, error in
             guard let users = users else { return }
             for user in users {

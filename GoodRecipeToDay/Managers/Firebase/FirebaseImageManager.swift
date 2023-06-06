@@ -15,7 +15,7 @@ class FirebaseImageManager {
      init() {}
     
     func uploadImage(_ image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
             completion(.failure(FirebaseImageManagerError.invalidImageData))
             return
         }
@@ -54,16 +54,37 @@ class FirebaseImageManager {
         }
     }
     
+//    func deleteImage(at url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
+//        let imageRef = storageRef.child(url.absoluteString)
+//        imageRef.delete { error in
+//            if let error = error {
+//                completion(.failure(error))
+//            } else {
+//                completion(.success(()))
+//            }
+//        }
+//    }
     func deleteImage(at url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
-        let imageRef = storageRef.child(url.absoluteString)
-        imageRef.delete { error in
+        let storage = Storage.storage()
+        let reference = storage.reference(forURL: url.absoluteString)
+
+        reference.getMetadata { metadata, error in
             if let error = error {
+                // Object does not exist or other error occurred
                 completion(.failure(error))
             } else {
-                completion(.success(()))
+                // Object exists, proceed with deletion
+                reference.delete { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
             }
         }
     }
+
 }
 
 enum FirebaseImageManagerError: Error {

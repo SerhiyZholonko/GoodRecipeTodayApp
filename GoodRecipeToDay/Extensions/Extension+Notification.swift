@@ -15,5 +15,7 @@ extension Notification.Name{
     static let reloadFavoriteController = Notification.Name("reloadFavoriteController")
     static let reloadSearchController = Notification.Name("reloadSearchController")
     static let reloadMainSearchController = Notification.Name("reloadMainSearchController")
+    static let didUpdateCoredata = Notification.Name("didUpdateCoredata")
+
 
 }

@@ -9,7 +9,19 @@ import UIKit
 
 class FavoriteViewController: UIViewController {
     //MARK: - Properties
+    
     var viewModel = FavoriteViewControllerViewModel()
+    
+    lazy var segmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        segmentedControl.insertSegment(withTitle: "Favorites", at: 0, animated: false)
+        segmentedControl.insertSegment(withTitle: "Subscriptions", at: 1, animated: false)
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
+
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        return segmentedControl
+    }()
     
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -27,18 +39,30 @@ class FavoriteViewController: UIViewController {
         label.textColor = .black
         return label
     }()
-     
+    let subscriptionsView: UIView = {
+       let view = UIView()
+        view.backgroundColor = .white
+        view.isHidden = true
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    let subViewController = SubViewController()
     //MARK: - Livecycle
 //
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBasicUI()
+        view.addSubview(segmentedControl)
         view.addSubview(collectionView)
+        view.addSubview(subscriptionsView)
         addConstraints()
+        addChildViewController(subViewController, to: subscriptionsView)
         collectionView.dataSource = self
         collectionView.delegate = self
         viewModel.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(reloadFavoriteCollection), name: .reloadFavoriteController, object: nil)
+        reloadFavoriteCollection()
     }
   
     //MARK: - Functions
@@ -48,16 +72,40 @@ class FavoriteViewController: UIViewController {
     }
   
     private func addConstraints() {
+        let segmentedControlConstraints = [
+            segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            segmentedControl.leftAnchor.constraint(equalTo: view.leftAnchor),
+            segmentedControl.rightAnchor.constraint(equalTo: view.rightAnchor),
+            segmentedControl.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        NSLayoutConstraint.activate(segmentedControlConstraints)
        let collectionViewConstraints = [
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+        collectionView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
         collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
         collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(collectionViewConstraints)
+        
+       let subscriptionsViewConstraints = [
+        subscriptionsView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
+            subscriptionsView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            subscriptionsView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            subscriptionsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(subscriptionsViewConstraints)
     }
     @objc func reloadFavoriteCollection() {
+        
         viewModel.configure()
+    }
+    
+    @objc private func segmentedControlValueChanged() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            subscriptionsView.isHidden = true
+        } else {
+            subscriptionsView.isHidden = false
+        }
     }
 }
 
@@ -78,8 +126,6 @@ extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 150)
     }
-    
-    
 }
 
 

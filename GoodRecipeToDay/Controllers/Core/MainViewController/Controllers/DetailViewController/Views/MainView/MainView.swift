@@ -56,6 +56,8 @@ class MainView: UIView {
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             viewModel.updateRecipeRate(rate: rating)
             view.text = rateString
+            NotificationCenter.default.post(name: .didUpdateCoredata, object: nil, userInfo: nil)
+
         }
         view.settings.textColor = .systemGreen
         view.settings.textMargin = 14

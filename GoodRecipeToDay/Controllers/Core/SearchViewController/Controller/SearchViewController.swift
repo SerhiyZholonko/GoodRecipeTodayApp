@@ -8,6 +8,8 @@
 import UIKit
 
 class SearchViewController: UIViewController {
+   
+    
     //MARK: - Properties
    private var viewModel = SearchViewControllerViewModel()
 
@@ -30,17 +32,33 @@ class SearchViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    let layout = InsetCollectionViewFlowLayout()
-    lazy var searchCollectionViewController = SearchCollectionViewController(collectionViewLayout: layout)
+    let spiner: UIActivityIndicatorView = {
+       let spiner = UIActivityIndicatorView(style: .large)
+       spiner.color = .systemGreen
+       spiner.startAnimating()
+       spiner.translatesAutoresizingMaskIntoConstraints = false
+       return spiner
+   }()
+    
+    lazy var  searchCollectionViewController: SearchCollectionViewController = {
+        let layout = InsetCollectionViewFlowLayout()
+       let vc = SearchCollectionViewController(collectionViewLayout: layout)
+        vc.delegate = self
+        return vc
+    }()
+    
+    
     //MARK: - Init
   
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(headerView)
         view.addSubview(collectionView)
+        view.addSubview(spiner)
         collectionView.addSubview(collectionImageView)
         setupBasicUI()
         addConstraints()
+        addConstraintsSpiner()
         addChildViewController(searchCollectionViewController, to: collectionView)
         NotificationCenter.default.addObserver(self, selector: #selector(relosdSearchView), name: .reloadSearchController, object: nil)
     }
@@ -79,8 +97,18 @@ class SearchViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(collectionImageViewConstraints)
     }
+    private func addConstraintsSpiner() {
+        NSLayoutConstraint.activate([
+            spiner.widthAnchor.constraint(equalToConstant: 100),
+            spiner.heightAnchor.constraint(equalToConstant: 100),
+            spiner.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            spiner.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        ])
+    }
     @objc private func relosdSearchView() {
         searchCollectionViewController.reloadCollectionView()
+        spiner.stopAnimating()
+           spiner.isHidden = true
     }
 }
 
@@ -95,6 +123,7 @@ extension SearchViewController: HeaderSearchViewDelegate {
     
     func passSearchText(text: String) {
         self.searchCollectionViewController.updateviewModel(searchText: text)
+        
     }
     func dismissSearchView() {
     }
@@ -106,5 +135,20 @@ extension SearchViewController: HeaderSearchViewDelegate {
 extension SearchViewController: FilterControllerDelegate {
     func getFilterType(type: CheckmarkTextViewType) {
         searchCollectionViewController.viewModel.setupType(type: type)
+      
     }
+}
+
+
+//MARK: - Delegate
+
+extension SearchViewController: SearchCollectionViewControllerDelegate {
+    func stopSppiner() {
+        DispatchQueue.main.async {[weak self] in
+            self?.spiner.stopAnimating()
+            self?.spiner.isHidden = true
+        }
+    }
+    
+    
 }

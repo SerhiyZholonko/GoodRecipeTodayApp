@@ -32,7 +32,7 @@ class CategoryCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    let favoriteButton: UIButton = {
+    lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .gray
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold, scale: .default)

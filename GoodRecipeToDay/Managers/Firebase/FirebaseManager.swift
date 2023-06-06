@@ -191,7 +191,31 @@ class FirebaseManager {
             completion(.success(recipe))
         }
     }
- 
+    func getAllRecipesForUser(username: String, completion: @escaping (Result<[Recipe], Error>) -> Void) {
+        let recipesCollectionRef = database.collection("users").document(username).collection("recipes")
+        
+        recipesCollectionRef.getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            var recipes: [Recipe] = []
+            
+            for document in querySnapshot!.documents {
+                 let recipeData = document.data()
+                    if let recipe = Recipe(snapshot: recipeData) {
+                        recipes.append(recipe)
+                    
+                }
+            }
+            
+            completion(.success(recipes))
+        }
+    }
+
+
+
     func getRecipeIDForUser(username: String, recipeName: String , completion: @escaping (Result<String, Error>) -> Void) {
         let recipesCollectionRef = database.collection("users").document(username).collection("recipes")
         let query = recipesCollectionRef.whereField("title", isEqualTo: recipeName).limit(to: 1)
@@ -235,6 +259,20 @@ class FirebaseManager {
             }
         
     }
+    
+    func updateImageUrlForUser(username: String, urlString: String, completion: @escaping (Error?) -> Void) {
+        let recipeDocumentRef = database.collection("users").document(username)
+
+        let urlString = urlString
+        recipeDocumentRef.updateData(["urlString": urlString]) { error in
+            if let error = error {
+                completion(error)
+            } else {
+                completion(nil)
+            }
+        }
+        
+    }
 
     func getAllRecipes(completion: @escaping (Result<[Recipe], Error>) -> Void) {
         let usersCollection = database.collection("users")
@@ -273,17 +311,22 @@ class FirebaseManager {
                 completion(nil)
                 return
             }
+            print(users.count)
 
             guard let currentUser = Auth.auth().currentUser else {
                 print("No current user")
                 completion(nil)
                 return
             }
+            print(currentUser.uid)
+            print(users.count)
             let uid = currentUser.uid
             for user in users {
                 if user.uid == uid {
                     self.mainUser = user
+                    print("USer: ", user.username)
                     completion(user)
+                    return
                 }
             }
             // If we get here, it means we didn't find a matching user
@@ -292,24 +335,46 @@ class FirebaseManager {
         }
     }
 
+//    func getAllUsers(completion: @escaping ([GUser]?, Error?) -> Void) {
+//          database.collection("users").getDocuments { snapshot, error in
+//              guard error == nil else {
+//                  completion(nil, error)
+//                  return
+//              }
+//              var users: [GUser] = []
+//              for document in snapshot!.documents {
+//                  if let data = document.data() as? [String: String], let email = data["email"], let username = data["username"], let uid =
+//                  data["uid"], let urlString = data["urlString"]{
+//                      let user = GUser(uid: uid , email: email, username: username, urlString: urlString )
+//                      users.append(user)
+//                  }
+//              }
+//
+//              completion(users, nil)
+//          }
+//      }
     func getAllUsers(completion: @escaping ([GUser]?, Error?) -> Void) {
-          database.collection("users").getDocuments { snapshot, error in
-              guard error == nil else {
-                  completion(nil, error)
-                  return
-              }
-              var users: [GUser] = []
-              for document in snapshot!.documents {
-                  if let data = document.data() as? [String: String], let email = data["email"], let username = data["username"], let uid =
-                  data["uid"]{
-                      let user = GUser(uid: uid , email: email, username: username )
-                      users.append(user)
-                  }
-              }
-              
-              completion(users, nil)
-          }
-      }
+        database.collection("users").getDocuments { snapshot, error in
+            guard error == nil else {
+                completion(nil, error)
+                return
+            }
+            var users: [GUser] = []
+            for document in snapshot!.documents {
+                if let data = document.data() as? [String: Any],
+                    let email = data["email"] as? String,
+                    let username = data["username"] as? String,
+                    let uid = data["uid"] as? String,
+                    let urlString = data["urlString"] as? String? {
+                    let user = GUser(uid: uid, email: email, username: username, urlString: urlString)
+                    users.append(user)
+                }
+            }
+            
+            completion(users, nil)
+        }
+    }
+
 
 }
 
@@ -319,7 +384,7 @@ extension FirebaseManager {
     // MARK: - Authentication
         func signIn(username: String, password: String, completion: @escaping (Error?) -> Void) {
             database.collection("users").document(username).getDocument { [weak self] snapshot, error in
-                guard let email = snapshot?.data()?["email"] as? String, let uid = snapshot?.data()?["uid"] as? String, error == nil else {
+                guard let email = snapshot?.data()?["email"] as? String, let _ = snapshot?.data()?["uid"] as? String, error == nil else {
                     return
                 }
                 self?.auth.signIn(withEmail: email, password: password) { result, error in
@@ -327,7 +392,7 @@ extension FirebaseManager {
                         completion(error)
                         return
                     }
-                    let user = GUser(uid: uid, email: email, username: username)
+//                    let user = GUser(uid: uid, email: email, username: username)
 //                    self?.currentUser = user
                     completion(nil)
                 }

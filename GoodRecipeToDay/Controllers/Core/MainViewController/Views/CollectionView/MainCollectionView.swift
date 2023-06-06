@@ -14,9 +14,10 @@ class MainCollectionView: UIView {
             
         }
     }
-    private let spiner: UIActivityIndicatorView = {
+     let spiner: UIActivityIndicatorView = {
         let spiner = UIActivityIndicatorView(style: .large)
-        spiner.hidesWhenStopped = true
+        spiner.color = .systemGreen
+        spiner.startAnimating()
         spiner.translatesAutoresizingMaskIntoConstraints = false
         return spiner
     }()
@@ -28,9 +29,9 @@ class MainCollectionView: UIView {
         let collectionView = createCollectionView()
         collectionView.backgroundColor = .secondarySystemBackground
         self.collectionView = collectionView
-        addSubview(spiner)
 
         addSubview(collectionView)
+        addSubview(spiner)
         addConstraints()
     }
     required init?(coder: NSCoder) {
@@ -89,7 +90,10 @@ class MainCollectionView: UIView {
         case .oftheWeek:
             return viewModel.createOfTheWeekSectionLayout()
         }
-       
+
     }
   
 }
+
+
+

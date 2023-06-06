@@ -49,6 +49,15 @@ class RecomendViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func prepareForReuse() {
+          super.prepareForReuse()
+          
+          // Reset any content that needs to be updated
+          // For example, reset the image and label text
+          recipeImageView.image = nil
+        titleLabel.text = nil
+        userLabel.text = nil
+      }
     //MARK: - Functions
     public func configure(viewModel: RecomendViewCellViewModel) {
         DispatchQueue.main.async { [weak self] in

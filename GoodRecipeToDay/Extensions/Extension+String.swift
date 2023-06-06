@@ -28,6 +28,32 @@ extension String {
 }
 
 
+/// Usage convertToTimeFormat
+/*
+ let originalString = "01h:00m"
+ let convertedString = originalString.convertToTimeFormat()
+
+ print(convertedString) // Output: 01:00
+ 
+ */
+extension String {
+    func convertToTimeFormat() -> String {
+        let strippedString = self.replacingOccurrences(of: "[hm]", with: "", options: .regularExpression)
+        let components = strippedString.components(separatedBy: ":")
+        
+        if components.count == 2 {
+            let hours = components[0]
+            let minutes = components[1]
+            return String(format: "%02d:%02d", Int(hours) ?? 0, Int(minutes) ?? 0)
+        }
+        
+        return ""
+    }
+}
+
+
+ 
+
 /// Usage TimeConverter
 /* let timeString = "01h:01m"
 TimeConverter.convertTimeStringToMinutes(timeString)
@@ -44,6 +70,7 @@ final class TimeConverter {
         }
     }
 }
+
 
 
 

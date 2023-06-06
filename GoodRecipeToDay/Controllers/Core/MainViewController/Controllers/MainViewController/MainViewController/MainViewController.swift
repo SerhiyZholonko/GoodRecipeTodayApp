@@ -211,6 +211,7 @@ extension MainViewController: MainCategoryHeaderViewDelegete {
 extension MainViewController: MainViewControllerViewModelDelegate {
     func reloadCollection() {
         detailView.collectionView?.reloadData()
+        detailView.spiner.stopAnimating()
     }
 }
 

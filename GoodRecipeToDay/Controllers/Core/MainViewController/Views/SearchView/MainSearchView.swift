@@ -15,11 +15,11 @@ protocol MainSearchViewDelegate: AnyObject {
 class MainSearchView: UIView {
     //MARK: - Properties
     weak var delegate: MainSearchViewDelegate?
-    let filterView: FilterView = {
-       let view = FilterView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+//    let filterView: FilterView = {
+//       let view = FilterView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
     lazy var searchTextField: UITextField = {
        let tf = UITextField()
         tf.placeholder = "Search any recipe"
@@ -36,7 +36,7 @@ class MainSearchView: UIView {
         super.init(frame: frame)
         setupBasicUI()
         translatesAutoresizingMaskIntoConstraints = false
-        addSubview(filterView)
+//        addSubview(filterView)
         addSubview(searchTextField)
         addConstraints()
     }
@@ -51,19 +51,19 @@ class MainSearchView: UIView {
         clipsToBounds = true
     }
     private func addConstraints() {
-       let  filterViewConstrints = [
-            filterView.topAnchor.constraint(equalTo: topAnchor),
-            filterView.rightAnchor.constraint(equalTo: rightAnchor),
-            filterView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            filterView.widthAnchor.constraint(equalToConstant: 50)
-
-        ]
-        NSLayoutConstraint.activate(filterViewConstrints)
+//       let  filterViewConstrints = [
+//            filterView.topAnchor.constraint(equalTo: topAnchor),
+//            filterView.rightAnchor.constraint(equalTo: rightAnchor),
+//            filterView.bottomAnchor.constraint(equalTo: bottomAnchor),
+//            filterView.widthAnchor.constraint(equalToConstant: 50)
+//
+//        ]
+//        NSLayoutConstraint.activate(filterViewConstrints)
         let searchTextFieldConstraints = [
             searchTextField.topAnchor.constraint(equalTo: topAnchor),
             searchTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
             searchTextField.bottomAnchor.constraint(equalTo: bottomAnchor),
-            searchTextField.rightAnchor.constraint(equalTo: filterView.leftAnchor)
+            searchTextField.rightAnchor.constraint(equalTo: rightAnchor, constant: -10)
         ]
         NSLayoutConstraint.activate(searchTextFieldConstraints)
     }

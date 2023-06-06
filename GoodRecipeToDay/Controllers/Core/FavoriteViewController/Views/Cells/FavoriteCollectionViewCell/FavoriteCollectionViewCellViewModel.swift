@@ -22,7 +22,7 @@ final class FavoriteCollectionViewCellViewModel {
         return "\(newRate)(\(recipe.rateCounter))"
     }
     public var time: String {
-        return recipe.time ?? "0:00"
+        return recipe.time?.convertToTimeFormat() ?? "0:00"
     }
     public var numberOfSteps: String {
         return "\(recipe.numberOfSteps) Steps"

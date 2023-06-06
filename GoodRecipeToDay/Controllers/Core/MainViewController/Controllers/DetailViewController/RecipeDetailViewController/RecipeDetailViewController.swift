@@ -72,7 +72,8 @@ class RecipeDetailViewController: UIViewController {
         setupUI()
         addConstraints()
         configure()
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateCoredata), name: .didUpdateCoredata, object: nil)
+
     }
 //MARK: - Functions
 
@@ -156,6 +157,11 @@ class RecipeDetailViewController: UIViewController {
         let vc = PresentImageViewController()
         vc.configure(viewModel: PresentImageViewControllerViewModel(imageUrl: viewModel.mainImageUrl))
         self.present(vc, animated: true)
+    }
+    @objc private func didUpdateCoredata() {
+        didTapFavorite()
+        NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
+        didTapFavorite()
     }
 }
 
