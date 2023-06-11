@@ -9,7 +9,9 @@ import UIKit
 import Firebase
 
 
-struct Recipe {
+struct Recipe: Hashable, Equatable {
+ 
+    
     let mainImage: String
     let title: String
     let description: String
@@ -165,10 +167,37 @@ struct Recipe {
     mutating func incrementRateCounter() {
            rateCounter += 1
        }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(mainImage)
+        hasher.combine(title)
+        hasher.combine(description)
+        hasher.combine(category)
+        hasher.combine(quantity)
+        hasher.combine(time)
+        hasher.combine(steps)
+        hasher.combine(ingredients)
+        hasher.combine(username)
+        hasher.combine(createdAt)
+    }
+
+    static func == (lhs: Recipe, rhs: Recipe) -> Bool {
+        return lhs.mainImage == rhs.mainImage &&
+            lhs.title == rhs.title &&
+            lhs.description == rhs.description &&
+            lhs.category == rhs.category &&
+            lhs.quantity == rhs.quantity &&
+            lhs.time == rhs.time &&
+            lhs.steps == rhs.steps &&
+            lhs.ingredients == rhs.ingredients &&
+            lhs.username == rhs.username &&
+            lhs.createdAt == rhs.createdAt
+    }
+
 }
 
 
-struct Ingredient {
+struct Ingredient: Hashable {
     let title: String
     
     init(title: String) {
@@ -184,8 +213,16 @@ struct Ingredient {
     func toDictionary() -> [String: Any] {
         return ["title": title]
     }
+    
+    func hash(into hasher: inout Hasher) {
+          hasher.combine(title)
+      }
+
+      static func == (lhs: Ingredient, rhs: Ingredient) -> Bool {
+          return lhs.title == rhs.title
+      }
 }
-struct Step {
+struct Step: Hashable{
     let title: String
     var imageUrl: String?
     
@@ -253,5 +290,16 @@ struct Step {
         } else {
             completion(.success(()))
         }
+    }
+    
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(imageUrl)
+    }
+
+    static func == (lhs: Step, rhs: Step) -> Bool {
+        return lhs.title == rhs.title &&
+            lhs.imageUrl == rhs.imageUrl
     }
 }

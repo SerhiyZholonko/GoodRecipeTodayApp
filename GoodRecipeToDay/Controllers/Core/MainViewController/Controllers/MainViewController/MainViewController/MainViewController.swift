@@ -191,18 +191,22 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 //MARK: - Delegate Header
 extension MainViewController: MainWeekHeaderViewDelegate {
     func didTapWeek() {
-        print("Week")
+        let vc = RecipesOfTheWeekController()
+        navigationController?.pushViewController(vc, animated: true)
+
     }
 }
 
 extension MainViewController: MainRecomendHeaderViewDelegate {
     func didTapRecomend() {
-        print("Recomend")
+        let vc = RecomendViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 extension MainViewController: MainCategoryHeaderViewDelegete {
     func didTapCategories() {
-        print("Categories")
+        let vc = CategoriesViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

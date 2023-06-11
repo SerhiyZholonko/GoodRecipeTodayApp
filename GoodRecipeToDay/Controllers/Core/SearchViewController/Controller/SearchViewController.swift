@@ -19,19 +19,20 @@ class SearchViewController: UIViewController {
         return view
     }()
     let collectionView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .orange
+        let view = UIView()
+        view.backgroundColor = .systemGray5
         view.layer.cornerRadius = 25
-        view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
+
+        // Add shadow
+        view.layer.shadowColor = UIColor.green.cgColor
+        view.layer.shadowOpacity = 0.3
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 6
+
         return view
     }()
-    let collectionImageView: UIImageView = {
-       let view = UIImageView()
-        view.image = UIImage(named: "wood")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+
     let spiner: UIActivityIndicatorView = {
        let spiner = UIActivityIndicatorView(style: .large)
        spiner.color = .systemGreen
@@ -55,7 +56,7 @@ class SearchViewController: UIViewController {
         view.addSubview(headerView)
         view.addSubview(collectionView)
         view.addSubview(spiner)
-        collectionView.addSubview(collectionImageView)
+//        collectionView.addSubview(collectionImageView)
         setupBasicUI()
         addConstraints()
         addConstraintsSpiner()
@@ -89,13 +90,7 @@ class SearchViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: 50),
         ]
         NSLayoutConstraint.activate(collectionViewConstraints)
-        let collectionImageViewConstraints = [
-            collectionImageView.topAnchor.constraint(equalTo: collectionView.topAnchor),
-            collectionImageView.leftAnchor.constraint(equalTo: collectionView.leftAnchor),
-            collectionImageView.rightAnchor.constraint(equalTo: collectionView.rightAnchor),
-            collectionImageView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
-        ]
-        NSLayoutConstraint.activate(collectionImageViewConstraints)
+
     }
     private func addConstraintsSpiner() {
         NSLayoutConstraint.activate([

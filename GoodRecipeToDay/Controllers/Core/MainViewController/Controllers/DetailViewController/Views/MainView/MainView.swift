@@ -17,8 +17,7 @@ class MainView: UIView {
     var viewModel: MainViewViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
-            print("controller rate - ", viewModel.rate)
-            
+            userView.configure(isFollow: viewModel.isFallow, viewModel: UserViewViewModel(username: viewModel.username))
             rateView.rating = viewModel.rate
 
         }
@@ -71,13 +70,10 @@ class MainView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    let userLabel: UILabel = {
-        let label = UILabel()
-        label.text = "by Username"
-        label.font = .systemFont(ofSize: 14, weight: .light)
-        label.textColor = .systemGray3
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    lazy var userView: UserView = {
+        let view = UserView(frame: .zero)
+        view.delegate = self
+        return view
     }()
     let timeView: TimeView = {
         let view = TimeView()
@@ -121,7 +117,7 @@ class MainView: UIView {
         contentView.addSubview(topGayView)
         contentView.addSubview(rateView)
         contentView.addSubview(title)
-        contentView.addSubview(userLabel)
+        contentView.addSubview(userView)
         contentView.addSubview(timeView)
         contentView.addSubview(descriptionView)
         contentView.addSubview(ingredientTableView)
@@ -146,10 +142,11 @@ class MainView: UIView {
     public func configure(recipe: Recipe) {
         self.viewModel = MainViewViewModel(recipe: recipe)
         guard let viewModel = viewModel else { return }
+        viewModel.delegate = self
         DispatchQueue.main.async {[weak self] in
             self?.title.text = viewModel.title
             self?.descriptionView.configure(description: viewModel.description)
-            self?.userLabel.text = viewModel.fromUser
+            self?.userView.userLabel.text = viewModel.fromUser
             self?.timeView.configure(time: viewModel.time)
         }
         calculateIngredientTableViewHeight()
@@ -207,14 +204,15 @@ class MainView: UIView {
             title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
         ]
         NSLayoutConstraint.activate(titleConstraints)
-        let userLabelConstraints = [
-            userLabel.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10),
-            userLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            userLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+        let userViewConstraints = [
+            userView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10),
+            userView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            userView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            userView.heightAnchor.constraint(equalToConstant: 50)
         ]
-        NSLayoutConstraint.activate(userLabelConstraints)
+        NSLayoutConstraint.activate(userViewConstraints)
         let timeViewConstraints = [
-            timeView.topAnchor.constraint(equalTo: userLabel.bottomAnchor, constant: 10),
+            timeView.topAnchor.constraint(equalTo: userView.bottomAnchor, constant: 10),
             timeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             timeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             timeView.heightAnchor.constraint(equalToConstant: 50)
@@ -306,7 +304,6 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
 extension MainView: InstructionTableViewCellDelegate {
     func showImage(viewModel: InstructionTableViewCellViewModel) {
         delegate?.presentImage(viewModel: viewModel)
-
     }
     
 
@@ -316,3 +313,25 @@ extension MainView: InstructionTableViewCellDelegate {
 
    
 
+//MARK: - Delegate
+extension MainView: UserViewDelegate {
+    func followerBottonPressed() {
+        guard let viewModel = viewModel else { return }
+        if viewModel.isFallow {
+            viewModel.deleteFollowersFrolUser()
+        } else  {
+            viewModel.userToFollower()
+        }
+        userView.configure(isFollow: viewModel.isFallow, viewModel: UserViewViewModel(username: viewModel.username))
+    }
+    
+    
+}
+
+extension MainView: MainViewViewModelDelegate {
+    func changeIsFollow(viewModel: MainViewViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    
+}

@@ -53,7 +53,7 @@ class MyReipeCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.layer.cornerRadius = 10
         contentView.clipsToBounds = true
-        contentView.backgroundColor = .systemGray
+        contentView.backgroundColor = .systemGray5
         contentView.addSubview(recipeImageView)
         
         contentView.addSubview(titleLabel)

@@ -19,6 +19,7 @@ class CategoryCell: UICollectionViewCell {
                 self?.categoryImage.sd_setImage(with: viewModel.mainImageUrl)
                 self?.titleLabel.text = viewModel.title
                 self?.usernameLabel.text = viewModel.username
+                self?.userImage.sd_setImage(with: viewModel.userPhotoUrl)
                 self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .label
             }
         }
@@ -56,6 +57,7 @@ class CategoryCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.backgroundColor = .secondarySystemBackground
         imageView.layer.cornerRadius = 15
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -86,6 +88,7 @@ class CategoryCell: UICollectionViewCell {
     //MARK: - Functions
     public func configure(viewModel: CategoryCellViewModel) {
         self.viewModel = viewModel
+        self.viewModel?.delegate = self
     }
     private func addConstraints() {
        let categoryImageConstraints = [
@@ -140,4 +143,16 @@ class CategoryCell: UICollectionViewCell {
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
         }
     }
+}
+
+
+
+//MARK: - delegate
+extension CategoryCell: CategoryCellViewModelDelegate {
+    func reloadCollection(viewModel: CategoryCellViewModel) {
+        self.viewModel = viewModel
+        
+    }
+    
+    
 }

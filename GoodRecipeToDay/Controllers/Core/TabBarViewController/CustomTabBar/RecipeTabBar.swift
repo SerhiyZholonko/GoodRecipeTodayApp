@@ -17,11 +17,15 @@ class RecipeTabBar: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if let index = tabBarController.viewControllers?.firstIndex(of: viewController) {
             // Check if the selected view controller is your collection view controller
+          
             if index == 3  {
                 print(viewController.viewDidLoad())
                 viewController.viewDidLoad()
             }
-            
+            if index == 3 {
+                viewController.viewDidLoad()
+                
+            }
             if index == 4 {
                 viewController.viewDidLoad()
                 

@@ -19,7 +19,8 @@ class FilterController: UIViewController {
     
     let backgroungImageView: UIImageView = {
        let iv = UIImageView()
-        iv.image = UIImage(named: "wood")
+//        iv.image = UIImage(named: "wood")
+        iv.backgroundColor = .systemGray5
         iv.layer.cornerRadius = 10
         iv.clipsToBounds = true
         iv.layer.borderColor = UIColor.gray.cgColor

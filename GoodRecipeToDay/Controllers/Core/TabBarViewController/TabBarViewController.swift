@@ -27,16 +27,17 @@ class TabBarViewController: RecipeTabBar {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    let mainViewController = UINavigationController(rootViewController: MainViewController())
+    var mainViewController = UINavigationController(rootViewController: MainViewController())
     let searchViewController =  UINavigationController(rootViewController: SearchViewController())
     let addViewController = AddViewController()
-    let favoriteController = UINavigationController(rootViewController: FavoriteViewController())
+    var favoriteController = UINavigationController(rootViewController: FavoriteViewController())
     var profileViewController = UINavigationController(rootViewController: ProfileViewController())
     
     //MARK: - Lovecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         isShowAuthController()
+        favoriteController = UINavigationController(rootViewController: FavoriteViewController())
         profileViewController = UINavigationController(rootViewController: ProfileViewController())
         viewDidLoad()
     }

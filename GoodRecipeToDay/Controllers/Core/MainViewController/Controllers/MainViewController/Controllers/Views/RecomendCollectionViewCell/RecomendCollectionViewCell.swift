@@ -1,38 +1,28 @@
 //
-//  FavoriteCollectionViewCell.swift
+//  RecomendCollectionViewCell.swift
 //  GoodRecipeToDay
 //
-//  Created by apple on 31.05.2023.
+//  Created by apple on 10.06.2023.
 //
 
 import UIKit
 import SDWebImage
 
-protocol FavoriteCollectionViewCellDelegate: AnyObject {
-    func reloadCollectionView()
-    func deleteCell(cell: FavoriteCollectionViewCell)
-}
-
-class FavoriteCollectionViewCell: UICollectionViewCell {
+class RecomendCollectionViewCell: UICollectionViewCell {
     //MARK: - Properties
-    static let identifier = "FavoriteCollectionViewCell"
-    
-    weak var delegate: FavoriteCollectionViewCellDelegate?
-    
-    var viewModel: FavoriteCollectionViewCellViewModel? {
+    static let identifier = "RecomendCollectionViewCell"
+    private var viewModel: RecomendCollectionViewCellViewModel? {
         didSet {
+            guard let viewModel = viewModel else { return }
             DispatchQueue.main.async {[weak self] in
-                guard let viewModel = self?.viewModel, let url = URL(string: viewModel.stringUrl) else { return }
-                self?.recipeImageView.sd_setImage(with: url)
+                self?.recipeImageView.sd_setImage(with: viewModel.imageUrl)
                 self?.nameLabel.text = viewModel.title
-                self?.rateView.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: viewModel.rate))
                 self?.timeView.configure(viewModel: ImageTextViewViewModel(imageName: "fast-time", titleText: viewModel.time))
-                self?.stepsView.titleLabel.text = viewModel.numberOfSteps
-                self?.complicationView.titleLabel.text = viewModel.complexity
+                self?.rateView.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: viewModel.rate))
             }
+           
         }
     }
-    
     let mainView: UIView = {
        let view = UIView()
         view.backgroundColor = .secondarySystemBackground
@@ -77,15 +67,6 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         view.configure(color: .systemGreen.withAlphaComponent(0.3), textColor: .systemGreen, title: "4 steps")
         return view
     }()
-    lazy var favoriteButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.tintColor = .systemGreen
-        button.setImage( UIImage(systemName: "trash"), for: .normal)
-        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-        
-    }()
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -96,11 +77,8 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(timeView)
         contentView.addSubview(complicationView)
         contentView.addSubview(stepsView)
-        contentView.addSubview(favoriteButton)
+        
         addConstraints()
-    }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -110,8 +88,11 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         nameLabel.text = nil
         
     }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     //MARK: - Functions
-    public func configure(viewModel: FavoriteCollectionViewCellViewModel) {
+    public func configure(viewModel: RecomendCollectionViewCellViewModel) {
         self.viewModel = viewModel
     }
     private func addConstraints() {
@@ -124,8 +105,8 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(mainViewConstraints)
         
       let recipeImageViewConstraints = [
-            recipeImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.6),
-            recipeImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.6),
+            recipeImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
+            recipeImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
             recipeImageView.leftAnchor.constraint(equalTo: mainView.leftAnchor, constant: 10),
             recipeImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
             ]
@@ -168,19 +149,6 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(stepsViewConstraints)
         
-        let favoriteButtonConstraints = [
-            favoriteButton.widthAnchor.constraint(equalToConstant: 30),
-            favoriteButton.heightAnchor.constraint(equalToConstant: 30),
-            favoriteButton.rightAnchor.constraint(equalTo: mainView.rightAnchor, constant: -20),
-            favoriteButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -20)
-        ]
-        NSLayoutConstraint.activate(favoriteButtonConstraints)
+        
     }
-       @objc private func deleteButtonTapped() {
-         // Perform deletion logic
-           
-           delegate?.deleteCell(cell: self)
-      
-     }
-
 }

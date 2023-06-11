@@ -25,7 +25,11 @@ final class ProfileViewControllerViewModel {
             uploadImageUrl(url: imageUrl)
         }
     }
-    public var recipes: [Recipe] = []
+    public var recipes: [Recipe] = [] {
+        didSet {
+            delegate?.updateRecipes()
+        }
+    }
     public var username: String {
         guard let user = user else { return "no user" }
         return user.username
@@ -34,7 +38,13 @@ final class ProfileViewControllerViewModel {
         guard let user = user else { return "no user" }
         return user.urlString ?? ""
     }
-    private var user: GUser? = nil 
+    public var followersCount: Int {
+        return followers.count
+    }
+    private var user: GUser? = nil
+    private var recipesFromFollowers: [Recipe] = []
+    private var followers: [GUser] = []
+    private var following: [GUser] = []
     //MARK: - Init
     init() {
         configure()
@@ -46,6 +56,11 @@ final class ProfileViewControllerViewModel {
     }
      public func configure() {
         fetchCurrentUserRecipe()
+         fetchAllFollowers()
+         fetchAllFollowing()
+    }
+    public func getRecipe(indexPath: IndexPath) -> Recipe {
+        return self.recipes[indexPath.item]
     }
     public func fetchCurrentUserRecipe() {
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
@@ -56,7 +71,6 @@ final class ProfileViewControllerViewModel {
                 switch result {
                 case .success(let recipes):
                     self?.recipes = recipes
-                    self?.delegate?.updateRecipes()
                 case .failure(let err):
                     print(err.localizedDescription)
                 }
@@ -64,18 +78,54 @@ final class ProfileViewControllerViewModel {
 
         })
     }
-    public func fetchAllRecipe() {
-        firebaseManager.getAllRecipes { [weak self] result in
-            switch result {
-            case .success(let recipes):
-                let newRecipes = recipes.sorted { $0.rate ?? 0.0 < $1.rate ?? 0.0}
-                self?.recipes = newRecipes
-                self?.delegate?.updateRecipes()
-            case .failure(let error):
-                print(error)
+    public func fetchAllFollowing() {
+        firebaseManager.fetchCurrentUser { [weak self] currentUser in
+            guard let currentUser = currentUser else { return }
+            self?.firebaseManager.getAllFollowing(username: currentUser.username, completion: { [weak self] result in
+                switch result {
+                case .success(let users):
+                    self?.followers = users
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            })
+
+        }
+
+    }
+    public func fetchAllFollowers() {
+        firebaseManager.fetchCurrentUser { [weak self] currentUser in
+            guard let currentUser = currentUser else { return }
+            self?.firebaseManager.getAllFollowersForUser(username: currentUser.username, completion: { [weak self] result in
+                switch result {
+                case .success(let users):
+                    self?.followers = users
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            })
+
+        }
+
+    }
+ 
+    public func getRecipeFromFollowers() {
+        recipes = [] // Clear the recipes array before adding new recipes
+        
+        for user in followers {
+            self.firebaseManager.getAllRecipesForUser(username: user.username) { result in
+                switch result {
+                    
+                case .success(let recipes):
+                    self.recipes.append(contentsOf: recipes)
+                case .failure(let error):
+                    print(error)
+                }
             }
+
         }
     }
+
     public func setImage(_ image: UIImage, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let user = user else { return }
      

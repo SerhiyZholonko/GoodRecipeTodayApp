@@ -9,7 +9,11 @@ import UIKit
 
 class SubViewController: UIViewController {
     //MARK: - Properties
-    var viewModel = SubViewControllerViewModel()
+    var viewModel = SubViewControllerViewModel() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -27,6 +31,7 @@ class SubViewController: UIViewController {
         addConstraints()
         collectionView.dataSource = self
         collectionView.delegate = self
+        viewModel.delegate = self
     }
     //MARK: - Functions
     private func addConstraints() {
@@ -43,17 +48,36 @@ class SubViewController: UIViewController {
 
 extension SubViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.users.count
+        return viewModel.followers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SubCollectionViewCell.identifier, for: indexPath) as? SubCollectionViewCell else { return UICollectionViewCell() }
+        cell.delegate = self
         let user = viewModel.getUser(indexPath: indexPath)
-        cell.configure(viewModel: SubCollectionViewCellViewModel(name: user.username, stringUrl: user.urlString))
+        cell.configure(viewModel: SubCollectionViewCellViewModel(user: user))
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: SubCollectionViewCell.height)
     }
+}
+
+
+//MARK: - Delegate
+
+extension SubViewController: SubCollectionViewCellDelegate {
+    func reloadTableView() {
+        viewModel.getAllFollowersForUser()
+    }
+}
+
+
+extension SubViewController: SubViewControllerViewModelDelegate {
+    func updateViewModel(viewModel: SubViewControllerViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    
 }

@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(MyReipeCollectionViewCell.self, forCellWithReuseIdentifier: MyReipeCollectionViewCell.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .clear
         // Configure collection view properties as needed
         return collectionView
     }()
@@ -128,11 +128,15 @@ class ProfileViewController: UIViewController {
     @objc private func segmentedControlValueChanged() {
         if segmentedControl.selectedSegmentIndex == 0 {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
-                self?.viewModel.fetchCurrentUserRecipe()
+                DispatchQueue.main.async {
+                    self?.viewModel.fetchCurrentUserRecipe()
+                }
             }
         } else {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
-                self?.viewModel.fetchAllRecipe()
+                DispatchQueue.main.async {
+                    self?.viewModel.getRecipeFromFollowers()
+                }
             }
         }
     }
@@ -171,6 +175,17 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
         let spacing: CGFloat = 10 // Adjust the spacing value as needed
 
         return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let recipe = viewModel.getRecipe(indexPath: indexPath)
+        let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
+        vc.delegate = self
+
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        UIView.animate(withDuration: 0.5) {
+            self.present(vc, animated: true)
+        }
     }
 }
 
@@ -220,4 +235,13 @@ extension ProfileViewController: ProfileViewControllerViewModelDelegate {
     func updateRecipes() {
         collectionView.reloadData()
     }
+}
+
+
+extension ProfileViewController: RecipeDetailViewControllerDelegate {
+    func reloadCollectionView() {
+        collectionView.reloadData()
+    }
+    
+    
 }

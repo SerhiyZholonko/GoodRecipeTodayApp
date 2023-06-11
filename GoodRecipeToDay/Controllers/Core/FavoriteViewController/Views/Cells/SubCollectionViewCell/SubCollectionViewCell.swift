@@ -8,10 +8,16 @@
 import UIKit
 import SDWebImage
 
+protocol SubCollectionViewCellDelegate: AnyObject {
+    func reloadTableView()
+}
+
 class SubCollectionViewCell: UICollectionViewCell {
     //MARK: - Properties
     static var identifier = "SubCollectionViewCell"
     static var height: CGFloat = 100
+    
+    weak var delegate: SubCollectionViewCellDelegate?
     
     var viewModel: SubCollectionViewCellViewModel? {
         didSet {
@@ -37,13 +43,14 @@ class SubCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    let followButton: UIButton = {
+    lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Unfollow", for: .normal)
         button.tintColor = .label
         button.layer.cornerRadius = 10
         button.layer.borderColor = UIColor.systemGray.cgColor
         button.layer.borderWidth = 2
+        button.addTarget(self, action: #selector(didTapUnfollow), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -87,5 +94,9 @@ class SubCollectionViewCell: UICollectionViewCell {
             followButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ]
         NSLayoutConstraint.activate(followButtonConstraints)
+    }
+    @objc private func didTapUnfollow() {
+        viewModel?.deleteFollower()
+        delegate?.reloadTableView()
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 
 final class SubCollectionViewCellViewModel {
     //MARK: - Properties
+    let firebaseManager = FirebaseManager.shared
     public var nameLabel: String {
         return name
     }
@@ -18,8 +19,25 @@ final class SubCollectionViewCellViewModel {
     }
     private let name: String
     private let stringUrl: String?
-    init(name: String, stringUrl: String?) {
-        self.name = name
-        self.stringUrl = stringUrl
+    private let user: GUser
+    init(user: GUser) {
+        self.user = user
+        self.name = user.username
+        self.stringUrl = user.urlString
+    }
+    
+    //MARK: Functions
+    
+    public func deleteFollower () {
+        print(user.username)
+        firebaseManager.deleteFollower(user) { result in
+            switch result {
+                
+            case .success():
+                print("Deleted follower successfuly!")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

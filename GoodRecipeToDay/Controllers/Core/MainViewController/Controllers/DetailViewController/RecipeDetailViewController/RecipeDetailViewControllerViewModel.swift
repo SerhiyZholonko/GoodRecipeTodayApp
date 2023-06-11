@@ -42,6 +42,7 @@ class RecipeDetailViewControllerViewModel {
         }
         coredataManager.save(recipe)
     }
+  
     public func checkIsFavorite() -> Bool {
         let recipes: [CDRecipe] = CoreDataManager.shared.fetchData(entityName: "CDRecipe")
         for recipe in recipes {

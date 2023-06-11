@@ -54,16 +54,7 @@ class FirebaseImageManager {
         }
     }
     
-//    func deleteImage(at url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
-//        let imageRef = storageRef.child(url.absoluteString)
-//        imageRef.delete { error in
-//            if let error = error {
-//                completion(.failure(error))
-//            } else {
-//                completion(.success(()))
-//            }
-//        }
-//    }
+
     func deleteImage(at url: URL, completion: @escaping (Result<Void, Error>) -> Void) {
         let storage = Storage.storage()
         let reference = storage.reference(forURL: url.absoluteString)

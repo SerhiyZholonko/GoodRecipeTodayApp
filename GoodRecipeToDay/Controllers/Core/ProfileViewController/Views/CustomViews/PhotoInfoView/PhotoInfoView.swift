@@ -27,7 +27,10 @@ class PhotoInfoView: UIView {
                 strongSelf.nameView.configure(viewModel: TitleTextViewViewModel(labelText: "name:", text: viewModel.username))
                 strongSelf.emailView.configure(viewModel: TitleTextViewViewModel(labelText: "email:", text: viewModel.email))
                 strongSelf.photoImageView.sd_setImage(with: URL(string: viewModel.stringUrl), placeholderImage: UIImage(named: "chef"))
-                
+                strongSelf.postsView.configure(viewModel: IntStringVerticalViewViewModel(number: viewModel.recipesCount, title: "Recipes"))
+
+                strongSelf.followersView.configure(viewModel: IntStringVerticalViewViewModel(number: viewModel.followersCount, title: "Followers"))
+                strongSelf.followingView.configure(viewModel: IntStringVerticalViewViewModel(number: viewModel.followingCount, title: "Following"))
                 strongSelf.delegate?.reloadPhotoInfoView()
             }
         }
@@ -35,7 +38,7 @@ class PhotoInfoView: UIView {
     let photoImageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .systemGray
-        iv.image = UIImage(named: "chef")
+//        iv.image = UIImage(named: "chef")
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -161,7 +164,6 @@ class PhotoInfoView: UIView {
         photoImageView.clipsToBounds = true
     }
     @objc private func didTapEdit() {
-        print("Tapped!")
         delegate?.setPhotoImageView()
     }
 }

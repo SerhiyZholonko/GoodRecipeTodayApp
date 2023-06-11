@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class HeaderHomeView: UIView {
   
@@ -25,7 +26,7 @@ class HeaderHomeView: UIView {
     }()
     let photoImageView: UIImageView = {
        let iv = UIImageView()
-        iv.image = UIImage(named: "woman")
+        iv.image = UIImage(named: "chef")
         iv.layer.cornerRadius = 25
         iv.clipsToBounds = true
         iv.layer.borderColor = UIColor.systemGray.cgColor
@@ -51,7 +52,8 @@ class HeaderHomeView: UIView {
          viewModel.setUser { user in
              guard let user = user else { return }
              DispatchQueue.main.async {
-                 self.helloLabel.text = "Hallo, \(user.username)" 
+                 self.helloLabel.text = "Hallo, \(user.username)"
+                 self.photoImageView.sd_setImage(with: URL(string: user.urlString ?? ""))
              }
          }
        
