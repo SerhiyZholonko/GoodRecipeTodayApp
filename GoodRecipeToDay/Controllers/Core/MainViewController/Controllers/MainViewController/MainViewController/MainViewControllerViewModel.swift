@@ -68,6 +68,7 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
                 self.recomendRecipes = recipes.map{.init(recomendRecipe: $0)}
                 let weekRecipe = recipes.map{WeekViewCellViewModel(weekRecipe: $0)}
                 self.weekRecipe = weekRecipe.sorted { $0.craetedDate > $1.craetedDate }
+                self.delegate?.reloadCollection()
                 //TODO: - filter recomend
             case .failure(_):
                 print("error recomendRecipes")

@@ -15,12 +15,13 @@ class CategoryCell: UICollectionViewCell {
     private var viewModel: CategoryCellViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
+            self.viewModel?.delegate = self
             DispatchQueue.main.async { [weak self] in
                 self?.categoryImage.sd_setImage(with: viewModel.mainImageUrl)
                 self?.titleLabel.text = viewModel.title
                 self?.usernameLabel.text = viewModel.username
                 self?.userImage.sd_setImage(with: viewModel.userPhotoUrl)
-                self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .label
+                self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
             }
         }
     }
@@ -88,7 +89,6 @@ class CategoryCell: UICollectionViewCell {
     //MARK: - Functions
     public func configure(viewModel: CategoryCellViewModel) {
         self.viewModel = viewModel
-        self.viewModel?.delegate = self
     }
     private func addConstraints() {
        let categoryImageConstraints = [
@@ -151,7 +151,6 @@ class CategoryCell: UICollectionViewCell {
 extension CategoryCell: CategoryCellViewModelDelegate {
     func reloadCollection(viewModel: CategoryCellViewModel) {
         self.viewModel = viewModel
-        
     }
     
     

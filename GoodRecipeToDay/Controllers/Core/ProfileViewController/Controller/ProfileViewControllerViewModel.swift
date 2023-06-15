@@ -156,7 +156,11 @@ final class ProfileViewControllerViewModel {
                 
             case .success(let username):
                 self.firebaseManager.updateImageUrlForUser(username: username, urlString: imageUrlString) { error in
-                    guard let error = error else { return }
+                    guard let error = error else {
+                        NotificationCenter.default.post(name: .reloadMainViewControlelr, object: nil, userInfo: nil)
+
+                        return }
+
                     print(error.localizedDescription)
                 }
             case .failure(let error):

@@ -20,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
         let authController = UINavigationController(rootViewController: TabBarViewController())
+        let vc = PaginationViewController()
         window.rootViewController = authController
     }
 

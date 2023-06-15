@@ -33,9 +33,15 @@ class RecipesOfTheWeekController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
           super.viewWillAppear(animated)
           navigationController?.setNavigationBarHidden(false, animated: animated)
+        viewModel.startListeningForChanges()
+
+        viewModel.fetchFirstPage()
     }
     
     //MARK: - Functions
+    private func fetchNextPage() {
+        viewModel.fetchNextPage()
+    }
     private func setupBasicUI() {
         view.backgroundColor = .systemBackground
         navigationItem.title = viewModel.title
@@ -72,6 +78,12 @@ extension RecipesOfTheWeekController: UICollectionViewDelegate, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipesOfTheWeekCell.identifier, for: indexPath) as? RecipesOfTheWeekCell else { return UICollectionViewCell() }
         cell.configure(viewModel: .init(recipe: viewModel.getRecipe(indexParh: indexPath)))
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let lastRowIndex = collectionView.numberOfItems(inSection: 0) - 1
+        if indexPath.row == lastRowIndex {
+            self.fetchNextPage()
+        }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -110,9 +122,14 @@ extension RecipesOfTheWeekController: UICollectionViewDelegate, UICollectionView
 //MARK: - Delegate
 
 extension RecipesOfTheWeekController: RecipesOfTheWeekControllerViewModelDelegate {
-    func didLoadRecipes(viewModel: RecipesOfTheWeekControllerViewModel) {
-        self.viewModel = viewModel
-        collectionView.reloadData()
+    func didFetchData() {
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
+    }
+
+    func didFail(with error: Error) {
+        print("Error fetching data: \(error.localizedDescription)")
     }
     
     

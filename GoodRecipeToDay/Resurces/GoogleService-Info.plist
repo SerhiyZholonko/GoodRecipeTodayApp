@@ -30,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:326149732050:ios:ad73aea459b1fcfd2b5f0b</string>
+	<key>DATABASE_URL</key>
+	<string>https://goodrecipetoday-1aeb8-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

@@ -114,6 +114,7 @@ class AddViewController: UIViewController {
     //MARK: - Lilecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
         setupScrollView()
         contentView.addSubview(topView)
         contentView.addSubview(bestImageView)
@@ -483,6 +484,7 @@ extension AddViewController: TopBarViewDelegate {
         }
         viewModel.getUsername()
         guard let username = viewModel.username else { return }
+        //user nil
         
         viewModel.addToFirebase(mainImage: bestImageView.image, title: title, description: description, category: category, quantity: quantity, time: time, ingredient: ingredients , step: steps, username: username) {[weak self] in
             self?.dismiss(animated: true)
@@ -498,3 +500,12 @@ extension AddViewController: TopBarViewDelegate {
 
 
 
+// delegate viewModel
+
+extension AddViewController: AddViewControllerViewModelDelegate {
+    func updateUsername(viewModel: AddViewControllerViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    
+}

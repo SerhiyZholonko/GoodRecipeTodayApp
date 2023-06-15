@@ -41,7 +41,35 @@ struct Recipe: Hashable, Equatable {
         self.createdAt = createdAt
     }
     
-
+    
+    init?(documentSnapshot: DocumentSnapshot) {
+           guard let data = documentSnapshot.data(),
+                 let mainImage = data["mainImage"] as? String,
+                 let title = data["title"] as? String,
+                 let description = data["description"] as? String,
+                 let category = data["category"] as? String,
+                 let quantity = data["quantity"] as? String,
+                 let time = data["time"] as? String,
+                 let steps = data["steps"] as? [Step],
+                 let ingredients = data["ingredients"] as? [Ingredient],
+                 let username = data["username"] as? String else {
+               return nil
+           }
+           
+           self.mainImage = mainImage
+           self.title = title
+           self.description = description
+           self.category = category
+           self.quantity = quantity
+           self.time = time
+           self.key = data["key"] as? String
+           self.rate = data["rate"] as? Double
+           self.rateCounter = data["rateCounter"] as? Int ?? 0
+           self.steps = steps
+           self.ingredients = ingredients
+           self.username = username
+           self.createdAt = data["createdAt"] as? Timestamp
+       }
     init?(snapshot: Any?) {
         guard let dict = snapshot as? [String: Any],
             let mainImage = dict["mainImage"] as? String,

@@ -26,6 +26,7 @@ class FavoriteViewController: UIViewController {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .systemBackground
         cv.register(FavoriteCollectionViewCell.self, forCellWithReuseIdentifier: FavoriteCollectionViewCell.identifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
@@ -36,7 +37,7 @@ class FavoriteViewController: UIViewController {
         label.numberOfLines = 2
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 30)
-        label.textColor = .black
+        label.textColor = .label
         return label
     }()
     let subscriptionsView: UIView = {

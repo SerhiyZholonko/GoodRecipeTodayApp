@@ -6,55 +6,123 @@
 //
 
 import Foundation
+import FirebaseFirestore
+
 
 protocol CategoryViewControllerViewModelDelegate: AnyObject {
-    func reloadCollectionView()
+    func didFetchData()
+    func didFail(with error: Error)
 }
 
 final class CategoryViewControllerViewModel {
     //MARK: - Properties
+    
     weak var delegate: CategoryViewControllerViewModelDelegate?
     let firebaseManager = FirebaseManager.shared
+    
+    private let pageSize: Int = 10
+    private var lastSnapshot: DocumentSnapshot?
+    private var isFetchingData: Bool = false
+    
     public var title: String {
         return category.title
     }
-    var recipes: [Recipe] = [] {
-        didSet {
-            var newRecipes: [Recipe] = []
-            for recipe in recipes {
-                              if recipe.category == self.category.title {
-                                  newRecipes.append(recipe)
-                              }
-                           }
-            self.recipes = newRecipes
-            self.delegate?.reloadCollectionView()
-        }
-    }
+    private(set) var dataSource: [Recipe] = []
+
     private let category: Categories
     init(category: Categories) {
         self.category = category
-        self.getingRecipes()
     }
+    
+    //MARK: - Functions
     public func getRecipe(indexParh: IndexPath) -> Recipe {
-        return recipes[indexParh.item]
+        return dataSource[indexParh.item]
     }
-    private func getingRecipes() {
-        firebaseManager.getAllRecipes { [weak self] result in
+    func fetchFirstPage() {
+        guard !isFetchingData else {
+            return
+        }
+        
+        isFetchingData = true
+        
+        fetchRecipes(pageSize: pageSize, lastSnapshot: nil) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.isFetchingData = false
+            
             switch result {
-            case .success(let recipes):
-                self?.recipes = recipes
-//                for recipe in recipes {
-//                    if recipe.category == self?.category.title {
-//                        self?.recipe.append(recipe)
-//                    }
-//                }
-////                self.weekRecipe = weekRecipe.sorted { $0.craetedDate > $1.craetedDate }
-                //TODO: - filter recomend
-            case .failure(_):
-                print("error recomendRecipes")
+            case .success(let (recipes, nextSnapshot)):
+                self.dataSource = recipes
+                self.lastSnapshot = nextSnapshot
+                self.delegate?.didFetchData()
+                
+            case .failure(let error):
+                self.delegate?.didFail(with: error)
             }
         }
-
     }
+    func fetchNextPage() {
+        guard !isFetchingData, let lastSnapshot = lastSnapshot else {
+            return
+        }
+        
+        isFetchingData = true
+        
+        fetchRecipes(pageSize: pageSize, lastSnapshot: lastSnapshot) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.isFetchingData = false
+            
+            switch result {
+            case .success(let (recipes, nextSnapshot)):
+                self.dataSource.append(contentsOf: recipes)
+                self.lastSnapshot = nextSnapshot
+                self.delegate?.didFetchData()
+                
+            case .failure(let error):
+                self.delegate?.didFail(with: error)
+            }
+        }
+    }
+    
+    func startListeningForChanges() {
+        // Implement your snapshot listener logic here if needed
+    }
+    
+    func stopListeningForChanges() {
+        // Implement your snapshot listener logic here if needed
+    }
+    
+    private func fetchRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        firebaseManager.fetchRecipes(pageSize: pageSize, lastSnapshot: lastSnapshot) {  result in
+            
+            switch result {
+            case .success(let snapshot):
+                var recipes: [Recipe] = []
+                var nextSnapshot: DocumentSnapshot?
+                
+                for recipeDocument in snapshot.documents {
+                    if let recipe = Recipe(snapshot: recipeDocument) {
+                        if recipe.category == self.category.title {
+                            recipes.append(recipe)
+                        }
+                    }
+                }
+                
+                if let lastDocumentSnapshot = snapshot.documents.last {
+                    nextSnapshot = lastDocumentSnapshot
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    // Introduce a 2-second delay (adjust the delay time as needed)
+                    completion(.success((recipes, nextSnapshot)))
+                }
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
 
 }

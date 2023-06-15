@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SearchCollectionViewControllerDelegate: AnyObject {
-    func stopSppiner()
+    func didNoResult(isHitten: Bool)
 }
 
 class SearchCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
@@ -30,17 +30,20 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
     //MARK: - Functions
     public func updateviewModel(searchText: String) {
         self.viewModel.updateSearchText(newText: searchText)
-        delegate?.stopSppiner()
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
+        if viewModel.recipes.count == 0 {
+            delegate?.didNoResult(isHitten: false)
+        } else {
+            delegate?.didNoResult(isHitten: true)
+        }
         return viewModel.recipes.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionViewCell.identifier, for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
         // Configure the cell
         cell.configure(viewModel: SearchCollectionViewCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
-        delegate?.stopSppiner()
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -1,42 +1,31 @@
 //
-//  RecipesOfTheWeekControllerViewModel.swift
+//  File.swift
 //  GoodRecipeToDay
 //
-//  Created by apple on 11.06.2023.
+//  Created by apple on 13.06.2023.
 //
 
-import Foundation
-import Firebase
+import UIKit
+import FirebaseFirestore
 
-
-protocol RecipesOfTheWeekControllerViewModelDelegate: AnyObject {
-//    func didLoadRecipes(viewModel: RecipesOfTheWeekControllerViewModel)
+protocol PaginationViewModelDelegate: AnyObject {
     func didFetchData()
     func didFail(with error: Error)
 }
 
-final class RecipesOfTheWeekControllerViewModel {
-    //MARK: - Properties
-    weak var delegate: RecipesOfTheWeekControllerViewModelDelegate?
-    let title = "The Week"
-    let firebaseManager = FirebaseManager.shared
-//    private var recipes: [Recipe] = []
-    private(set) var dataSource: [Recipe] = []
-
+class PaginationViewModel {
+    
+    let firebaseManager = FBManager.shared
+    
+//    private let database = Firestore.firestore()
     private let pageSize: Int = 10
     private var lastSnapshot: DocumentSnapshot?
     private var isFetchingData: Bool = false
-
-    //MARK: - Init
-    init() {
-    }
-    //MARK: - Functions
-    public func getRecipe(indexParh: IndexPath) -> Recipe {
-        return dataSource[indexParh.item]
-    }
-    public func getRecipesCount() -> Int {
-        return dataSource.count
-    }
+//    private var listener: ListenerRegistration?
+    
+    private(set) var dataSource: [Recipe] = []
+    weak var delegate: PaginationViewModelDelegate?
+    
     func fetchFirstPage() {
         guard !isFetchingData else {
             return
@@ -60,6 +49,7 @@ final class RecipesOfTheWeekControllerViewModel {
             }
         }
     }
+    
     func fetchNextPage() {
         guard !isFetchingData, let lastSnapshot = lastSnapshot else {
             return
@@ -93,7 +83,7 @@ final class RecipesOfTheWeekControllerViewModel {
     }
     
     private func fetchRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
-        firebaseManager.fetchRecipes(pageSize: pageSize, lastSnapshot: lastSnapshot) {  result in
+        FBManager.shared.getAllMainRecipes(pageSize: pageSize, lastSnapshot: lastSnapshot) {  result in
             
             switch result {
             case .success(let snapshot):
@@ -102,8 +92,9 @@ final class RecipesOfTheWeekControllerViewModel {
                 
                 for recipeDocument in snapshot.documents {
                     if let recipe = Recipe(snapshot: recipeDocument) {
-                            recipes.append(recipe)
-
+                        print("user name name: ", recipe.username)
+                        print("recipe title: ", recipe.title)
+                        recipes.append(recipe)
                     }
                 }
                 
@@ -111,35 +102,14 @@ final class RecipesOfTheWeekControllerViewModel {
                     nextSnapshot = lastDocumentSnapshot
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     // Introduce a 2-second delay (adjust the delay time as needed)
-                    recipes = recipes.sorted  {
-                                    $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date())
-                                }
+                print(recipes.count)
                     completion(.success((recipes, nextSnapshot)))
-                }
+//                }
                 
             case .failure(let error):
                 completion(.failure(error))
             }
         }
-    }
-    
-//    private func fetchRecipies() {
-//        firebaseManager.getAllRecipes { [weak self] result in
-//            guard let strongSelf = self else { return }
-//            switch result {
-//
-//            case .success(let recipes):
-//                let newRecipes = recipes.sorted  {
-//                    $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date())
-//                }
-//
-//                strongSelf.recipes = newRecipes
-//                strongSelf.delegate?.didLoadRecipes(viewModel: strongSelf)
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
-}
+    }}

@@ -33,14 +33,14 @@ class SearchViewController: UIViewController {
         return view
     }()
 
-    let spiner: UIActivityIndicatorView = {
-       let spiner = UIActivityIndicatorView(style: .large)
-       spiner.color = .systemGreen
-       spiner.startAnimating()
-       spiner.translatesAutoresizingMaskIntoConstraints = false
-       return spiner
-   }()
-    
+    let noResultLabel: UILabel = {
+       let label = UILabel()
+        label.text = "No Result"
+        label.font = .boldSystemFont(ofSize: 24)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     lazy var  searchCollectionViewController: SearchCollectionViewController = {
         let layout = InsetCollectionViewFlowLayout()
        let vc = SearchCollectionViewController(collectionViewLayout: layout)
@@ -55,11 +55,10 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(headerView)
         view.addSubview(collectionView)
-        view.addSubview(spiner)
-//        collectionView.addSubview(collectionImageView)
+        view.addSubview(noResultLabel)
         setupBasicUI()
         addConstraints()
-        addConstraintsSpiner()
+        addConstraintsnoResultLabel()
         addChildViewController(searchCollectionViewController, to: collectionView)
         NotificationCenter.default.addObserver(self, selector: #selector(relosdSearchView), name: .reloadSearchController, object: nil)
     }
@@ -92,18 +91,15 @@ class SearchViewController: UIViewController {
         NSLayoutConstraint.activate(collectionViewConstraints)
 
     }
-    private func addConstraintsSpiner() {
+    private func addConstraintsnoResultLabel() {
         NSLayoutConstraint.activate([
-            spiner.widthAnchor.constraint(equalToConstant: 100),
-            spiner.heightAnchor.constraint(equalToConstant: 100),
-            spiner.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-            spiner.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+            noResultLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            noResultLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
         ])
     }
     @objc private func relosdSearchView() {
         searchCollectionViewController.reloadCollectionView()
-        spiner.stopAnimating()
-           spiner.isHidden = true
+
     }
 }
 
@@ -138,12 +134,9 @@ extension SearchViewController: FilterControllerDelegate {
 //MARK: - Delegate
 
 extension SearchViewController: SearchCollectionViewControllerDelegate {
-    func stopSppiner() {
+    func didNoResult(isHitten: Bool) {
         DispatchQueue.main.async {[weak self] in
-            self?.spiner.stopAnimating()
-            self?.spiner.isHidden = true
+            self?.noResultLabel.isHidden = isHitten
         }
     }
-    
-    
 }

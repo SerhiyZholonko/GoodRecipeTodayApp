@@ -35,8 +35,14 @@ final class RecomendViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         viewModel.delegate = self
+        viewModel.startListeningForChanges()
+
+        viewModel.fetchFirstPage()
     }
     //MARK: - Functions
+    private func fetchNextPage() {
+        viewModel.fetchNextPage()
+    }
     private func setupBasicUI() {
         view.backgroundColor = .systemBackground
         navigationItem.title = viewModel.title
@@ -63,13 +69,19 @@ final class RecomendViewController: UIViewController {
 
 extension RecomendViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.getRecipesCount()
+        return viewModel.dataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecomendCollectionViewCell.identifier, for: indexPath) as? RecomendCollectionViewCell else { return UICollectionViewCell() }
         cell.configure(viewModel: .init(recipe: viewModel.getRecipe(indexParh: indexPath)))
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let lastRowIndex = collectionView.numberOfItems(inSection: 0) - 1
+        if indexPath.row == lastRowIndex {
+            self.fetchNextPage()
+        }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -106,10 +118,17 @@ extension RecomendViewController: UICollectionViewDelegate, UICollectionViewData
 
 
 extension RecomendViewController: RecomendViewControllerViewModelDelegate {
-    func didLoadRecipes(viewModel: RecomendViewControllerViewModel) {
-        self.viewModel = viewModel
-        collectionView.reloadData()
+
+    func didFetchData() {
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
+
+    func didFail(with error: Error) {
+        print("Error fetching data: \(error.localizedDescription)")
+    }
+    
     
     
 }

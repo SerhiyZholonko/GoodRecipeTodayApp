@@ -15,7 +15,7 @@ class CategoryViewController: UIViewController {
             guard let viewModel = viewModel else { return }
             DispatchQueue.main.async { [weak self] in
                 self?.titleLabel.text = viewModel.title
-                
+
             }
         }
     }
@@ -39,7 +39,7 @@ class CategoryViewController: UIViewController {
         let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         button.setImage(UIImage(systemName: "arrow.left", withConfiguration: configuration), for: .normal)
         button.backgroundColor = .white
-        button.tintColor = .label
+        button.tintColor = .black
         button.layer.cornerRadius = 25
         button.addTarget(self, action: #selector(didTappedBack), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -58,9 +58,15 @@ class CategoryViewController: UIViewController {
         categoriesCollectionView.delegate = self
         categoriesCollectionView.dataSource = self
         viewModel?.delegate = self
+        viewModel?.startListeningForChanges()
+
+        viewModel?.fetchFirstPage()
     }
     public func configure(viewModel: CategoryViewControllerViewModel) {
         self.viewModel = viewModel
+    }
+    private func fetchNextPage() {
+        viewModel?.fetchNextPage()
     }
     //MARK: - Functions
     private func addConstraints() {
@@ -96,7 +102,7 @@ class CategoryViewController: UIViewController {
 
 extension CategoryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel?.recipes.count ?? 0
+        return viewModel?.dataSource.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -105,6 +111,12 @@ extension CategoryViewController: UICollectionViewDelegate, UICollectionViewData
             cell.configure(viewModel: CategoryCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
         }
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let lastRowIndex = collectionView.numberOfItems(inSection: 0) - 1
+        if indexPath.row == lastRowIndex {
+            self.fetchNextPage()
+        }
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            // Return the desired size of each item (cell)
@@ -142,6 +154,16 @@ extension CategoryViewController: UICollectionViewDelegate, UICollectionViewData
 
 
 extension CategoryViewController: CategoryViewControllerViewModelDelegate {
+    func didFetchData() {
+        DispatchQueue.main.async { [weak self] in
+            self?.categoriesCollectionView.reloadData()
+        }
+    }
+
+    func didFail(with error: Error) {
+        print("Error fetching data: \(error.localizedDescription)")
+    }
+    
     func reloadCollectionView() {
         DispatchQueue.main.async { [weak self] in
             self?.categoriesCollectionView.reloadData()

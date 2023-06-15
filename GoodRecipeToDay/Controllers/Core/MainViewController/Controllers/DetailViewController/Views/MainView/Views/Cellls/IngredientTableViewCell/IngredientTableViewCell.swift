@@ -13,6 +13,7 @@ class IngredientTableViewCell: UITableViewCell {
         didSet {
             guard let viewModel = viewModel else { return }
             DispatchQueue.main.async {[weak self] in
+                print("Ingredients: ", viewModel.title)
                 self?.ingredientLabel.text = viewModel.title
             }
         }

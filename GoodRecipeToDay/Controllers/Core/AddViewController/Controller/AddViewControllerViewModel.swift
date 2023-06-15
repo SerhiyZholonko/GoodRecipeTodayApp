@@ -7,13 +7,20 @@
 
 import UIKit
 
+protocol AddViewControllerViewModelDelegate: AnyObject {
+    func updateUsername(viewModel: AddViewControllerViewModel)
+}
+
 final class AddViewControllerViewModel {
+    weak var delegate: AddViewControllerViewModelDelegate?
     var username: String?
     let firebaseManager = FirebaseManager.shared
     let title = "Adding"
     var ingregients = [AddIngredientTableViewCellViewModel]()
     var instructions = [CookingTableViewCellViewModel]()
     init() {
+        
+        getUsername()
         addIngredients()
         addInstructions()
         
@@ -41,10 +48,12 @@ final class AddViewControllerViewModel {
         }
     }
     func getUsername() {
-        FirebaseManager.shared.getCurrentUsername  { result in
+        FirebaseManager.shared.getCurrentUsername  { [weak self] result in
+            guard let strongSelf = self else { return }
             switch result {
             case .success(let username):
-                self.username = username
+                strongSelf.username = username
+                strongSelf.delegate?.updateUsername(viewModel: strongSelf)
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -57,7 +66,8 @@ final class AddViewControllerViewModel {
             switch result {
                 
             case .success(let success):
-                self.firebaseManager.addRecipeToUser(Recipe(mainImage: success, title: title, description: description, category: category, quantity: quantity, time: time, steps: step, ingredients: ingredient, username: username)) { result in
+                let recipe = Recipe(mainImage: success, title: title, description: description, category: category, quantity: quantity, time: time, steps: step, ingredients: ingredient, username: username)
+                self.firebaseManager.addRecipeToUser(recipe) { result in
                                         switch result {
                     
                                         case .success():
@@ -67,6 +77,16 @@ final class AddViewControllerViewModel {
                                         case .failure(let error):
                                             print(error.localizedDescription)
                                         }
+                }
+                self.firebaseManager.addRecipeToMainPath(recipe) { result in
+                    switch result {
+                        
+                    case .success():
+                        print("Success created firebase recip for main path")
+
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
                 }
             case .failure(let err):
                 print(err.localizedDescription)

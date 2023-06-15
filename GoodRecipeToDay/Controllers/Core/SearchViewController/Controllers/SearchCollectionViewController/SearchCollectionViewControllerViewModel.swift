@@ -27,13 +27,6 @@ final class SearchCollectionViewControllerViewModel {
     var recipes: [Recipe] = [] {
         didSet {
             var newRecipes: [Recipe] = []
-            if searchText == nil || searchText == ""   {
-                for recipe in recipes {
-                                      newRecipes.append(recipe)
-                               }
-                self.recipes = newRecipes
-                self.delegate?.reloadCollectionView()
-            }
             guard  searchText != nil,  let searchText = searchText else { return }
             for recipe in recipes {
                 if recipe.title.contains(searchText){
@@ -50,9 +43,7 @@ final class SearchCollectionViewControllerViewModel {
 
     //MARK: - Init
 
-    init() {
-    self.getingRecipes()
-    }
+    init() {}
     //MARK: - Functions
     
     public func setupType(type: CheckmarkTextViewType) {

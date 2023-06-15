@@ -36,13 +36,14 @@ final class CategoryCellViewModel {
         self.recipe = recipe
         getUser()
     }
-    private func getUser() {
-        firebaseManager.getUserFromUsername(username: recipe.username) { [weak self] result in
+     private func getUser() {
+      
+        firebaseManager.getMainUserFromUsername(username: recipe.username) { [weak self] result in
             switch result {
             case .success(let user):
-                self?.user = user
                 guard let strongSelf = self else { return }
-                self?.delegate?.reloadCollection(viewModel: strongSelf)
+                strongSelf.user = user
+                strongSelf.delegate?.reloadCollection(viewModel: strongSelf)
             case .failure(let error):
                 print(error.localizedDescription)
             }

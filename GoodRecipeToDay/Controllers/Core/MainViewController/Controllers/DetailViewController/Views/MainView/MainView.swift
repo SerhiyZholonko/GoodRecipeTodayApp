@@ -19,7 +19,6 @@ class MainView: UIView {
             guard let viewModel = viewModel else { return }
             userView.configure(isFollow: viewModel.isFallow, viewModel: UserViewViewModel(username: viewModel.username))
             rateView.rating = viewModel.rate
-
         }
     }
     private let scrollView: UIScrollView = {
@@ -42,27 +41,27 @@ class MainView: UIView {
     }()
     lazy var rateView: CosmosView = {
         let view = CosmosView()
-        view.settings.filledImage = UIImage(systemName: "star.fill")
-        view.settings.emptyImage = UIImage(systemName: "star")
+        view.settings.filledColor = .systemYellow
+        view.settings.emptyColor = .systemGray
         view.settings.totalStars = 5
         view.settings.starSize = 20
-        //TODO: - get rate from server
+        // TODO: - get rate from server
         view.settings.starMargin = 3.3
         view.settings.fillMode = .precise
         view.text = "Rate me"
-        view.didTouchCosmos = {[weak self] rating in
-           let rateString = "You rate: \(rating.rounded(toDecimalPlaces: 1))"
+        view.didTouchCosmos = { [weak self] rating in
+            let rateString = "You rate: \(rating.rounded(toDecimalPlaces: 1))"
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             viewModel.updateRecipeRate(rate: rating)
             view.text = rateString
             NotificationCenter.default.post(name: .didUpdateCoredata, object: nil, userInfo: nil)
-
         }
         view.settings.textColor = .systemGreen
         view.settings.textMargin = 14
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+
     let title: UILabel = {
         let label = UILabel()
         label.text = "Title"
@@ -283,10 +282,11 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
          let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
          
          let label = UILabel(frame: CGRect(x: 15, y: 0, width: tableView.frame.width - 30, height: 50))
-         label.textColor = UIColor.black
+         label.textColor = UIColor.label
          label.font = UIFont.boldSystemFont(ofSize: 18)
          if tableView == ingredientTableView{
              label.text = "Ingredient"
+             
          } else {
              label.text = "Instruction"
          }

@@ -16,13 +16,15 @@ class TabBarViewController: RecipeTabBar {
     let viewModel = TabBarViewControllerViewModel()
     lazy var addButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .systemBackground
+        button.backgroundColor = .white
         if let plusImage = UIImage(systemName: "plus")?.withConfiguration(UIImage.SymbolConfiguration(pointSize: 25, weight: .regular, scale: .large)) {
             button.setImage(plusImage, for: .normal)
         }
         button.tintColor = .systemGray
         button.titleLabel?.font = .systemFont(ofSize: 40)
-        button.layer.cornerRadius = 40
+        button.layer.cornerRadius = 30
+        button.layer.borderColor = UIColor.systemGray3.cgColor
+        button.layer.borderWidth = 2
         button.addTarget(self, action: #selector(didTapAdd), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -67,23 +69,24 @@ class TabBarViewController: RecipeTabBar {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+ 
+
     //MARK: Functions
     private func setControllers() {
         mainViewController.tabBarItem = UITabBarItem(title: "home", image: UIImage(systemName: "house"), tag: 1)
         searchViewController.tabBarItem = UITabBarItem(title: "search", image: UIImage(systemName: "magnifyingglass"), tag: 2)
-        addViewController.tabBarItem = UITabBarItem(title: "Add", image: UIImage(systemName: "plus"), tag: 3)
+        addViewController.tabBarItem = DisabledTabBarItem(title: nil, image: nil, tag: 3)
         favoriteController.tabBarItem = UITabBarItem(title: "favorite", image: UIImage(systemName: "bookmark"), tag: 4)
         profileViewController.tabBarItem = UITabBarItem(title: "profile", image: UIImage(systemName: "person"), tag: 5)
         tabBar.tintColor = UIColor.systemGreen
-        tabBar.barTintColor = UIColor.white
-        tabBar.backgroundColor = .systemBackground
+
     }
     private func addConstraints() {
         let addButtonConstraints = [
-            addButton.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: 60),
+            addButton.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: 30),
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.widthAnchor.constraint(equalToConstant: 80),
-            addButton.heightAnchor.constraint(equalToConstant: 80)
+            addButton.widthAnchor.constraint(equalToConstant: 60),
+            addButton.heightAnchor.constraint(equalToConstant: 60)
         ]
         NSLayoutConstraint.activate(addButtonConstraints)
     }
@@ -125,3 +128,7 @@ extension TabBarViewController: AuthViewControllerDelegate {
     
     
 }
+
+
+
+

@@ -86,7 +86,8 @@ class MainViewController: UIViewController {
         NSLayoutConstraint.activate(searchCollectionViewConstraints)
     }
     @objc func reloadDataMainController() {
-        headerView.configure(viewModel: viewModel)
+            self.headerView.configure(viewModel: self.viewModel)
+
     }
 }
 
@@ -104,12 +105,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
         switch sectionType {
             
-        case .category(viewModel: let viewModel):
-            return viewModel.count
-        case .recomend(viewModel: let viewModel):
-            return viewModel.count
-        case .oftheWeek(viewModel: let viewModel):
-            return viewModel.count
+        case .category(_):
+            return 6
+        case .recomend(_):
+            return 6
+        case .oftheWeek(_):
+            return 6
         }
     }
     
