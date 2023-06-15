@@ -444,6 +444,25 @@ class FirebaseManager {
             completion(.success(recipeID))
         }
     }
+    func getRecipeIDForUserMain(recipeName: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let recipesCollectionRef = database.collection("recipes")
+        let query = recipesCollectionRef.whereField("title", isEqualTo: recipeName).limit(to: 1)
+        
+        query.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let document = snapshot?.documents.first else {
+                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Recipe not found"])))
+                return
+            }
+            
+            let recipeID = document.documentID
+            completion(.success(recipeID))
+        }
+    }
     func updateRecipeForUser(username: String, recipeID: String, newRate: Double, recipe: Recipe, completion: @escaping (Error?) -> Void) {
         let recipeDocumentRef = database.collection("users").document(username).collection("recipes").document(recipeID)
 
@@ -468,7 +487,27 @@ class FirebaseManager {
             }
         
     }
-    
+    func updateRecipeMain(recipeID: String, newRate: Double, recipe: Recipe, completion: @escaping (Error?) -> Void) {
+        let recipeDocumentRef = database.collection("recipes").document(recipeID)
+        
+        let oldRate = recipe.rate ?? 0.0
+        let rate = oldRate + newRate
+        let newRateCounter = recipe.rateCounter + 1
+        
+        let data: [String: Any] = [
+            "rate": rate,
+            "rateCounter": newRateCounter
+        ]
+        
+        recipeDocumentRef.updateData(data) { error in
+            if let error = error {
+                completion(error)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+
     func updateImageUrlForUser(username: String, urlString: String, completion: @escaping (Error?) -> Void) {
         let recipeDocumentRef = database.collection("users").document(username)
         let urlString = urlString
@@ -548,7 +587,6 @@ class FirebaseManager {
                             recipes.append(recipe)
                         }
                     }
-                    
                     completion(.success(recipes))
                 }
             }

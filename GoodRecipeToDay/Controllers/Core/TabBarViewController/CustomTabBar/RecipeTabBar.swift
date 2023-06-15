@@ -28,7 +28,7 @@ class RecipeTabBar: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.itemWidth = 40
         self.tabBar.itemPositioning = .centered
         self.tabBar.itemSpacing = 180
-        self.tabBar.tintColor = UIColor(hex: "#fe989b", alpha: 1.0)
+//        self.tabBar.tintColor = UIColor(white: "#fe989b", alpha: 1.0)
 
     }
     func getPathForTabBar() -> UIBezierPath {

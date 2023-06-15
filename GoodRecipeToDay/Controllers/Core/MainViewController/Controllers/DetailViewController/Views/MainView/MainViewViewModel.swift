@@ -226,7 +226,6 @@ final class MainViewViewModel {
             switch result {
             case .success(let id):
                 self?.recipeIdForUser = id
-                print("ID: ",id)
             case .failure(let error):
                 print(error)
             }
@@ -248,6 +247,20 @@ final class MainViewViewModel {
                 }
             case .failure(let error):
                 print(error)
+            }
+        }
+        firebaseManager.getRecipeIDForUserMain(recipeName: recipe.title) {[weak self] result in
+            switch result {
+                
+            case .success(let id):
+                guard let strongSelf = self else { return }
+                strongSelf.firebaseManager.updateRecipeMain(recipeID: id, newRate: newRate, recipe: strongSelf.recipe) { error in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
      

@@ -49,6 +49,7 @@ final class MainSearchCollectionViewControllerViewModel {
             switch result {
             case .success(let recipes):
                 self?.recipes = recipes
+                
                 //TODO: - filter recomend
             case .failure(_):
                 print("error recomendRecipes")

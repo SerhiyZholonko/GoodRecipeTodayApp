@@ -8,12 +8,21 @@
 import Foundation
 
 
+protocol MainSearchCollectionViewCellViewModelDelegate: AnyObject {
+    func didSetUser(viewModel: MainSearchCollectionViewCellViewModel)
+}
+
 final class MainSearchCollectionViewCellViewModel {
     let coredataManager = CoreDataManager.shared
-
+    let firebaseManager = FirebaseManager.shared
+    weak var delegate: MainSearchCollectionViewCellViewModelDelegate?
     public var mainImageUrl: URL? {
         let url = URL(string: recipe.mainImage)
         return url
+    }
+    public var userUrl: URL? {
+        guard let user = user else { return nil}
+        return URL(string: user.urlString ?? "")
     }
     public  var title: String {
         return recipe.title
@@ -22,8 +31,34 @@ final class MainSearchCollectionViewCellViewModel {
         return recipe.username
     }
     private let recipe: Recipe
+
+    private var user: GUser? {
+        didSet {
+            delegate?.didSetUser(viewModel: self)
+        }
+    }
     init(recipe: Recipe ){
         self.recipe = recipe
+        getUser()
+        
+    }
+     func getUser() {
+        firebaseManager.getAllUsers {  users, error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let users = users {
+                for user in users {
+                    print(user.username)
+                    print(self.recipe.username)
+                    if user.username == self.recipe.username {
+                        self.user = user
+                    }
+
+                }
+            }
+            self.delegate?.didSetUser(viewModel: self)
+
+        }
     }
     public func checkIsFavorite() -> Bool {
         let recipes: [CDRecipe] = CoreDataManager.shared.fetchData(entityName: "CDRecipe")

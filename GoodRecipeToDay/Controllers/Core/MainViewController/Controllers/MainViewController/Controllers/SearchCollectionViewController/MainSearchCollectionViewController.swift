@@ -52,7 +52,6 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainSearchCollectionViewCell.identifier, for: indexPath) as? MainSearchCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(viewModel: MainSearchCollectionViewCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
-        
         // Configure the cell
         return cell
     }
@@ -96,3 +95,5 @@ extension MainSearchCollectionViewController: MainSearchCollectionViewController
     
     
 }
+
+

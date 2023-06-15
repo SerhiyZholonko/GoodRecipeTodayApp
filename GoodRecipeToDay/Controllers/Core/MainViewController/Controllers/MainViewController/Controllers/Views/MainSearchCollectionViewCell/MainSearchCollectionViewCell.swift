@@ -8,17 +8,23 @@
 import UIKit
 import SDWebImage
 
+
+
 class MainSearchCollectionViewCell: UICollectionViewCell {
+   
     //MARK: - Properties
     static let identifier = "SearchCollectionViewCell"
     
-    private var viewModel: MainSearchCollectionViewCellViewModel? {
+    
+    private weak var viewModel: MainSearchCollectionViewCellViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
+
             DispatchQueue.main.async { [weak self] in
                 self?.searchImage.sd_setImage(with: viewModel.mainImageUrl)
                 self?.titleLabel.text = viewModel.title
                 self?.usernameLabel.text = viewModel.username
+                self?.userImage.sd_setImage(with: viewModel.userUrl)
                 self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .label
             }
         }
@@ -56,6 +62,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.backgroundColor = .secondarySystemBackground
         imageView.layer.cornerRadius = 15
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -86,6 +93,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
     //MARK: - Functions
     public func configure(viewModel: MainSearchCollectionViewCellViewModel) {
         self.viewModel = viewModel
+        self.viewModel?.delegate = self
     }
     private func addConstraints() {
        let categoryImageConstraints = [
@@ -140,4 +148,13 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
         }
     }
+}
+
+
+extension MainSearchCollectionViewCell: MainSearchCollectionViewCellViewModelDelegate {
+    func didSetUser(viewModel: MainSearchCollectionViewCellViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    
 }
