@@ -23,11 +23,12 @@ struct Recipe: Hashable, Equatable {
     var rateCounter: Int = 0
     let steps: [Step]
     let ingredients: [Ingredient]
+    var chats: [Chat] = []
     let username: String
     let createdAt: Timestamp?
 
 
-    init(mainImage: String, title: String, description: String, category: String, quantity: String, time: String, steps: [Step], ingredients: [Ingredient], key: String? = nil, username: String, createdAt: Timestamp? = nil) {
+    init(mainImage: String, title: String, description: String, category: String, quantity: String, time: String, steps: [Step], ingredients: [Ingredient], chats: [Chat] = [], key: String? = nil, username: String, createdAt: Timestamp? = nil) {
         self.mainImage = mainImage
         self.title = title
         self.description = description
@@ -36,6 +37,7 @@ struct Recipe: Hashable, Equatable {
         self.time = time
         self.steps = steps
         self.ingredients = ingredients
+        self.chats = chats
         self.key = key
         self.username = username
         self.createdAt = createdAt
@@ -52,6 +54,7 @@ struct Recipe: Hashable, Equatable {
                  let time = data["time"] as? String,
                  let steps = data["steps"] as? [Step],
                  let ingredients = data["ingredients"] as? [Ingredient],
+                 let chats = data["chat"] as? [Chat],
                  let username = data["username"] as? String else {
                return nil
            }
@@ -67,6 +70,7 @@ struct Recipe: Hashable, Equatable {
            self.rateCounter = data["rateCounter"] as? Int ?? 0
            self.steps = steps
            self.ingredients = ingredients
+        self.chats = chats
            self.username = username
            self.createdAt = data["createdAt"] as? Timestamp
        }
@@ -80,6 +84,7 @@ struct Recipe: Hashable, Equatable {
             let time = dict["time"] as? String,
             let stepsDict = dict["steps"] as? [[String: Any]],
             let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+//            let chatsDict = dict["chat"] as? [[String: Any]],
             let rateDict = dict["rate"] as? Double?,
             let rateCounterDict = dict["rateCounter"] as? Int?, // Retrieve rateCounter
             let usernameDict = dict["username"] as? String,
@@ -101,7 +106,12 @@ struct Recipe: Hashable, Equatable {
                 ingredients.append(ingredient)
             }
         }
-        
+//        var chats: [Chat] = []
+//        for chatDict in chatsDict {
+//            if let chat = Chat(dict: chatDict) {
+//                chats.append(chat)
+//            }
+//        }
         self.mainImage = mainImage
         self.title = title
         self.description = description
@@ -110,6 +120,7 @@ struct Recipe: Hashable, Equatable {
         self.time = time
         self.steps = steps
         self.ingredients = ingredients
+//        self.chats = chats
         self.rate = rateDict
         self.rateCounter = rateCounterDict ?? 0 // Assign rateCounter
         self.key = (snapshot as AnyObject).key
@@ -127,6 +138,7 @@ struct Recipe: Hashable, Equatable {
             let time = dict["time"] as? String,
             let stepsDict = dict["steps"] as? [[String: Any]],
             let ingredientsDict = dict["ingredients"] as? [[String: Any]],
+//            let chatsDict = dict["chat"] as? [[String: Any]],
             let rateDict = dict["rate"] as? Double?,
             let rateCounterDict = dict["rateCounter"] as? Int?, // Retrieve rateCounter
             let usernameDict = dict["username"] as? String,
@@ -146,6 +158,12 @@ struct Recipe: Hashable, Equatable {
                 ingredients.append(ingredient)
             }
         }
+//        var chats: [Chat] = []
+//        for chatDict in chatsDict {
+//            if let chat = Chat(dict: chatDict) {
+//                chats.append(chat)
+//            }
+//        }
         self.mainImage = mainImage
         self.title = title
         self.description = description
@@ -154,6 +172,7 @@ struct Recipe: Hashable, Equatable {
         self.time = time
         self.steps = steps
         self.ingredients = ingredients
+//        self.chats = chats
         self.key = snapshot.documentID
         self.rate = rateDict
         self.rateCounter = rateCounterDict ?? 0 // Assign rateCounter
@@ -181,6 +200,7 @@ struct Recipe: Hashable, Equatable {
             "time": time,
             "steps": stepsDict,
             "ingredients": ingredientsDict,
+            "chat": chats,
             "createdAt": createdAt ?? FieldValue.serverTimestamp(),
             "rate": rate ?? 0.0,
             "rateCounter": NSNumber(value: rateCounter) // Convert rateCounter to NSNumber
@@ -205,6 +225,7 @@ struct Recipe: Hashable, Equatable {
         hasher.combine(time)
         hasher.combine(steps)
         hasher.combine(ingredients)
+        hasher.combine(chats)
         hasher.combine(username)
         hasher.combine(createdAt)
     }
@@ -218,6 +239,7 @@ struct Recipe: Hashable, Equatable {
             lhs.time == rhs.time &&
             lhs.steps == rhs.steps &&
             lhs.ingredients == rhs.ingredients &&
+            lhs.chats == rhs.chats &&
             lhs.username == rhs.username &&
             lhs.createdAt == rhs.createdAt
     }
@@ -250,6 +272,135 @@ struct Ingredient: Hashable {
           return lhs.title == rhs.title
       }
 }
+//struct Chat: Hashable {
+//    let title: String
+//    let createdAt: Timestamp?
+//
+//    init(title: String, createdAt: Timestamp? = nil) {
+//        self.title = title
+//        self.createdAt = createdAt
+//    }
+//
+//    init?(dict: [String: Any]) {
+//        guard let title = dict["chat"] as? String else {
+//            return nil
+//        }
+//
+//        self.title = title
+//        self.createdAt = dict["createdAt"] as? Timestamp
+//    }
+//
+//    func toDictionary() -> [String: Any] {
+//        var dictionary: [String: Any] = [
+//            "chat": title
+//        ]
+//
+//        if let createdAt = createdAt {
+//            dictionary["createdAt"] = createdAt
+//        }
+//
+//        return dictionary
+//    }
+//
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(title)
+//    }
+//
+//    static func == (lhs: Chat, rhs: Chat) -> Bool {
+//        return lhs.title == rhs.title && lhs.createdAt == rhs.createdAt
+//    }
+//}
+//struct Chat: Hashable {
+//    let title: String
+//    let createdAt: Timestamp?
+//    let username: String
+//
+//    init(title: String, createdAt: Timestamp? = nil, username: String = "") {
+//        self.title = title
+//        self.createdAt = createdAt
+//        self.username = username
+//    }
+//
+//    init?(dict: [String: Any]) {
+//        guard let title = dict["chat"] as? String else {
+//            return nil
+//        }
+//
+//        self.title = title
+//        self.createdAt = dict["createdAt"] as? Timestamp
+//        self.username = dict["username"] as? String ?? ""
+//    }
+//
+//    func toDictionary() -> [String: Any] {
+//        var dictionary: [String: Any] = [
+//            "chat": title
+//        ]
+//
+//        if let createdAt = createdAt {
+//            dictionary["createdAt"] = createdAt
+//        }
+//
+//        dictionary["username"] = username
+//
+//        return dictionary
+//    }
+//
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(title)
+//        hasher.combine(username)
+//    }
+//
+//    static func == (lhs: Chat, rhs: Chat) -> Bool {
+//        return lhs.title == rhs.title && lhs.createdAt == rhs.createdAt && lhs.username == rhs.username
+//    }
+//}
+struct Chat: Hashable {
+    let title: String
+    let createdAt: Timestamp?
+    let username: String?
+
+    init(title: String, createdAt: Timestamp? = nil, username: String? = nil) {
+        self.title = title
+        self.createdAt = createdAt
+        self.username = username
+    }
+
+    init?(dict: [String: Any]) {
+        guard let title = dict["chat"] as? String else {
+            return nil
+        }
+
+        self.title = title
+        self.createdAt = dict["createdAt"] as? Timestamp
+        self.username = dict["username"] as? String
+    }
+
+    func toDictionary() -> [String: Any] {
+        var dictionary: [String: Any] = [
+            "chat": title
+        ]
+
+        if let createdAt = createdAt {
+            dictionary["createdAt"] = createdAt
+        }
+
+        if let username = username {
+            dictionary["username"] = username
+        }
+
+        return dictionary
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(username)
+    }
+
+    static func == (lhs: Chat, rhs: Chat) -> Bool {
+        return lhs.title == rhs.title && lhs.createdAt == rhs.createdAt && lhs.username == rhs.username
+    }
+}
+
 struct Step: Hashable{
     let title: String
     var imageUrl: String?

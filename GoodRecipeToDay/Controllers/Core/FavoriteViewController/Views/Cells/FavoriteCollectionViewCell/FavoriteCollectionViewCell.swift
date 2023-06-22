@@ -44,7 +44,7 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
     }()
     let recipeImageView: UIImageView = {
        let iv = UIImageView()
-        iv.backgroundColor = .systemPink
+        iv.backgroundColor = .systemGray3
         iv.layer.cornerRadius = 10
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +52,6 @@ class FavoriteCollectionViewCell: UICollectionViewCell {
     }()
     let nameLabel: UILabel = {
        let label = UILabel()
-        label.text = "Title"
         label.font = .boldSystemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

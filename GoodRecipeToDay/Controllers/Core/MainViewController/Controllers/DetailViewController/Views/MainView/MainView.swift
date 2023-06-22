@@ -23,13 +23,29 @@ class MainView: UIView {
     }
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     let topGayView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    lazy var segmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        segmentedControl.insertSegment(withTitle: "Info", at: 0, animated: false)
+        segmentedControl.insertSegment(withTitle: "Chat", at: 1, animated: false)
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
+
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        return segmentedControl
+    }()
+    let chatView: UIView = {
+       let view = UIView()
+        view.backgroundColor = .systemBackground
+        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -64,7 +80,6 @@ class MainView: UIView {
 
     let title: UILabel = {
         let label = UILabel()
-        label.text = "Title"
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -114,6 +129,7 @@ class MainView: UIView {
         setupScrollView()
         setupContentView()
         contentView.addSubview(topGayView)
+        contentView.addSubview(segmentedControl)
         contentView.addSubview(rateView)
         contentView.addSubview(title)
         contentView.addSubview(userView)
@@ -121,6 +137,7 @@ class MainView: UIView {
         contentView.addSubview(descriptionView)
         contentView.addSubview(ingredientTableView)
         contentView.addSubview(instructionTableView)
+        contentView.addSubview(chatView)
         addConstraints()
         calculateIngredientTableViewHeight()
         calculateInstructionTableViewHeight()
@@ -190,9 +207,23 @@ class MainView: UIView {
             topGayView.heightAnchor.constraint(equalToConstant: 3)
         ]
         NSLayoutConstraint.activate(topGayViewConstraints)
+        let segmentedControlConstraints = [
+            segmentedControl.topAnchor.constraint(equalTo: topGayView.bottomAnchor, constant: 20),
+            segmentedControl.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 40),
+            segmentedControl.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -40),
+            segmentedControl.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        NSLayoutConstraint.activate(segmentedControlConstraints)
+       let chatViewConstraints = [
+            chatView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
+            chatView.leftAnchor.constraint(equalTo: leftAnchor),
+            chatView.rightAnchor.constraint(equalTo: rightAnchor),
+            chatView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(chatViewConstraints)
         let  rateViewConstraints = [
-            rateView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 50),
-//            rateView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            rateView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 100),
+
             rateView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 40),
             rateView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -40)
         ]
@@ -240,6 +271,18 @@ class MainView: UIView {
             instructionTableViewHeightConstraint
         ]
         NSLayoutConstraint.activate(instructionTableViewConstraints)
+    }
+    @objc private func segmentedControlValueChanged() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
+                self?.chatView.isHidden = true
+            }
+        } else {
+            UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
+                self?.chatView.isHidden = false
+
+            }
+        }
     }
 }
 extension MainView: UITableViewDataSource, UITableViewDelegate {
@@ -310,9 +353,6 @@ extension MainView: InstructionTableViewCellDelegate {
     
     
 }
-
-   
-
 //MARK: - Delegate
 extension MainView: UserViewDelegate {
     func followerBottonPressed() {

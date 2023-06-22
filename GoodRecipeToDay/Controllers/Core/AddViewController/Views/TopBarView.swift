@@ -17,7 +17,9 @@ class TopBarView: UIView {
     weak var delegate: TopBarViewDelegate?
     lazy var closeButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "xmark.app"), for: .normal)
+//        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.setTitle("Close", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 16)
         button.tintColor = .label
         button.addTarget(self, action: #selector(didTappedClose), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -25,8 +27,8 @@ class TopBarView: UIView {
     }()
     lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("SAVE", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.setTitle("Save", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 16)
         button.tintColor = .label
         button.addTarget(self, action: #selector(didTappedSave), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -49,8 +51,8 @@ class TopBarView: UIView {
        let closeButtonConstraints = [
             closeButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
             closeButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            closeButton.widthAnchor.constraint(equalToConstant: 40),
-            closeButton.heightAnchor.constraint(equalToConstant: 40)
+            closeButton.widthAnchor.constraint(equalToConstant: 60),
+            closeButton.heightAnchor.constraint(equalToConstant: 30)
         ]
         NSLayoutConstraint.activate(closeButtonConstraints)
         

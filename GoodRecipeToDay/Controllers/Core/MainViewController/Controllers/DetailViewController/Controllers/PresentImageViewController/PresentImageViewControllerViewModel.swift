@@ -9,8 +9,15 @@ import UIKit
 
 
 struct PresentImageViewControllerViewModel {
-     var imageUrl: URL?
-    init(imageUrl: URL?) {
-        self.imageUrl = imageUrl
+   public var imageUrl: URL? {
+       return URL(string: step.imageUrl ?? "")
     }
+    public var description: String {
+        return step.title
+    }
+    private var step: Step
+    init(step: Step) {
+        self.step = step
+    }
+  
 }

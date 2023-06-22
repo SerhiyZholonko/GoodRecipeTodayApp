@@ -30,7 +30,7 @@ class PhotoInfoView: UIView {
                 strongSelf.postsView.configure(viewModel: IntStringVerticalViewViewModel(number: viewModel.recipesCount, title: "Recipes"))
 
                 strongSelf.followersView.configure(viewModel: IntStringVerticalViewViewModel(number: viewModel.followersCount, title: "Followers"))
-                strongSelf.followingView.configure(viewModel: IntStringVerticalViewViewModel(number: viewModel.followingCount, title: "Following"))
+                strongSelf.followingView.configure(viewModel: IntStringVerticalViewViewModel(number: viewModel.followingCount, title: "Followings"))
                 strongSelf.delegate?.reloadPhotoInfoView()
             }
         }

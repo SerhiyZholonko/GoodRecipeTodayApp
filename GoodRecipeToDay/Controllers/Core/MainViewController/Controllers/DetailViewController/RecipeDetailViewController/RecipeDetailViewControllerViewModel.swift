@@ -20,6 +20,9 @@ class RecipeDetailViewControllerViewModel {
     public var currentRecipe: Recipe {
         return recipe
     }
+    public var step: [Step] {
+        return recipe.steps
+    }
     private var recipe: Recipe
     init(recipe: Recipe) {
         self.recipe = recipe

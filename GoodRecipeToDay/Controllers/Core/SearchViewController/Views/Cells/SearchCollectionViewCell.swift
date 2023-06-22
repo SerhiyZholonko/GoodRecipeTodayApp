@@ -18,8 +18,9 @@ class SearchCollectionViewCell: UICollectionViewCell {
             DispatchQueue.main.async { [weak self] in
                 self?.recipeImageView.sd_setImage(with: viewModel.mainImageUrl)
                 self?.titleLabel.text = viewModel.title
-                self?.rateView.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: "\(viewModel.rate)"))
+                self?.rateView.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: viewModel.rate))
                 self?.timeView.configure(viewModel: ImageTextViewViewModel(imageName: "fast-time", titleText: "\(viewModel.time)"))
+                self?.dateLabel.text = viewModel.createdDateString
                 self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .label
                 NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
             }
@@ -63,18 +64,36 @@ class SearchCollectionViewCell: UICollectionViewCell {
         button.addTarget(self, action: #selector(didTapFavoriteButton), for: .touchUpInside)
         return button
     }()
-    lazy var bottonStackView: UIStackView = {
+    let dateLabel: UILabel = {
+       let label = UILabel()
+        label.text = "date"
+        label.font = .boldSystemFont(ofSize: 14)
+        label.textAlignment = .left
+        label.textColor = .systemGray2
+        label.numberOfLines = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    lazy var topBottonStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
         rateView,
         timeView,
-        favoriteButton
         ])
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+    lazy var bottonStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            dateLabel,
+        favoriteButton,
+        ])
+        stackView.axis = .horizontal
+        stackView.distribution = .fillProportionally
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,6 +101,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(recipeImageView)
         
         contentView.addSubview(titleLabel)
+        contentView.addSubview(topBottonStackView)
         contentView.addSubview(bottonStackView)
         addConstraints()
     }
@@ -112,16 +132,22 @@ class SearchCollectionViewCell: UICollectionViewCell {
             titleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10)
         ]
         NSLayoutConstraint.activate(titleLabelConstraints)
+        let topBottonStackViewConstraints = [
+            topBottonStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            topBottonStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
+            topBottonStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            topBottonStackView.heightAnchor.constraint(equalToConstant: 30)
+        ]
+        NSLayoutConstraint.activate(topBottonStackViewConstraints)
         let bottonStackViewConstraints = [
-            bottonStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            bottonStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 5),
-            bottonStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5),
-            bottonStackView.heightAnchor.constraint(equalToConstant: 50)
+            bottonStackView.topAnchor.constraint(equalTo: topBottonStackView.bottomAnchor),
+            bottonStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
+            bottonStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            bottonStackView.heightAnchor.constraint(equalToConstant: 30)
         ]
         NSLayoutConstraint.activate(bottonStackViewConstraints)
     }
     @objc private func didTapFavoriteButton() {
-        print("Added to favorite")
         guard let viewModel = viewModel else { return }
         if viewModel.checkIsFavorite() {
             viewModel.deleteWithFavorite()

@@ -487,6 +487,116 @@ class FirebaseManager {
             }
         
     }
+    func updateRecipeMainForChat(username: String, recipeID: String, chatMessage: String, recipe: Recipe, completion: @escaping (Error?) -> Void) {
+        let recipeDocumentRef = database.collection("recipes").document(recipeID)
+
+        recipeDocumentRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if var existingChats = document.data()?["chats"] as? [[String: Any]] {
+                    // If "chats" field exists, update the array
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+                    existingChats.append(newChat.toDictionary())
+
+                    recipeDocumentRef.updateData(["chats": existingChats]) { error in
+                        if let error = error {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                } else {
+                    // If "chats" field doesn't exist, create a new array
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+
+                    let newData = ["chats": [newChat.toDictionary()]]
+
+                    recipeDocumentRef.updateData(newData) { error in
+                        if let error = error {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                }
+            } else {
+                completion(error)
+            }
+        }
+    }
+    func updateRecipeForChat(username: String, recipeID: String, chatMessage: String, recipe: Recipe, completion: @escaping (Error?) -> Void) {
+        let recipeDocumentRef = database.collection("users").document(username).collection("recipes").document(recipeID)
+
+        recipeDocumentRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if var existingChats = document.data()?["chats"] as? [[String: Any]] {
+                    // If "chats" field exists, update the array
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+                    existingChats.append(newChat.toDictionary())
+
+                    recipeDocumentRef.updateData(["chats": existingChats]) { error in
+                        if let error = error {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                } else {
+                    // If "chats" field doesn't exist, create a new array
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+
+                    let newData = ["chats": [newChat.toDictionary()]]
+
+                    recipeDocumentRef.updateData(newData) { error in
+                        if let error = error {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                }
+            } else {
+                completion(error)
+            }
+        }
+    }
+    func getChatsMainForRecipe(username: String, recipeID: String, completion: @escaping ([Chat]?, Error?) -> Void) {
+        let recipeDocumentRef = database.collection("recipes").document(recipeID)
+
+        recipeDocumentRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let chatsData = document.data()?["chats"] as? [[String: Any]] {
+                    // Convert the dictionary data to an array of Chat objects
+                    let chats = chatsData.compactMap { Chat(dict: $0) }
+                    completion(chats, nil)
+                } else {
+                    // No chats found
+                    completion(nil, nil)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+
+    func getChatsForRecipe(username: String, recipeID: String, completion: @escaping ([Chat]?, Error?) -> Void) {
+        let recipeDocumentRef = database.collection("users").document(username).collection("recipes").document(recipeID)
+
+        recipeDocumentRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let chatsData = document.data()?["chats"] as? [[String: Any]] {
+                    // Convert the dictionary data to an array of Chat objects
+                    let chats = chatsData.compactMap { Chat(dict: $0) }
+                    completion(chats, nil)
+                } else {
+                    // No chats found
+                    completion(nil, nil)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+    }
+
     func updateRecipeMain(recipeID: String, newRate: Double, recipe: Recipe, completion: @escaping (Error?) -> Void) {
         let recipeDocumentRef = database.collection("recipes").document(recipeID)
         
@@ -720,6 +830,23 @@ extension FirebaseManager {
                 }
             }
         }
+    func signUpInGoogle(username: String, email: String, uid: String, completion: @escaping (Error?) -> Void) {
+          
+            let data = [
+                "email": email,
+                "username": username,
+                "uid": uid
+            ]
+            self.database.collection("users").document(username).setData(data) { error in
+                guard error == nil else {
+                    completion(error)
+                    return
+                }
+//                    let user = GUser(uid: uid, email: email, username: username)
+
+                completion(nil)
+            }
+    }
     func signOut() {
         do {
             try Auth.auth().signOut()

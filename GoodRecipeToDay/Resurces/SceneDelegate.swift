@@ -6,12 +6,12 @@
 //
 
 import UIKit
-
+import Firebase
+import GoogleSignIn
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
       
@@ -20,11 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
         let authController = UINavigationController(rootViewController: TabBarViewController())
-//        let vc = PaginationViewController()
         window.rootViewController = authController
     }
-
-
-
 }
+
 

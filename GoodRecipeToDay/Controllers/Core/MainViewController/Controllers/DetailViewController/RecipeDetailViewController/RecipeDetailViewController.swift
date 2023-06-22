@@ -18,8 +18,7 @@ class RecipeDetailViewController: UIViewController {
     let viewModel: RecipeDetailViewControllerViewModel
     lazy var mainImageView: UIImageView = {
        let iv = UIImageView()
-        iv.backgroundColor = .systemBlue
-        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedMainImage)))
+//        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedMainImage)))
         iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
@@ -55,6 +54,8 @@ class RecipeDetailViewController: UIViewController {
         return view
     }()
     var mainViewHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
+    private lazy var chatViewController = ChatViewController(viewModel: ChatViewControllerViewModel(recipe: viewModel.currentRecipe))
+
     init(viewModel: RecipeDetailViewControllerViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -65,6 +66,7 @@ class RecipeDetailViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         view.addSubview(mainImageView)
         view.addSubview(arrowBack)
         view.addSubview(favoriteButton)
@@ -73,7 +75,7 @@ class RecipeDetailViewController: UIViewController {
         addConstraints()
         configure()
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateCoredata), name: .didUpdateCoredata, object: nil)
-
+        self.addChildViewController(chatViewController, to: mainView.chatView)
     }
 //MARK: - Functions
 
@@ -153,11 +155,11 @@ class RecipeDetailViewController: UIViewController {
 
         
     }
-    @objc func didTappedMainImage() {
-        let vc = PresentImageViewController()
-        vc.configure(viewModel: PresentImageViewControllerViewModel(imageUrl: viewModel.mainImageUrl))
-        self.present(vc, animated: true)
-    }
+//    @objc func didTappedMainImage() {
+//        let vc = PresentImageViewController()
+//        vc.configure(viewModel: viewModel)
+//        self.present(vc, animated: true)
+//    }
     @objc private func didUpdateCoredata() {
         didTapFavorite()
         NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
@@ -172,7 +174,13 @@ class RecipeDetailViewController: UIViewController {
 extension RecipeDetailViewController: MainViewDelegate {
     func presentImage(viewModel: InstructionTableViewCellViewModel) {
         let vc = PresentImageViewController()
-        vc.configure(viewModel: PresentImageViewControllerViewModel(imageUrl: viewModel.image))
+        vc.modalPresentationStyle = .custom
+        vc.configure(viewModel: PresentImageViewControllerViewModel(step: viewModel.instructionStep))
         self.present(vc, animated: true)
     }
 }
+
+
+
+
+

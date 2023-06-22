@@ -60,13 +60,13 @@ final class AddViewControllerViewModel {
         }
         
     }
-    func addToFirebase(mainImage: UIImage?, title: String, description: String, category: String, quantity: String, time: String, ingredient: [Ingredient], step: [Step], username: String, complition: @escaping () -> Void) {
+    func addToFirebase(mainImage: UIImage?, title: String, description: String, category: String, quantity: String, time: String, ingredient: [Ingredient], step: [Step], chats: [Chat],  username: String, complition: @escaping () -> Void) {
         guard let mainImage = mainImage else { return }
         firebaseManager.uploadImage(mainImage) { result in
             switch result {
                 
             case .success(let success):
-                let recipe = Recipe(mainImage: success, title: title, description: description, category: category, quantity: quantity, time: time, steps: step, ingredients: ingredient, username: username)
+                let recipe = Recipe(mainImage: success, title: title, description: description, category: category, quantity: quantity, time: time, steps: step, ingredients: ingredient, chats: chats, username: username)
                 self.firebaseManager.addRecipeToUser(recipe) { result in
                                         switch result {
                     

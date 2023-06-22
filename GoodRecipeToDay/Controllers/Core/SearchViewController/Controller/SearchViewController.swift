@@ -23,20 +23,14 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .systemGray5
         view.layer.cornerRadius = 25
         view.translatesAutoresizingMaskIntoConstraints = false
-
-        // Add shadow
-        view.layer.shadowColor = UIColor.green.cgColor
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 6
-
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.systemGray.cgColor
         return view
     }()
 
-    let noResultLabel: UILabel = {
-       let label = UILabel()
-        label.text = "No Result"
-        label.font = .boldSystemFont(ofSize: 24)
+    let noResultLabel: UIImageView = {
+       let label = UIImageView()
+        label.image = UIImage(named: "search-engine")
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -94,7 +88,9 @@ class SearchViewController: UIViewController {
     private func addConstraintsnoResultLabel() {
         NSLayoutConstraint.activate([
             noResultLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-            noResultLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+            noResultLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor, constant: -100),
+            noResultLabel.widthAnchor.constraint(equalToConstant: 150),
+            noResultLabel.heightAnchor.constraint(equalToConstant: 150)
         ])
     }
     @objc private func relosdSearchView() {

@@ -14,7 +14,6 @@ class RecomendViewCell: UICollectionViewCell {
     let imageManager = FirebaseImageManager.shared
     let recipeImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "pancakes")
         iv.layer.cornerRadius = 20
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +21,6 @@ class RecomendViewCell: UICollectionViewCell {
     }()
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text =  "Title"
         label.font = .systemFont(ofSize: 13, weight: .bold)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +28,6 @@ class RecomendViewCell: UICollectionViewCell {
     }()
     let userLabel: UILabel = {
         let label = UILabel()
-        label.text =  "By User"
         label.textColor = .systemGray
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textAlignment = .center

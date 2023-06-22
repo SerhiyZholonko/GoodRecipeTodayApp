@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 final class SearchCollectionViewCellViewModel {
     //MARK: - Properties
@@ -26,12 +27,26 @@ final class SearchCollectionViewCellViewModel {
             return recipe.time
         }
     }
-    public var rate: Double{
-        if let allRateValue = recipe.rate {
-            let currentRate = allRateValue / Double(recipe.rateCounter)
-            return currentRate.rounded(toDecimalPlaces: 1)
+    public var createdDateString: String? {
+        guard let timestamp: Timestamp = recipe.createdAt else { return nil }
+
+        // Create a DateFormatter instance
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMM YYYY"  // Customize the format according to your needs
+
+        // Convert the Timestamp to a Date object
+        let date = timestamp.dateValue()
+
+        // Convert the Date to a string representation
+        let dateString = dateFormatter.string(from: date)
+        return "\(dateString)"
+    }
+    public var rate: String {
+        var newRate = 0.0
+        if recipe.rateCounter != 0, let rate = recipe.rate {
+            newRate = rate.rounded(toDecimalPlaces: 1) / Double(recipe.rateCounter)
         }
-        return 0.0
+        return "\(newRate.rounded(toDecimalPlaces: 1))(\(recipe.rateCounter))"
     }
     //PRivate
     private let recipe: Recipe

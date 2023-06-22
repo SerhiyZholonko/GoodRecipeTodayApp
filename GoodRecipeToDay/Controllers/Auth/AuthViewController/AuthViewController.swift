@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import GoogleSignIn
+import GoogleSignInSwift
 
 protocol AuthViewControllerDelegate: AnyObject {
     func didSuccess(isAuth: Bool)
@@ -14,6 +16,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 class AuthViewController: UIViewController {
     //MARK: - Properties
     weak var delegate: AuthViewControllerDelegate?
+    var viewModel = AuthViewControllerViewModel()
     let mainImageView: UIImageView = {
        let iv = UIImageView()
         iv.image = UIImage(named: "platter")
@@ -43,6 +46,7 @@ class AuthViewController: UIViewController {
     lazy var appleButton: ImageTextButton = {
         let button = ImageTextButton(type: .apple)
         button.addTarget(self, action: #selector(didTappedApple), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     let orUseLabel: UILabel = {
@@ -87,6 +91,7 @@ class AuthViewController: UIViewController {
 
         addConstraints()
         configure()
+        viewModel.delegate = self
     }
     deinit {
          NotificationCenter.default.removeObserver(self)
@@ -160,6 +165,7 @@ class AuthViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     @objc private func didTappedGoogle() {
+        viewModel.signIn(vc: self)
     }
     @objc private func didTappedApple() {
     }
@@ -176,13 +182,11 @@ class AuthViewController: UIViewController {
 
 //MARK: - Delegate
 
-extension AuthViewController: SignUpViewControllerDelegate {
+extension AuthViewController: SignUpViewControllerDelegate, AuthViewControllerViewModelDelegate {
     func isDismissVC(isAuth: Bool) {
         NotificationCenter.default.post(name: .reloadMainViewControlelr, object: nil, userInfo: nil)
             delegate?.didSuccess(isAuth: isAuth)
         
     }
 }
-
-
 

@@ -12,13 +12,16 @@ protocol AddDatePikerViewControllerDelegate: AnyObject {
 }
 
 class AddDatePikerViewController: UIViewController {
-    private var timeString: String = "1h:00m"
+    private var timeString: String = "00h:10m"
     //MARK: - Properties
     weak var delegate: AddDatePikerViewControllerDelegate?
     let timePicker : UIDatePicker = {
        let picker = UIDatePicker()
+        picker.backgroundColor = .systemBackground
         picker.layer.cornerRadius = 10
         picker.clipsToBounds = true
+        picker.layer.borderColor = UIColor.systemGray3.cgColor
+        picker.layer.borderWidth = 2
         picker.translatesAutoresizingMaskIntoConstraints = false
         return picker
     }()
@@ -47,17 +50,16 @@ class AddDatePikerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground.withAlphaComponent(0.5)
+        let startDuration: TimeInterval = 120 * 60 // 2 hours in seconds
+           timePicker.countDownDuration = startDuration
         timePicker.datePickerMode = .countDownTimer
-        timePicker.minuteInterval = 60
+          timePicker.minuteInterval = 10
         timePicker.addTarget(self, action: #selector(timeChanged), for: .valueChanged)
+       
 
-        // Set initial time to 1 hour
-        let oneHourInSeconds: TimeInterval = 60 * 60
-        timePicker.countDownDuration = oneHourInSeconds
 
         // Customize the appearance of the picker
-        timePicker.backgroundColor = UIColor.white
-        timePicker.tintColor = UIColor.blue
+        timePicker.backgroundColor = UIColor.systemBackground
 
         // Add the picker to your view
         view.addSubview(timePicker)
@@ -69,8 +71,8 @@ class AddDatePikerViewController: UIViewController {
     //MARK: - Functions
     private func addConstraints() {
            let timePickerConstraints = [
-               timePicker.widthAnchor.constraint(equalToConstant: 200),
-               timePicker.heightAnchor.constraint(equalToConstant: 150),
+               timePicker.widthAnchor.constraint(equalToConstant: 300),
+               timePicker.heightAnchor.constraint(equalToConstant: 250),
                timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                timePicker.centerYAnchor.constraint(equalTo: view.centerYAnchor)
            ]
@@ -79,14 +81,14 @@ class AddDatePikerViewController: UIViewController {
             canselButton.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 10),
             canselButton.leftAnchor.constraint(equalTo: timePicker.leftAnchor, constant: 10),
             canselButton.heightAnchor.constraint(equalToConstant: 50),
-            canselButton.widthAnchor.constraint(equalToConstant: 80)
+            canselButton.widthAnchor.constraint(equalToConstant: 120)
         ]
         NSLayoutConstraint.activate(canselButtonConstraints)
         let saveButtonConstraints = [
             saveButton.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 10),
             saveButton.rightAnchor.constraint(equalTo: timePicker.rightAnchor, constant: -10),
             saveButton.heightAnchor.constraint(equalToConstant: 50),
-            saveButton.widthAnchor.constraint(equalToConstant: 80)
+            saveButton.widthAnchor.constraint(equalToConstant: 120)
         ]
         NSLayoutConstraint.activate(saveButtonConstraints)
     }

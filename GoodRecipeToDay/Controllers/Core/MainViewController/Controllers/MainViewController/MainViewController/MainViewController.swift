@@ -105,12 +105,14 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
         switch sectionType {
             
-        case .category(_):
-            return 6
-        case .recomend(_):
-            return 6
-        case .oftheWeek(_):
-            return 6
+        case .category(let viewModel):
+            return viewModel.count
+        case .recomend(let viewModel):
+            print("ViewModel: ", viewModel.count)
+            return viewModel.count
+        case .oftheWeek(let viewModel):
+            print("ViewModel: ", viewModel.count)
+            return viewModel.count
         }
     }
     

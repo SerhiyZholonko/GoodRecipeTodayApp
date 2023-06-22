@@ -45,6 +45,8 @@ class AddPersonsPikerViewController: UIViewController, UIPickerViewDataSource, U
         picker.backgroundColor = .systemBackground
         picker.layer.cornerRadius = 10
         picker.clipsToBounds = true
+        picker.layer.borderColor = UIColor.systemGray3.cgColor
+        picker.layer.borderWidth = 2
         picker.translatesAutoresizingMaskIntoConstraints = false
         return picker
     }()
@@ -66,8 +68,8 @@ class AddPersonsPikerViewController: UIViewController, UIPickerViewDataSource, U
     //MARK: - Functions
     private func addConstraints() {
        let pickerViewConstraints = [
-            pickerView.widthAnchor.constraint(equalToConstant: 200),
-            pickerView.heightAnchor.constraint(equalToConstant: 150),
+            pickerView.widthAnchor.constraint(equalToConstant: 300),
+            pickerView.heightAnchor.constraint(equalToConstant: 250),
             pickerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
@@ -75,14 +77,14 @@ class AddPersonsPikerViewController: UIViewController, UIPickerViewDataSource, U
         let saveButtonConstraints = [
             saveButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 10),
             saveButton.rightAnchor.constraint(equalTo: pickerView.rightAnchor, constant: -10),
-            saveButton.widthAnchor.constraint(equalToConstant: 80),
+            saveButton.widthAnchor.constraint(equalToConstant: 120),
             saveButton.heightAnchor.constraint(equalToConstant: 50)
         ]
         NSLayoutConstraint.activate(saveButtonConstraints)
        let canselButtonConstraints = [
             canselButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 10),
             canselButton.leftAnchor.constraint(equalTo: pickerView.leftAnchor, constant: 10),
-            canselButton.widthAnchor.constraint(equalToConstant: 80),
+            canselButton.widthAnchor.constraint(equalToConstant: 120),
             canselButton.heightAnchor.constraint(equalToConstant: 50)
         ]
         NSLayoutConstraint.activate(canselButtonConstraints)

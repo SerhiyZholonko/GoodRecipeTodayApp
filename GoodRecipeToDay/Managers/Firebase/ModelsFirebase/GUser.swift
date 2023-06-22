@@ -42,15 +42,43 @@ final class GUser: Hashable, Decodable, Equatable {
         self.key = key
     }
     
+    init?(document: QueryDocumentSnapshot) {
+        guard let username = document.data()["username"] as? String,
+            let email = document.data()["email"] as? String,
+            let uid = document.data()["uid"] as? String
+        else {
+            return nil
+        }
+
+        self.username = username
+        self.email = email
+        self.uid = uid
+
+        if let urlString = document.data()["urlString"] as? String {
+            self.urlString = urlString
+        } else {
+            self.urlString = ""
+        }
+
+        self.key = document.documentID
+
+        // Initialize followers as an empty array
+        if let followersData = document.data()["followers"] as? [[String: Any]] {
+            self.followers = followersData.compactMap { GUser(dictionary: $0) }
+        } else {
+            self.followers = []
+        }
+    }
+
+
     init?(document: DocumentSnapshot) {
         guard let data = document.data(),
             let username = data["username"] as? String,
             let email = data["email"] as? String,
             let uid = data["uid"] as? String,
             let urlString = data["urlString"] as? String
-//              let key = document.documentID as? String
         else {
-                return nil
+            return nil
         }
 
         self.username = username

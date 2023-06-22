@@ -96,16 +96,6 @@ class AddCategoryViewController: UIViewController, UIPickerViewDataSource, UIPic
     //MARK: - Prooperties
     weak var delegate: AddCategoryViewControllerDelegate?
     let categories = Categories.allCases
-//    [ CategoryModel(id: 1, name: "breakfast", image: "english-breakfast"),
-//                                      CategoryModel(id: 2, name: "lunch", image: "lunch"),
-//                                      CategoryModel(id: 3, name: "dinner", image: "christmas-dinner"),
-//                                      CategoryModel(id: 4, name: "dissert", image: "panna-cotta"),
-//                                      CategoryModel(id: 5, name: "snacks appetizers", image: "nachos"),
-//                                      CategoryModel(id: 6, name: "salads", image: "salad"),
-//                                      CategoryModel(id: 7, name: "soups stews", image: "goulash"),
-//                                      CategoryModel(id: 8, name: "pasta noodles", image: "noodles"),
-//                                      CategoryModel(id: 9, name: "grilling barbecue", image: "grilling"),
-//                                      CategoryModel(id: 10, name: "vegetarian vegan", image: "vegetable")]
     var selectedNumber: Int?
     var result: Categories?
     
@@ -116,6 +106,8 @@ class AddCategoryViewController: UIViewController, UIPickerViewDataSource, UIPic
         button.backgroundColor = .systemBackground
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
+        button.layer.borderColor = UIColor.systemGray3.cgColor
+        button.layer.borderWidth = 2
         button.addTarget(self, action: #selector(didTappedSave), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -127,6 +119,8 @@ class AddCategoryViewController: UIViewController, UIPickerViewDataSource, UIPic
         button.backgroundColor = .systemBackground
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
+        button.layer.borderColor = UIColor.systemGray3.cgColor
+        button.layer.borderWidth = 2
         button.addTarget(self, action: #selector(didTappedCansel), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -136,6 +130,8 @@ class AddCategoryViewController: UIViewController, UIPickerViewDataSource, UIPic
         picker.backgroundColor = .systemBackground
         picker.layer.cornerRadius = 10
         picker.clipsToBounds = true
+        picker.layer.borderColor = UIColor.systemGray3.cgColor
+        picker.layer.borderWidth = 2
         picker.translatesAutoresizingMaskIntoConstraints = false
         return picker
     }()
@@ -158,7 +154,7 @@ class AddCategoryViewController: UIViewController, UIPickerViewDataSource, UIPic
     private func addConstraints() {
         let pickerViewConstraints = [
             pickerView.widthAnchor.constraint(equalToConstant: 300),
-            pickerView.heightAnchor.constraint(equalToConstant: 150),
+            pickerView.heightAnchor.constraint(equalToConstant: 250),
             pickerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
@@ -166,14 +162,14 @@ class AddCategoryViewController: UIViewController, UIPickerViewDataSource, UIPic
         let saveButtonConstraints = [
             saveButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 10),
             saveButton.rightAnchor.constraint(equalTo: pickerView.rightAnchor, constant: -10),
-            saveButton.widthAnchor.constraint(equalToConstant: 80),
+            saveButton.widthAnchor.constraint(equalToConstant: 120),
             saveButton.heightAnchor.constraint(equalToConstant: 50)
         ]
         NSLayoutConstraint.activate(saveButtonConstraints)
         let canselButtonConstraints = [
             canselButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 10),
             canselButton.leftAnchor.constraint(equalTo: pickerView.leftAnchor, constant: 10),
-            canselButton.widthAnchor.constraint(equalToConstant: 80),
+            canselButton.widthAnchor.constraint(equalToConstant: 120),
             canselButton.heightAnchor.constraint(equalToConstant: 50)
         ]
         NSLayoutConstraint.activate(canselButtonConstraints)

@@ -12,16 +12,14 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
 
     var viewModel = MainSearchCollectionViewControllerViewModel() {
         didSet{
-            collectionView.reloadData()
+//            collectionView.reloadData()
         }
     }
-    let emptyLabel: UILabel = {
-      let label = UILabel()
-        label.text = "No Result"
-        label.font = .boldSystemFont(ofSize: 24)
-        label.textColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    let emptyLabel: UIImageView = {
+      let view = UIImageView()
+        view.image = UIImage(named: "search-engine")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +66,17 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
 
         return CGSize(width: itemWidth, height: itemWidth * 1.5)
        }
-
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+         let recipe = viewModel.getRecipe(indexParh: indexPath)
+        let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
+        vc.delegate = self
+        
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        UIView.animate(withDuration: 0.5) {
+            self.present(vc, animated: true)
+        }
+    }
        // Implement the UICollectionViewDelegateFlowLayout method to specify the spacing around cells
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
            // Return the desired padding (spacing) around cells
@@ -79,7 +87,9 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
     private func addConstraints() {
         let emptyLabelConstraints = [
             emptyLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-            emptyLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+            emptyLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+            emptyLabel.widthAnchor.constraint(equalToConstant: 150),
+            emptyLabel.heightAnchor.constraint(equalToConstant: 150)
         ]
         NSLayoutConstraint.activate(emptyLabelConstraints)
     }
@@ -97,3 +107,7 @@ extension MainSearchCollectionViewController: MainSearchCollectionViewController
 }
 
 
+
+extension MainSearchCollectionViewController: RecipeDetailViewControllerDelegate {
+   
+}

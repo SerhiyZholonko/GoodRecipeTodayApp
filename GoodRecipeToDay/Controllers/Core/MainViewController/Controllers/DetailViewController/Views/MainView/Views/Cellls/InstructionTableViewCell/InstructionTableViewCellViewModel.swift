@@ -16,6 +16,9 @@ struct InstructionTableViewCellViewModel {
     public var title: String {
         return step.title
     }
+    public var instructionStep: Step {
+        return step
+    }
     private var step: Step
     init(step: Step) {
         self.step = step

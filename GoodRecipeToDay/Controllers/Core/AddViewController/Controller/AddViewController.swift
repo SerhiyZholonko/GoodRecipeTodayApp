@@ -372,7 +372,7 @@ extension AddViewController: LabelTextfieldViewDelegate {
             let addPersonsPikerViewController = AddPersonsPikerViewController()
             addPersonsPikerViewController.delegate = self
             addPersonsPikerViewController.modalTransitionStyle = .crossDissolve
-            addPersonsPikerViewController.modalPresentationStyle = .fullScreen
+            addPersonsPikerViewController.modalPresentationStyle = .pageSheet
             UIView.animate(withDuration: 0.4, delay: 0.2, options: [.repeat]) {
                 self.present(addPersonsPikerViewController, animated: true)
             }
@@ -380,7 +380,7 @@ extension AddViewController: LabelTextfieldViewDelegate {
             let addDatePikerViewController = AddDatePikerViewController()
             addDatePikerViewController.delegate = self
             addDatePikerViewController.modalTransitionStyle = .crossDissolve
-            addDatePikerViewController.modalPresentationStyle = .fullScreen
+            addDatePikerViewController.modalPresentationStyle = .pageSheet
             UIView.animate(withDuration: 0.4, delay: 0.2, options: [.repeat]) {
                 self.present(addDatePikerViewController, animated: true)
             }
@@ -482,11 +482,12 @@ extension AddViewController: TopBarViewDelegate {
         let steps: [Step] = viewModel.instructions.map { viewModel in
             return Step(title: viewModel.instruction, imageUrl: viewModel.imageUrlString)
         }
+        let chats = [Chat]()
         viewModel.getUsername()
         guard let username = viewModel.username else { return }
         //user nil
         
-        viewModel.addToFirebase(mainImage: bestImageView.image, title: title, description: description, category: category, quantity: quantity, time: time, ingredient: ingredients , step: steps, username: username) {[weak self] in
+        viewModel.addToFirebase(mainImage: bestImageView.image, title: title, description: description, category: category, quantity: quantity, time: time, ingredient: ingredients , step: steps, chats: chats, username: username) {[weak self] in
             self?.dismiss(animated: true)
         }
         dismiss(animated: true)

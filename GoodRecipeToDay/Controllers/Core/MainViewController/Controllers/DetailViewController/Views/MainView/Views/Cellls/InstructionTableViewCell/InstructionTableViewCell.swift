@@ -34,9 +34,7 @@ class InstructionTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
-//        let gester = UITapGestureRecognizer(target: self, action: #selector(didTouchImage))
-//        instructionImageView.isUserInteractionEnabled = true
-//        instructionImageView.addGestureRecognizer(gester)
+
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         instructionImageView.isUserInteractionEnabled = true
         instructionImageView.addGestureRecognizer(tapGestureRecognizer)
@@ -71,15 +69,10 @@ class InstructionTableViewCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(instructionLabelConstraints)
     }
-//    @objc  func didTouchImage() {
-//        print("Test")
-//        delegate?.showImage()
-//    }
+
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
         guard let viewModel = viewModel else { return }
         delegate?.showImage(viewModel: viewModel)
-
-  
     }
 }

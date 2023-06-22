@@ -48,6 +48,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(didTapFavoriteButton), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     let titleLabel: UILabel = {
@@ -85,6 +86,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(usernameLabel)
         
         addConstraints()
+
     }
     
     required init?(coder: NSCoder) {
@@ -94,6 +96,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
     public func configure(viewModel: MainSearchCollectionViewCellViewModel) {
         self.viewModel = viewModel
         self.viewModel?.delegate = self
+
     }
     private func addConstraints() {
        let categoryImageConstraints = [
@@ -131,7 +134,7 @@ class MainSearchCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(usernameLabelConstraints)
     }
     @objc private func didTapFavoriteButton() {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = self.viewModel else { return }
         if viewModel.checkIsFavorite() {
             viewModel.deleteWithFavorite()
             favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black

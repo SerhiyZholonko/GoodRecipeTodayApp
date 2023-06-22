@@ -22,7 +22,7 @@ class ProfileViewController: UIViewController {
     lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl()
         segmentedControl.insertSegment(withTitle: "My Recipes", at: 0, animated: false)
-        segmentedControl.insertSegment(withTitle: "Follow", at: 1, animated: false)
+        segmentedControl.insertSegment(withTitle: "Subscriptions", at: 1, animated: false)
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
 
@@ -39,6 +39,14 @@ class ProfileViewController: UIViewController {
         // Configure collection view properties as needed
         return collectionView
     }()
+    let noRecipeLabel: UILabel = {
+       let label = UILabel()
+        label.text = "No Recipes"
+        label.font = .boldSystemFont(ofSize: 18)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     // MARK: - Livecycle
 
@@ -49,7 +57,7 @@ class ProfileViewController: UIViewController {
         view.addSubview(photoInfoView)
         view.addSubview(segmentedControl)
         view.addSubview(collectionView)
-
+        collectionView.addSubview(noRecipeLabel)
         setupBasicUI()
         addConstraints()
         
@@ -63,9 +71,18 @@ class ProfileViewController: UIViewController {
     private func setupBasicUI() {
         title = viewModel.title
         view.backgroundColor = .systemBackground
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold, scale: .default)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.right", withConfiguration: imageConfig),
-                                                            style: .done, target: self, action: #selector(didTappedSignOut))
+        let barButtonItem = UIBarButtonItem(title: "LogOut", style: .plain, target: self, action: #selector(didTappedSignOut))
+
+        // Define the font attributes for the title text
+        let titleTextAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13) // Set the desired font size
+        ]
+
+        // Set the title text attributes for the bar button item
+        barButtonItem.setTitleTextAttributes(titleTextAttributes, for: .normal)
+
+        // Assign the modified bar button item to the rightBarButtonItem of the navigation item
+        navigationItem.rightBarButtonItem = barButtonItem
         navigationItem.rightBarButtonItem?.tintColor = UIColor.label
     }
 
@@ -116,6 +133,11 @@ class ProfileViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(collectionViewConstraints)
+        let noRecipeLabelConstraints = [
+            noRecipeLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            noRecipeLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor),
+        ]
+        NSLayoutConstraint.activate(noRecipeLabelConstraints)
     }
     
     @objc private func didTappedSignOut() {
@@ -147,6 +169,12 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Return the number of items in the collection view
+        if viewModel.recipes.count == 0 {
+            noRecipeLabel.isHidden = false
+        } else  {
+            noRecipeLabel.isHidden = true
+
+        }
         return viewModel.recipes.count
     }
     
