@@ -58,7 +58,6 @@ final class PhotoInfoViewViewModel {
     public func fetchCurrentUserRecipe() {
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
             guard let user = user else { return }
-            print("Current user: ", user)
             self?.user = user
             self?.firebaseManager.getAllRecipesForUser(username: user.username) { result in
                 guard let strongSelf = self else { return }

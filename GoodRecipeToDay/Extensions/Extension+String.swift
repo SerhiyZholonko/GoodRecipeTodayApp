@@ -62,7 +62,6 @@ final class TimeConverter {
     static let shared = TimeConverter()
      func convertTimeStringToMinutes(_ timeString: String, complition: @escaping (Int?) -> Void) {
         if let totalMinutes = timeString.convertToMinutes() {
-            print(totalMinutes) // Output: 61
             complition(totalMinutes)
         } else {
             print("Invalid format")

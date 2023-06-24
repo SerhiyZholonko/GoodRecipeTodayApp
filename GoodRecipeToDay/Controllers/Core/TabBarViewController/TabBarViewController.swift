@@ -46,12 +46,7 @@ class TabBarViewController: RecipeTabBar {
     override func viewDidLoad() {
         super.viewDidLoad()
         favoriteController.viewDidLoad()
-        FirebaseManager.shared.getAllUsers { users, error in
-            guard let users = users else { return }
-            for user in users {
-                print(user.uid)
-            }
-        }
+        
         setupObserver()
         view.addSubview(addButton)
         setControllers()

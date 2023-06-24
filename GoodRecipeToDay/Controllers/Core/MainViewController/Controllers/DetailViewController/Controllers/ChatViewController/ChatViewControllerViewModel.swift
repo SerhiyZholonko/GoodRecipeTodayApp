@@ -13,7 +13,7 @@ protocol ChatViewControllerViewModelViewModelDelegate: AnyObject {
 final class ChatViewControllerViewModel {
     weak var delegate: ChatViewControllerViewModelViewModelDelegate?
     public var massage: String = ""
-    public var chat: [Chat] = []
+    public var chats: [Chat] = [] 
     private let firebaseManager = FirebaseManager.shared
     private let recipe: Recipe
     
@@ -22,12 +22,13 @@ final class ChatViewControllerViewModel {
         getChats()
     }
     public func returnChatCount() -> Int {
-        return chat.count
+        return chats.count
     }
     public func getSingleChat(indexPath: IndexPath) -> Chat {
-        return chat[indexPath.item]
+        return chats[indexPath.item]
     }
     public func saveMassage(massage: String) {
+        
         firebaseManager.getRecipeIDForUser(username: recipe.username, recipeName: recipe.title) { [weak self] result in
             guard let strongSelf = self else {
                 return
@@ -35,29 +36,48 @@ final class ChatViewControllerViewModel {
             switch result {
              
             case .success(let id):
-                self?.firebaseManager.updateRecipeForChat(username: strongSelf.recipe.username, recipeID: id, chatMessage: massage, recipe: strongSelf.recipe, completion: { error in
-                    if let error = error {
+                self?.firebaseManager.getCurrentUsername { [weak self] result in
+                    switch result {
+                        
+                    case .success(let currentUsername):
+                        self?.firebaseManager.updateRecipeForChat(username: strongSelf.recipe.username, currentUsername: currentUsername, recipeID: id, chatMessage: massage, recipe: strongSelf.recipe, completion: { error in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            }
+                            strongSelf.getChats()
+                        })
+                    case .failure(let error):
                         print(error.localizedDescription)
                     }
-                    strongSelf.getChats()
-                })
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
+        
+        //save in anther path
         firebaseManager.getRecipeIDForUserMain(recipeName: recipe.title) { [weak self] result in
-            guard let strongSelf = self else {
-                return
-            }
+
             switch result {
              
             case .success(let id):
-                self?.firebaseManager.updateRecipeMainForChat(username: strongSelf.recipe.username, recipeID: id, chatMessage: massage, recipe: strongSelf.recipe, completion: { error in
-                    if let error = error {
+                self?.firebaseManager.getCurrentUsername { [weak self] result in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    switch result {
+                        
+                    case .success(let currentUsername):
+                        strongSelf.firebaseManager.updateRecipeMainForChat(username: strongSelf.recipe.username, currentUsername: currentUsername, recipeID: id, chatMessage: massage, recipe: strongSelf.recipe, completion: { error in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            }
+                            strongSelf.getChats()
+                        })
+                    case .failure(let error):
                         print(error.localizedDescription)
                     }
-                    strongSelf.getChats()
-                })
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -75,7 +95,7 @@ final class ChatViewControllerViewModel {
                     if let error = error {
                         print(error.localizedDescription)
                     } else if let chat = chat {
-                        strongSelf.chat = chat
+                        strongSelf.chats = chat
                         strongSelf.delegate?.reloadTableView(viewModel: strongSelf)
                     }
                 }
@@ -94,7 +114,7 @@ final class ChatViewControllerViewModel {
                     if let error = error {
                         print(error.localizedDescription)
                     } else if let chat = chat {
-                        strongSelf.chat = chat
+                        strongSelf.chats = chat
                         strongSelf.delegate?.reloadTableView(viewModel: strongSelf)
                     }
                 }

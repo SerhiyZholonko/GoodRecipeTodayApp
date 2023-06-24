@@ -9,6 +9,7 @@ import UIKit
 
 protocol AddIngredientTableViewCellDelegate: AnyObject {
     func updateData(ingredient: String, viewModel: AddIngredientTableViewCellViewModel)
+    func textFieldShouldBeginEditingIngredients()
 }
 
 class AddIngredientTableViewCell: UITableViewCell {
@@ -67,10 +68,21 @@ static let identifier = "AddIngredientTableViewCell"
 
 
 extension AddIngredientTableViewCell: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+          // Perform actions when the text field is touched
+          
+          // Example: Log a message
+          print("Text field was touched")
+        delegate?.textFieldShouldBeginEditingIngredients()
+          // Return true to allow the text field to become the first responder
+          // Return false to prevent the text field from becoming the first responder
+          return true
+      }
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text {
             guard var viewModel = self.viewModel else { return }

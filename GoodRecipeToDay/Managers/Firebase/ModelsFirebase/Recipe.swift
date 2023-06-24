@@ -272,94 +272,13 @@ struct Ingredient: Hashable {
           return lhs.title == rhs.title
       }
 }
-//struct Chat: Hashable {
-//    let title: String
-//    let createdAt: Timestamp?
-//
-//    init(title: String, createdAt: Timestamp? = nil) {
-//        self.title = title
-//        self.createdAt = createdAt
-//    }
-//
-//    init?(dict: [String: Any]) {
-//        guard let title = dict["chat"] as? String else {
-//            return nil
-//        }
-//
-//        self.title = title
-//        self.createdAt = dict["createdAt"] as? Timestamp
-//    }
-//
-//    func toDictionary() -> [String: Any] {
-//        var dictionary: [String: Any] = [
-//            "chat": title
-//        ]
-//
-//        if let createdAt = createdAt {
-//            dictionary["createdAt"] = createdAt
-//        }
-//
-//        return dictionary
-//    }
-//
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(title)
-//    }
-//
-//    static func == (lhs: Chat, rhs: Chat) -> Bool {
-//        return lhs.title == rhs.title && lhs.createdAt == rhs.createdAt
-//    }
-//}
-//struct Chat: Hashable {
-//    let title: String
-//    let createdAt: Timestamp?
-//    let username: String
-//
-//    init(title: String, createdAt: Timestamp? = nil, username: String = "") {
-//        self.title = title
-//        self.createdAt = createdAt
-//        self.username = username
-//    }
-//
-//    init?(dict: [String: Any]) {
-//        guard let title = dict["chat"] as? String else {
-//            return nil
-//        }
-//
-//        self.title = title
-//        self.createdAt = dict["createdAt"] as? Timestamp
-//        self.username = dict["username"] as? String ?? ""
-//    }
-//
-//    func toDictionary() -> [String: Any] {
-//        var dictionary: [String: Any] = [
-//            "chat": title
-//        ]
-//
-//        if let createdAt = createdAt {
-//            dictionary["createdAt"] = createdAt
-//        }
-//
-//        dictionary["username"] = username
-//
-//        return dictionary
-//    }
-//
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(title)
-//        hasher.combine(username)
-//    }
-//
-//    static func == (lhs: Chat, rhs: Chat) -> Bool {
-//        return lhs.title == rhs.title && lhs.createdAt == rhs.createdAt && lhs.username == rhs.username
-//    }
-//}
+
 struct Chat: Hashable {
     let title: String
     let createdAt: Timestamp?
     let username: String?
 
-    init(title: String, createdAt: Timestamp? = nil, username: String? = nil) {
+    init(title: String, createdAt: Timestamp? = nil, username: String) {
         self.title = title
         self.createdAt = createdAt
         self.username = username
@@ -369,24 +288,27 @@ struct Chat: Hashable {
         guard let title = dict["chat"] as? String else {
             return nil
         }
-
+        guard let username = dict["username"] as? String else {
+            return nil
+        }
         self.title = title
         self.createdAt = dict["createdAt"] as? Timestamp
-        self.username = dict["username"] as? String
+        self.username = username
     }
 
     func toDictionary() -> [String: Any] {
         var dictionary: [String: Any] = [
-            "chat": title
+            "chat": title,
+            "username": username
         ]
 
         if let createdAt = createdAt {
             dictionary["createdAt"] = createdAt
         }
 
-        if let username = username {
-            dictionary["username"] = username
-        }
+//        if let username = username {
+//            dictionary["username"] = username
+//        }
 
         return dictionary
     }

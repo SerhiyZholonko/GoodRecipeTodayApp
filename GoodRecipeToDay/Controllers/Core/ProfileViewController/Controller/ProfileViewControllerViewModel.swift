@@ -65,7 +65,6 @@ final class ProfileViewControllerViewModel {
     public func fetchCurrentUserRecipe() {
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
             guard let user = user else { return }
-            print("Current user: ", user)
             self?.user = user
             self?.firebaseManager.getAllRecipesForUser(username: user.username) { result in
                 switch result {

@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-protocol ChatTableViewCellViewModeldelegate: AnyObject {
+protocol ChatTableViewCellViewModelDelegate: AnyObject {
     func updateViewModel(viewModel: ChatTableViewCellViewModel)
 }
 
@@ -16,7 +16,7 @@ final class ChatTableViewCellViewModel {
    
     
     //MARK: - Properties
-    weak var delegate: ChatTableViewCellViewModeldelegate?
+    weak var delegate: ChatTableViewCellViewModelDelegate?
     
     let firebaseManager = FirebaseManager.shared
     
@@ -28,9 +28,9 @@ final class ChatTableViewCellViewModel {
         let mediumAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .light)
         ]
-
-        let attributedString = NSMutableAttributedString(string: "\(username ?? "no username") ")
-        attributedString.addAttributes(boldAttributes, range: NSRange(location: 0, length: username?.count ?? 0))
+     
+            let attributedString = NSMutableAttributedString(string: "\(chat.username ?? "no username") ")
+            attributedString.addAttributes(boldAttributes, range: NSRange(location: 0, length: chat.username?.count ?? 0))
         
         let titleAttributedString = NSAttributedString(string: chat.title, attributes: mediumAttributes)
         attributedString.append(titleAttributedString)
@@ -41,11 +41,9 @@ final class ChatTableViewCellViewModel {
         return createdDateString ?? "no date"
     }
     private let chat: Chat
-    private var username: String?
     //MARK: - Init
     init(chat: Chat) {
         self.chat = chat
-        getUsername()
     }
     //MARK: - Functions
     private var createdDateString: String? {
@@ -73,18 +71,6 @@ final class ChatTableViewCellViewModel {
             return "from \(dateString)"
         }
     }
-    func getUsername() {
-        firebaseManager.getCurrentUsername { [weak self] result in
-            guard let strongSelf = self else { return }
-            switch result {
-                
-            case .success(let username):
-                strongSelf.username = username
-                strongSelf.delegate?.updateViewModel(viewModel: strongSelf)
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
+
 }
 

@@ -48,8 +48,6 @@ final class MainSearchCollectionViewCellViewModel {
                 print(error.localizedDescription)
             } else if let users = users {
                 for user in users {
-                    print(user.username)
-                    print(self.recipe.username)
                     if user.username == self.recipe.username {
                         self.user = user
                     }
@@ -61,7 +59,7 @@ final class MainSearchCollectionViewCellViewModel {
         }
     }
     public func checkIsFavorite() -> Bool {
-        let recipes: [CDRecipe] = CoreDataManager.shared.fetchData(entityName: "CDRecipe")
+        let recipes: [CDRecipe] = coredataManager.fetchData(entityName: "CDRecipe")
         for recipe in recipes {
             if recipe.id == self.recipe.key {
                 return true
@@ -70,7 +68,7 @@ final class MainSearchCollectionViewCellViewModel {
         return false
     }
     public func deleteWithFavorite() {
-        let recipes: [CDRecipe] = CoreDataManager.shared.fetchData(entityName: "CDRecipe")
+        let recipes: [CDRecipe] = coredataManager.fetchData(entityName: "CDRecipe")
         for recipe in recipes {
             if recipe.id == self.recipe.key {
                 coredataManager.delete(recipe)
@@ -79,7 +77,7 @@ final class MainSearchCollectionViewCellViewModel {
     }
     public func saveInCoredata() {
         guard !checkIsFavorite() else { return }
-        let recipe = CDRecipe(context: CoreDataManager.shared.managedObjectContext)
+        let recipe = CDRecipe(context: coredataManager.managedObjectContext)
         recipe.id = self.recipe.key
         recipe.nameRecipe = self.recipe.title
         recipe.rateCounter = Int16(self.recipe.rateCounter)

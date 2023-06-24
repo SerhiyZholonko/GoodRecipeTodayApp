@@ -23,6 +23,7 @@ class MainViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+    lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureResignFirstResponder))
     let searchCollectionViewController = MainSearchCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
     init() {
         viewModel = MainViewControllerViewModel()
@@ -48,13 +49,19 @@ class MainViewController: UIViewController {
         detailView.collectionView?.dataSource = self
         
         addChildViewController(searchCollectionViewController, to: searchCollectionView)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
+  
     private func setupBasicUI() {
         view.backgroundColor = .secondarySystemBackground
+        tapGesture.isEnabled = false // Disable the gesture recognizer initially
+        detailView.addGestureRecognizer(tapGesture)
     }
     private func addConstraints() {
        let  headerViewConstraints = [
@@ -87,8 +94,18 @@ class MainViewController: UIViewController {
     }
     @objc func reloadDataMainController() {
             self.headerView.configure(viewModel: self.viewModel)
-
     }
+    @objc func handleTapGestureResignFirstResponder() {
+        searchView.searchTextField.resignFirstResponder()
+    }
+    @objc func keyboardWillShow(notification: NSNotification) {
+        tapGesture.isEnabled = true
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        tapGesture.isEnabled = false
+    }
+
 }
 
 
@@ -108,10 +125,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .category(let viewModel):
             return viewModel.count
         case .recomend(let viewModel):
-            print("ViewModel: ", viewModel.count)
             return viewModel.count
         case .oftheWeek(let viewModel):
-            print("ViewModel: ", viewModel.count)
             return viewModel.count
         }
     }
@@ -171,17 +186,16 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .recomend(viewModel: let viewModel):
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
-            vc.delegate = self
+//            vc.delegate = self
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
                 self.present(vc, animated: true)
             }
         case .oftheWeek(viewModel: let viewModel):
-            print(viewModel[indexPath.item].title)
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
-            vc.delegate = self
+//            vc.delegate = self
 
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -240,11 +254,3 @@ extension MainViewController: MainSearchViewDelegate {
 
 //MARK: - Delegate mainView
 
-extension MainViewController: RecipeDetailViewControllerDelegate {
-    func reloadCollectionView() {
-        DispatchQueue.main.async {[weak self] in
-        self?.viewModel = MainViewControllerViewModel()
-        }
-
-    }
-}

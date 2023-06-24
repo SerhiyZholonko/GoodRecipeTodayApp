@@ -46,6 +46,7 @@ class MainView: UIView {
        let view = UIView()
         view.backgroundColor = .systemBackground
         view.isHidden = true
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -64,7 +65,7 @@ class MainView: UIView {
         // TODO: - get rate from server
         view.settings.starMargin = 3.3
         view.settings.fillMode = .precise
-        view.text = "Rate me"
+//        view.text = "Rate me"
         view.didTouchCosmos = { [weak self] rating in
             let rateString = "You rate: \(rating.rounded(toDecimalPlaces: 1))"
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
@@ -276,10 +277,12 @@ class MainView: UIView {
         if segmentedControl.selectedSegmentIndex == 0 {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
                 self?.chatView.isHidden = true
+                self?.scrollView.isScrollEnabled = true
             }
         } else {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
                 self?.chatView.isHidden = false
+                self?.scrollView.isScrollEnabled = false
 
             }
         }
@@ -342,18 +345,14 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
 }
 
 
+//MARK: - Delegate
 
 
 extension MainView: InstructionTableViewCellDelegate {
     func showImage(viewModel: InstructionTableViewCellViewModel) {
         delegate?.presentImage(viewModel: viewModel)
     }
-    
-
-    
-    
 }
-//MARK: - Delegate
 extension MainView: UserViewDelegate {
     func followerBottonPressed() {
         guard let viewModel = viewModel else { return }
@@ -364,14 +363,10 @@ extension MainView: UserViewDelegate {
         }
         userView.configure(isFollow: viewModel.isFallow, viewModel: UserViewViewModel(username: viewModel.username))
     }
-    
-    
 }
 
 extension MainView: MainViewViewModelDelegate {
     func changeIsFollow(viewModel: MainViewViewModel) {
         self.viewModel = viewModel
     }
-    
-    
 }

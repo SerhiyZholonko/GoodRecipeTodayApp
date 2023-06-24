@@ -155,11 +155,7 @@ class RecipeDetailViewController: UIViewController {
 
         
     }
-//    @objc func didTappedMainImage() {
-//        let vc = PresentImageViewController()
-//        vc.configure(viewModel: viewModel)
-//        self.present(vc, animated: true)
-//    }
+
     @objc private func didUpdateCoredata() {
         didTapFavorite()
         NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
@@ -179,6 +175,7 @@ extension RecipeDetailViewController: MainViewDelegate {
         self.present(vc, animated: true)
     }
 }
+
 
 
 

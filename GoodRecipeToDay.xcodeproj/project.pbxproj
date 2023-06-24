@@ -430,7 +430,7 @@
 			isa = PBXGroup;
 			children = (
 				18C151552A27829F0075D57F /* Firebase */,
-				18C151562A2782BD0075D57F /* CoredataManager.swift */,
+				18D2F3A82A46B2B700DC4395 /* Coredata */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1166,6 +1166,14 @@
 				182926EF2A3C5AD700405B6B /* ChatViewController */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		18D2F3A82A46B2B700DC4395 /* Coredata */ = {
+			isa = PBXGroup;
+			children = (
+				18C151562A2782BD0075D57F /* CoredataManager.swift */,
+			);
+			path = Coredata;
 			sourceTree = "<group>";
 		};
 		18D9A5F72A2B086100649CFA /* TitleTextView */ = {

@@ -63,7 +63,6 @@ static let identifier = "MainCategoryHeaderView"
         seeAllLabel.isUserInteractionEnabled = true
     }
     @objc  func didTapSeeAll() {
-        print("Tap")
         delegate?.didTapCategories()
     }
 }

@@ -8,11 +8,14 @@
 import UIKit
 
 
+
 class ChatViewController: UIViewController {
     //MARK: - Properties
     
-    var viewModel: ChatViewControllerViewModel
     
+    
+    var viewModel: ChatViewControllerViewModel
+        
     lazy var sendTextView: TextFildButtonView = {
         let view = TextFildButtonView()
         view.backgroundColor = .secondarySystemBackground
@@ -53,6 +56,8 @@ class ChatViewController: UIViewController {
         chatTableView.dataSource = self
         
         keyboardBehavior()
+        chatTableView.estimatedRowHeight = 100
+        chatTableView.rowHeight = UITableView.automaticDimension
     }
     
     deinit {
@@ -105,7 +110,7 @@ class ChatViewController: UIViewController {
             chatTableView.topAnchor.constraint(equalTo: view.topAnchor),
             chatTableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             chatTableView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            chatTableView.bottomAnchor.constraint(equalTo: sendTextView.topAnchor),
+            chatTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
         ]
         NSLayoutConstraint.activate(chatTableViewConstraints)
     }
@@ -121,11 +126,15 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.identifier, for: indexPath) as? ChatTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.identifier, for: indexPath) as? ChatTableViewCell else {
+            return UITableViewCell()
+        }
         cell.delegate = self
         cell.configure(viewModel: ChatTableViewCellViewModel(chat: viewModel.getSingleChat(indexPath: indexPath)))
+        cell.contentView.layoutIfNeeded() // Add this line to force layout update
         return cell
     }
+
 
 }
 
@@ -134,25 +143,21 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
 extension ChatViewController: TextFildButtonViewDelegate {
     func massageSended(massage: String) {
         viewModel.saveMassage(massage: massage)
+        sendTextView.endEditing(true)
 
     }
-    
-    
 }
-
 extension ChatViewController: ChatViewControllerViewModelViewModelDelegate {
     func reloadTableView(viewModel: ChatViewControllerViewModel) {
         self.viewModel = viewModel
         chatTableView.reloadData()
-        sendTextView.endEditing(true)
     }
-    
-    
 }
 
 
-extension ChatViewController: ChatTableViewCelldelegate {
+extension ChatViewController: ChatTableViewCellDelegate {
     func reloadTableView() {
-        viewModel.getChats()
+//        viewModel.getChats()
+//        chatTableView.reloadData()
     }
 }

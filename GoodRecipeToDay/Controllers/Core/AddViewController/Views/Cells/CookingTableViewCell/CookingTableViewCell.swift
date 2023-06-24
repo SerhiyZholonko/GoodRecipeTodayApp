@@ -10,6 +10,7 @@ import UIKit
 protocol CookingTableViewCellDelegate: AnyObject {
     func didTappedImage(cell: CookingTableViewCell)
     func updateData(instruction: String, viewModel: CookingTableViewCellViewModel)
+    func textFieldShouldBeginEditingCooking()
 
 }
 
@@ -99,5 +100,14 @@ extension CookingTableViewCell: UITextFieldDelegate {
             delegate?.updateData(instruction: text, viewModel: viewModel)
         }
     }
- 
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+          // Perform actions when the text field is touched
+          
+          // Example: Log a message
+        delegate?.textFieldShouldBeginEditingCooking()
+          
+          // Return true to allow the text field to become the first responder
+          // Return false to prevent the text field from becoming the first responder
+          return true
+      }
 }

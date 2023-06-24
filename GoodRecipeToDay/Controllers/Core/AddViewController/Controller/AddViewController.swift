@@ -19,6 +19,8 @@ class AddViewController: UIViewController {
     }()
     var isMainImage: Bool = false
     var index: Int?
+    private lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
+
     lazy var bestImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "add 1")
@@ -143,6 +145,11 @@ class AddViewController: UIViewController {
         cookingTableView.delegate = self
         cookingTableView.dataSource = self
         calculateCookingTableViewHeight()
+        
+        tapGesture.isEnabled = false // Disable the gesture recognizer initially
+        view.addGestureRecognizer(tapGesture)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     //MARK: - Functions
     private func addConstraints() {
@@ -304,6 +311,22 @@ class AddViewController: UIViewController {
             self.cookingTableView.reloadData()
         }
     }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        tapGesture.isEnabled = true
+
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        tapGesture.isEnabled = false
+        UIView.animate(withDuration: 0.3) {
+                  self.view.frame.origin.y = 0
+              }
+    }
+    @objc func handleTapGesture() {
+        // Handle the tap gesture here when the keyboard is shown
+        view.endEditing(true) // Dismiss the keyboard
+    }
 }
 
 
@@ -439,6 +462,14 @@ extension AddViewController: UIImagePickerControllerDelegate, UINavigationContro
 
 
 extension AddViewController: AddIngredientTableViewCellDelegate {
+    func textFieldShouldBeginEditingIngredients() {
+           
+
+               UIView.animate(withDuration: 0.3) {
+                   self.view.frame.origin.y = -150
+               }
+    }
+    
     func updateData(ingredient: String, viewModel: AddIngredientTableViewCellViewModel) {
         if let index = self.viewModel.ingregients.firstIndex(where: { $0.id == viewModel.id }) {
             self.viewModel.ingregients[index] = viewModel
@@ -449,6 +480,12 @@ extension AddViewController: AddIngredientTableViewCellDelegate {
 }
 
 extension AddViewController: CookingTableViewCellDelegate {
+    func textFieldShouldBeginEditingCooking() {
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame.origin.y = -350
+        }
+    }
+    
     func updateData(instruction: String, viewModel: CookingTableViewCellViewModel) {
         if let index = self.viewModel.instructions.firstIndex(where: { $0.id == viewModel.id }) {
             self.viewModel.instructions[index] = viewModel

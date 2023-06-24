@@ -125,21 +125,5 @@ final class RecipesOfTheWeekControllerViewModel {
         }
     }
     
-//    private func fetchRecipies() {
-//        firebaseManager.getAllRecipes { [weak self] result in
-//            guard let strongSelf = self else { return }
-//            switch result {
-//
-//            case .success(let recipes):
-//                let newRecipes = recipes.sorted  {
-//                    $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date())
-//                }
-//
-//                strongSelf.recipes = newRecipes
-//                strongSelf.delegate?.didLoadRecipes(viewModel: strongSelf)
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
+
 }

@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol ChatTableViewCelldelegate: AnyObject {
+protocol ChatTableViewCellDelegate: AnyObject {
     func reloadTableView()
 }
 
 class ChatTableViewCell: UITableViewCell {
     //MARK: - Properties
-    weak var delegate: ChatTableViewCelldelegate?
+    weak var delegate: ChatTableViewCellDelegate?
     static let identifier = "ChatTableViewCell"
 
     private var viewModel: ChatTableViewCellViewModel? {
@@ -22,13 +22,13 @@ class ChatTableViewCell: UITableViewCell {
             DispatchQueue.main.async { [weak self] in
                 self?.massageLabel.attributedText = viewModel.massage
                 self?.dateLabel.text = viewModel.date
-
             }
         }
     }
     lazy var massageLabel: UILabel = {
          let label = UILabel()
          label.numberOfLines = 0
+        //TODO: - ?
          label.text = "some text some text some text some text some text some text some text"
          label.translatesAutoresizingMaskIntoConstraints = false
          return label
@@ -57,12 +57,15 @@ class ChatTableViewCell: UITableViewCell {
     public func configure(viewModel: ChatTableViewCellViewModel) {
         self.viewModel = viewModel
         self.viewModel?.delegate = self
+
     }
  
     override func prepareForReuse() {
            super.prepareForReuse()
            massageLabel.text = nil
            dateLabel.text = nil
+//        self.delegate?.reloadTableView()
+
        }
     private func addConstraints() {
         let constraints = [
@@ -73,7 +76,8 @@ class ChatTableViewCell: UITableViewCell {
 
                   dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
                   dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                  dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+                  dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+                  dateLabel.widthAnchor.constraint(equalToConstant: 100)
               ]
 
               NSLayoutConstraint.activate(constraints)
@@ -85,7 +89,7 @@ class ChatTableViewCell: UITableViewCell {
 
 //MARK: - Delegate viewModel
 
-extension ChatTableViewCell: ChatTableViewCellViewModeldelegate {
+extension ChatTableViewCell: ChatTableViewCellViewModelDelegate {
   
     func updateViewModel(viewModel: ChatTableViewCellViewModel) {
         self.viewModel = viewModel
@@ -93,3 +97,4 @@ extension ChatTableViewCell: ChatTableViewCellViewModeldelegate {
     
     
 }
+

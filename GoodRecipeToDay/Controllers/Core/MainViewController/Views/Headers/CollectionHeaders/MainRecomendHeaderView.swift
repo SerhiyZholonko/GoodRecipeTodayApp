@@ -62,7 +62,6 @@ static let identifier = "MainRecomendHeaderView"
         seeAllLabel.isUserInteractionEnabled = true
     }
     @objc  func didTapSeeAll() {
-        print("Tap")
         delegate?.didTapRecomend()
     }
 }

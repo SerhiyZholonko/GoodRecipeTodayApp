@@ -35,7 +35,7 @@ class FirebaseManager {
     func curenUser() -> Firebase.User? {
         return auth.currentUser
     }
-  
+    //MARK: - Recipe
     func createRecipe(_ recipe: Recipe, completion: @escaping (Result<Void, Error>) -> Void) {
 
         var recipeData = recipe.toDictionary()
@@ -109,8 +109,113 @@ class FirebaseManager {
             }
         }
     }
+    func addRecipeToMainPath(_ recipe: Recipe, completion: @escaping (Result<Void, Error>) -> Void) {
+        getCurrentUsername { [weak self] result in
+            switch result {
+            case .success(let username):
+                var recipeData = recipe.toDictionary()
+                recipeData["createdAt"] = Timestamp()
+                recipeData["username"] = username
+                
+                self?.database.collection("recipes").addDocument(data: recipeData) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+            
+        }
+        
+    }
     
-    //pagination
+    func getRecipeForUser(username: String, key: String, completion: @escaping (Result<Recipe?, Error>) -> Void) {
+        let recipeDocumentRef = database.collection("users").document(username).collection("recipes").document(key)
+        
+        recipeDocumentRef.getDocument { document, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documentData = document?.data() else {
+                completion(.success(nil))
+                return
+            }
+            
+            let recipe = Recipe(snapshot: documentData)
+            completion(.success(recipe))
+        }
+    }
+    func getAllRecipesForUser(username: String, completion: @escaping (Result<[Recipe], Error>) -> Void) {
+        let recipesCollectionRef = database.collection("users").document(username).collection("recipes")
+        
+        recipesCollectionRef.getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            var recipes: [Recipe] = []
+            
+            for document in querySnapshot!.documents {
+                 let recipeData = document.data()
+                    if let recipe = Recipe(snapshot: recipeData) {
+                        recipes.append(recipe)
+                    
+                }
+            }
+            
+            completion(.success(recipes))
+        }
+    }
+    //MARK: - //pagination
+    func getAllPaginationRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        let usersCollection = database.collection("users")
+        
+        var query = usersCollection.limit(to: pageSize)
+        
+        if let lastSnapshot = lastSnapshot {
+            query = query.start(afterDocument: lastSnapshot)
+        }
+        
+        query.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            var recipes = [Recipe]()
+            var nextSnapshot: DocumentSnapshot?
+            
+            for document in snapshot?.documents ?? [] {
+                let userDocRef = document.reference
+                let recipesCollection = userDocRef.collection("recipes")
+                
+                recipesCollection.getDocuments { snapshot, error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    
+                    for document in snapshot?.documents ?? [] {
+                        if let recipe = Recipe(snapshot: document) {
+                            recipes.append(recipe)
+                        }
+                    }
+                    
+                    if let lastDocumentSnapshot = snapshot?.documents.last {
+                        nextSnapshot = lastDocumentSnapshot
+                    }
+                    
+                    completion(.success((recipes, nextSnapshot)))
+                }
+            }
+        }
+    }
     func fetchRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<QuerySnapshot, Error>) -> Void) {
         let recipesCollection = database.collection("recipes")
         
@@ -134,7 +239,89 @@ class FirebaseManager {
         }
     }
 
-    
+    func updateRecipeMain(recipeID: String, newRate: Double, recipe: Recipe, completion: @escaping (Error?) -> Void) {
+        let recipeDocumentRef = database.collection("recipes").document(recipeID)
+        
+        let oldRate = recipe.rate ?? 0.0
+        let rate = oldRate + newRate
+        let newRateCounter = recipe.rateCounter + 1
+        
+        let data: [String: Any] = [
+            "rate": rate,
+            "rateCounter": newRateCounter
+        ]
+        
+        recipeDocumentRef.updateData(data) { error in
+            if let error = error {
+                completion(error)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    func getAllRecipes(completion: @escaping (Result<[Recipe], Error>) -> Void) {
+        let usersCollection = database.collection("users")
+        usersCollection.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            var recipes = [Recipe]()
+            for document in snapshot?.documents ?? [] {
+                let userDocRef = document.reference
+                let recipesCollection = userDocRef.collection("recipes")
+                
+                recipesCollection.getDocuments { snapshot, error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    
+                    for document in snapshot?.documents ?? [] {
+                        if let recipe = Recipe(snapshot: document) {
+                            recipes.append(recipe)
+                        }
+                    }
+                    completion(.success(recipes))
+                }
+            }
+        }
+    }
+   
+    func getAllRecipesForUser(user: GUser, completion: @escaping (Result<[Recipe], Error>) -> Void) {
+        var recipes = [Recipe]()
+        let usersCollection = database.collection("users")
+        usersCollection.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            for document in snapshot?.documents ?? [] {
+                let userDocRef = document.reference
+                let recipesCollection = userDocRef.collection("recipes")
+                
+                recipesCollection.getDocuments { snapshot, error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    
+                    for document in snapshot?.documents ?? [] {
+                        if let recipe = Recipe(snapshot: document) {
+                            if recipe.username == user.username {
+                                recipes.append(recipe)
+                            }
+                        }
+                    }
+                    
+                    completion(.success(recipes))
+                }
+            }
+        }
+    }
+    //MARK: - Follower, Following
     func deleteFollower(_ follower: GUser, completion: @escaping (Result<Void, Error>) -> Void) {
         getCurrentUsername { [weak self] result in
             switch result {
@@ -167,8 +354,91 @@ class FirebaseManager {
             }
         }
     }
+    func addFollowToUser(_ user: GUser,  completion: @escaping (Result<Void, Error>) -> Void) {
+        getCurrentUsername { [weak self] result in
+            switch result {
+            case .success(let username):
+                let userData = user.toDictionary()
+                self?.database.collection("users").document(username).collection("followers").document(user.username).setData(userData) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     
-    // MARK: - Initialization
+    func addFollowingToUser(_ user: GUser,  completion: @escaping (Result<Void, Error>) -> Void) {
+        getCurrentUsername { [weak self] result in
+            switch result {
+            case .success(let username):
+                //
+                self?.getMainUserFromUsername(username: username) { result in
+                    switch result {
+                        
+                    case .success(let currentUser):
+                        let userData = currentUser.toDictionary()
+                        self?.database.collection("users").document(user.username).collection("followings").document(username).setData(userData) { error in
+                            if let error = error {
+                                completion(.failure(error))
+                            } else {
+                                completion(.success(()))
+                            }
+                        }
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+               
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    func getAllFollowing(username: String, completion: @escaping (Result<[GUser], Error>) -> Void) {
+        let recipesCollectionRef = database.collection("users").document(username).collection("followings")
+        
+        recipesCollectionRef.getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            var followers: [GUser] = []
+            for document in querySnapshot!.documents {
+                 let followerData = document.data()
+                if let follower = GUser(dictionary: followerData) {
+                    followers.append(follower)
+                }
+            }
+            completion(.success(followers))
+            return
+        }
+    }
+    func getAllFollowersForUser(username: String, completion: @escaping (Result<[GUser], Error>) -> Void) {
+        let recipesCollectionRef = database.collection("users").document(username).collection("followers")
+        
+        recipesCollectionRef.getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            var followers: [GUser] = []
+            for document in querySnapshot!.documents {
+                 let followerData = document.data()
+                if let follower = GUser(dictionary: followerData) {
+                    followers.append(follower)
+                }
+            }
+            completion(.success(followers))
+            return
+            
+        }
+    }
+    // MARK: - Image
     
     func uploadImage(_ image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.5) else {
@@ -186,6 +456,19 @@ class FirebaseManager {
                 completion(.failure(error))
             }
         }
+    }
+    //MARK: - User
+    func updateImageUrlForUser(username: String, urlString: String, completion: @escaping (Error?) -> Void) {
+        let recipeDocumentRef = database.collection("users").document(username)
+        let urlString = urlString
+        recipeDocumentRef.updateData(["urlString": urlString]) { error in
+            if let error = error {
+                completion(error)
+            } else {
+                completion(nil)
+            }
+        }
+        
     }
     func getMainUserFromUsername(username: String, completion: @escaping (Result<GUser, Error>) -> Void) {
         let recipesCollectionRef = database.collection("users")
@@ -276,155 +559,6 @@ class FirebaseManager {
             }
         }
     }
-    func addRecipeToMainPath(_ recipe: Recipe, completion: @escaping (Result<Void, Error>) -> Void) {
-        getCurrentUsername { [weak self] result in
-            switch result {
-            case .success(let username):
-                var recipeData = recipe.toDictionary()
-                recipeData["createdAt"] = Timestamp()
-                recipeData["username"] = username
-                
-                self?.database.collection("recipes").addDocument(data: recipeData) { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(()))
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-            
-        }
-        
-    }
-    func addFollowToUser(_ user: GUser,  completion: @escaping (Result<Void, Error>) -> Void) {
-        getCurrentUsername { [weak self] result in
-            switch result {
-            case .success(let username):
-                let userData = user.toDictionary()
-                self?.database.collection("users").document(username).collection("followers").document(user.username).setData(userData) { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(()))
-                    }
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    func addFollowingToUser(_ user: GUser,  completion: @escaping (Result<Void, Error>) -> Void) {
-        getCurrentUsername { [weak self] result in
-            switch result {
-            case .success(let username):
-                //
-                self?.getMainUserFromUsername(username: username) { result in
-                    switch result {
-                        
-                    case .success(let currentUser):
-                        let userData = currentUser.toDictionary()
-                        self?.database.collection("users").document(user.username).collection("followings").document(username).setData(userData) { error in
-                            if let error = error {
-                                completion(.failure(error))
-                            } else {
-                                completion(.success(()))
-                            }
-                        }
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
-                }
-               
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    func getRecipeForUser(username: String, key: String, completion: @escaping (Result<Recipe?, Error>) -> Void) {
-        let recipeDocumentRef = database.collection("users").document(username).collection("recipes").document(key)
-        
-        recipeDocumentRef.getDocument { document, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let documentData = document?.data() else {
-                completion(.success(nil))
-                return
-            }
-            
-            let recipe = Recipe(snapshot: documentData)
-            completion(.success(recipe))
-        }
-    }
-    func getAllRecipesForUser(username: String, completion: @escaping (Result<[Recipe], Error>) -> Void) {
-        let recipesCollectionRef = database.collection("users").document(username).collection("recipes")
-        
-        recipesCollectionRef.getDocuments { querySnapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            var recipes: [Recipe] = []
-            
-            for document in querySnapshot!.documents {
-                 let recipeData = document.data()
-                    if let recipe = Recipe(snapshot: recipeData) {
-                        recipes.append(recipe)
-                    
-                }
-            }
-            
-            completion(.success(recipes))
-        }
-    }
-    func getAllFollowing(username: String, completion: @escaping (Result<[GUser], Error>) -> Void) {
-        let recipesCollectionRef = database.collection("users").document(username).collection("followings")
-        
-        recipesCollectionRef.getDocuments { querySnapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            var followers: [GUser] = []
-            for document in querySnapshot!.documents {
-                 let followerData = document.data()
-                if let follower = GUser(dictionary: followerData) {
-                    followers.append(follower)
-                }
-            }
-            completion(.success(followers))
-            return
-        }
-    }
-    func getAllFollowersForUser(username: String, completion: @escaping (Result<[GUser], Error>) -> Void) {
-        let recipesCollectionRef = database.collection("users").document(username).collection("followers")
-        
-        recipesCollectionRef.getDocuments { querySnapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            var followers: [GUser] = []
-            for document in querySnapshot!.documents {
-                 let followerData = document.data()
-                if let follower = GUser(dictionary: followerData) {
-                    followers.append(follower)
-                }
-            }
-            completion(.success(followers))
-            return
-            
-        }
-    }
-
-
     func getRecipeIDForUser(username: String, recipeName: String , completion: @escaping (Result<String, Error>) -> Void) {
         let recipesCollectionRef = database.collection("users").document(username).collection("recipes")
         let query = recipesCollectionRef.whereField("title", isEqualTo: recipeName).limit(to: 1)
@@ -487,14 +621,65 @@ class FirebaseManager {
             }
         
     }
-    func updateRecipeMainForChat(username: String, recipeID: String, chatMessage: String, recipe: Recipe, completion: @escaping (Error?) -> Void) {
+    
+    
+    func fetchCurrentUser(completion: @escaping (GUser?) -> Void) {
+        getAllUsers { users, error in
+            guard let users = users else {
+                print("No users")
+                completion(nil)
+                return
+            }
+            print(users.count)
+
+            guard let currentUser = Auth.auth().currentUser else {
+                print("No current user")
+                completion(nil)
+                return
+            }
+            print(currentUser.uid)
+            print(users.count)
+            let uid = currentUser.uid
+            for user in users {
+                if user.uid == uid {
+                    self.mainUser = user
+                    completion(user)
+                    return
+                }
+            }
+            // If we get here, it means we didn't find a matching user
+            print("No user found")
+            completion(nil)
+        }
+    }
+
+
+    func getAllUsers(completion: @escaping ([GUser]?, Error?) -> Void) {
+        database.collection("users").getDocuments { snapshot, error in
+            guard error == nil else {
+                completion(nil, error)
+                return
+            }
+            var users: [GUser] = []
+            
+            for document in snapshot!.documents {
+                if let user = GUser(document: document) {
+                    users.append(user)
+                }
+            }
+            completion(users, nil)
+        }
+    }
+    
+    //MARK: - Chats
+    func updateRecipeMainForChat(username: String, currentUsername: String, recipeID: String, chatMessage: String, recipe: Recipe, completion: @escaping (Error?) -> Void) {
         let recipeDocumentRef = database.collection("recipes").document(recipeID)
 
         recipeDocumentRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 if var existingChats = document.data()?["chats"] as? [[String: Any]] {
                     // If "chats" field exists, update the array
-                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()), username: currentUsername)
                     existingChats.append(newChat.toDictionary())
 
                     recipeDocumentRef.updateData(["chats": existingChats]) { error in
@@ -506,7 +691,7 @@ class FirebaseManager {
                     }
                 } else {
                     // If "chats" field doesn't exist, create a new array
-                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()), username: currentUsername)
 
                     let newData = ["chats": [newChat.toDictionary()]]
 
@@ -523,14 +708,14 @@ class FirebaseManager {
             }
         }
     }
-    func updateRecipeForChat(username: String, recipeID: String, chatMessage: String, recipe: Recipe, completion: @escaping (Error?) -> Void) {
+    func updateRecipeForChat(username: String, currentUsername: String, recipeID: String, chatMessage: String, recipe: Recipe, completion: @escaping (Error?) -> Void) {
         let recipeDocumentRef = database.collection("users").document(username).collection("recipes").document(recipeID)
 
         recipeDocumentRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 if var existingChats = document.data()?["chats"] as? [[String: Any]] {
                     // If "chats" field exists, update the array
-                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()), username: currentUsername)
                     existingChats.append(newChat.toDictionary())
 
                     recipeDocumentRef.updateData(["chats": existingChats]) { error in
@@ -542,7 +727,7 @@ class FirebaseManager {
                     }
                 } else {
                     // If "chats" field doesn't exist, create a new array
-                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()))
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()), username: currentUsername)
 
                     let newData = ["chats": [newChat.toDictionary()]]
 
@@ -597,193 +782,11 @@ class FirebaseManager {
         }
     }
 
-    func updateRecipeMain(recipeID: String, newRate: Double, recipe: Recipe, completion: @escaping (Error?) -> Void) {
-        let recipeDocumentRef = database.collection("recipes").document(recipeID)
-        
-        let oldRate = recipe.rate ?? 0.0
-        let rate = oldRate + newRate
-        let newRateCounter = recipe.rateCounter + 1
-        
-        let data: [String: Any] = [
-            "rate": rate,
-            "rateCounter": newRateCounter
-        ]
-        
-        recipeDocumentRef.updateData(data) { error in
-            if let error = error {
-                completion(error)
-            } else {
-                completion(nil)
-            }
-        }
-    }
-
-    func updateImageUrlForUser(username: String, urlString: String, completion: @escaping (Error?) -> Void) {
-        let recipeDocumentRef = database.collection("users").document(username)
-        let urlString = urlString
-        recipeDocumentRef.updateData(["urlString": urlString]) { error in
-            if let error = error {
-                completion(error)
-            } else {
-                completion(nil)
-            }
-        }
-        
-    }
-    func getAllPaginationRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
-        let usersCollection = database.collection("users")
-        
-        var query = usersCollection.limit(to: pageSize)
-        
-        if let lastSnapshot = lastSnapshot {
-            query = query.start(afterDocument: lastSnapshot)
-        }
-        
-        query.getDocuments { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            var recipes = [Recipe]()
-            var nextSnapshot: DocumentSnapshot?
-            
-            for document in snapshot?.documents ?? [] {
-                let userDocRef = document.reference
-                let recipesCollection = userDocRef.collection("recipes")
-                
-                recipesCollection.getDocuments { snapshot, error in
-                    if let error = error {
-                        completion(.failure(error))
-                        return
-                    }
-                    
-                    for document in snapshot?.documents ?? [] {
-                        if let recipe = Recipe(snapshot: document) {
-                            recipes.append(recipe)
-                        }
-                    }
-                    
-                    if let lastDocumentSnapshot = snapshot?.documents.last {
-                        nextSnapshot = lastDocumentSnapshot
-                    }
-                    
-                    completion(.success((recipes, nextSnapshot)))
-                }
-            }
-        }
-    }
-    func getAllRecipes(completion: @escaping (Result<[Recipe], Error>) -> Void) {
-        let usersCollection = database.collection("users")
-        usersCollection.getDocuments { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            var recipes = [Recipe]()
-            for document in snapshot?.documents ?? [] {
-                let userDocRef = document.reference
-                let recipesCollection = userDocRef.collection("recipes")
-                
-                recipesCollection.getDocuments { snapshot, error in
-                    if let error = error {
-                        completion(.failure(error))
-                        return
-                    }
-                    
-                    for document in snapshot?.documents ?? [] {
-                        if let recipe = Recipe(snapshot: document) {
-                            recipes.append(recipe)
-                        }
-                    }
-                    completion(.success(recipes))
-                }
-            }
-        }
-    }
-   
-    func getAllRecipesForUser(user: GUser, completion: @escaping (Result<[Recipe], Error>) -> Void) {
-        var recipes = [Recipe]()
-        let usersCollection = database.collection("users")
-        usersCollection.getDocuments { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            for document in snapshot?.documents ?? [] {
-                let userDocRef = document.reference
-                let recipesCollection = userDocRef.collection("recipes")
-                
-                recipesCollection.getDocuments { snapshot, error in
-                    if let error = error {
-                        completion(.failure(error))
-                        return
-                    }
-                    
-                    for document in snapshot?.documents ?? [] {
-                        if let recipe = Recipe(snapshot: document) {
-                            if recipe.username == user.username {
-                                recipes.append(recipe)
-                            }
-                        }
-                    }
-                    
-                    completion(.success(recipes))
-                }
-            }
-        }
-    }
-    func fetchCurrentUser(completion: @escaping (GUser?) -> Void) {
-        getAllUsers { users, error in
-            guard let users = users else {
-                print("No users")
-                completion(nil)
-                return
-            }
-            print(users.count)
-
-            guard let currentUser = Auth.auth().currentUser else {
-                print("No current user")
-                completion(nil)
-                return
-            }
-            print(currentUser.uid)
-            print(users.count)
-            let uid = currentUser.uid
-            for user in users {
-                if user.uid == uid {
-                    self.mainUser = user
-                    completion(user)
-                    return
-                }
-            }
-            // If we get here, it means we didn't find a matching user
-            print("No user found")
-            completion(nil)
-        }
-    }
 
 
-    func getAllUsers(completion: @escaping ([GUser]?, Error?) -> Void) {
-        database.collection("users").getDocuments { snapshot, error in
-            guard error == nil else {
-                completion(nil, error)
-                return
-            }
-            
-            var users: [GUser] = []
-            
-            for document in snapshot!.documents {
-                if let user = GUser(document: document) {
-                    users.append(user)
-                }
-            }
-            completion(users, nil)
-        }
-    }
 
+
+  
 
 }
 
