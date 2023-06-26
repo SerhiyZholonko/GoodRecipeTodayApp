@@ -104,6 +104,7 @@ final class GUser: Hashable, Decodable, Equatable {
         if let key = key {
             dictionary["key"] = key
         }
+        
         return dictionary
     }
 
@@ -112,6 +113,7 @@ final class GUser: Hashable, Decodable, Equatable {
         rep["email"] = email
         rep["uid"] = uid
         rep["urlString"] = urlString
+
         if let key = key {
             rep["key"] = key
         }

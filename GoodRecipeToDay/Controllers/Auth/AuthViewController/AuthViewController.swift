@@ -44,9 +44,8 @@ class AuthViewController: UIViewController {
         return button
     }()
     lazy var appleButton: ImageTextButton = {
-        let button = ImageTextButton(type: .apple)
+        let button = ImageTextButton(type: .facebook)
         button.addTarget(self, action: #selector(didTappedApple), for: .touchUpInside)
-        button.isHidden = true
         return button
     }()
     let orUseLabel: UILabel = {

@@ -354,23 +354,7 @@ class FirebaseManager {
             }
         }
     }
-    func addFollowToUser(_ user: GUser,  completion: @escaping (Result<Void, Error>) -> Void) {
-        getCurrentUsername { [weak self] result in
-            switch result {
-            case .success(let username):
-                let userData = user.toDictionary()
-                self?.database.collection("users").document(username).collection("followers").document(user.username).setData(userData) { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(()))
-                    }
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+
     
     func addFollowingToUser(_ user: GUser,  completion: @escaping (Result<Void, Error>) -> Void) {
         getCurrentUsername { [weak self] result in
@@ -418,6 +402,23 @@ class FirebaseManager {
             return
         }
     }
+    func addFollowToUser(_ user: GUser,  completion: @escaping (Result<Void, Error>) -> Void) {
+        getCurrentUsername { [weak self] result in
+            switch result {
+            case .success(let username):
+                let userData = user.toDictionary()
+                self?.database.collection("users").document(username).collection("followers").document(user.username).setData(userData) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     func getAllFollowersForUser(username: String, completion: @escaping (Result<[GUser], Error>) -> Void) {
         let recipesCollectionRef = database.collection("users").document(username).collection("followers")
         
@@ -428,8 +429,8 @@ class FirebaseManager {
             }
             var followers: [GUser] = []
             for document in querySnapshot!.documents {
-                 let followerData = document.data()
-                if let follower = GUser(dictionary: followerData) {
+//                 let followerData = document.data()
+                if let follower = GUser(document: document) {
                     followers.append(follower)
                 }
             }

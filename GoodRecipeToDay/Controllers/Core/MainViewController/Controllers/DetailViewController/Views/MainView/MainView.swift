@@ -7,6 +7,7 @@ import Cosmos
 
 protocol MainViewDelegate: AnyObject {
     func presentImage(viewModel: InstructionTableViewCellViewModel)
+    func reloadChatView()
 }
 
 class MainView: UIView {
@@ -96,7 +97,6 @@ class MainView: UIView {
         return view
     }()
     let descriptionView: DescriptionView = {
-        
         let view = DescriptionView()
         return view
     }()
@@ -150,7 +150,6 @@ class MainView: UIView {
         UIView.performWithoutAnimation {
                   scrollView.setContentOffset(CGPoint(x: 0, y: 200), animated: false)
               }
-        
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -162,6 +161,7 @@ class MainView: UIView {
         viewModel.delegate = self
         DispatchQueue.main.async {[weak self] in
             self?.title.text = viewModel.title
+            self?.descriptionView.descriptionsLabel.numberOfLines = 0
             self?.descriptionView.configure(description: viewModel.description)
             self?.userView.userLabel.text = viewModel.fromUser
             self?.timeView.configure(time: viewModel.time)
@@ -216,10 +216,10 @@ class MainView: UIView {
         ]
         NSLayoutConstraint.activate(segmentedControlConstraints)
        let chatViewConstraints = [
-            chatView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
-            chatView.leftAnchor.constraint(equalTo: leftAnchor),
-            chatView.rightAnchor.constraint(equalTo: rightAnchor),
-            chatView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        chatView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
+        chatView.leftAnchor.constraint(equalTo: leftAnchor),
+        chatView.rightAnchor.constraint(equalTo: rightAnchor),
+        chatView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         NSLayoutConstraint.activate(chatViewConstraints)
         let  rateViewConstraints = [
@@ -252,8 +252,7 @@ class MainView: UIView {
         let descriptionViewConstraints = [
             descriptionView.topAnchor.constraint(equalTo: timeView.bottomAnchor),
             descriptionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            descriptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            descriptionView.heightAnchor.constraint(equalToConstant: 80)
+            descriptionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
         ]
         NSLayoutConstraint.activate(descriptionViewConstraints)
         ingredientTableViewHeightConstraint = ingredientTableView.heightAnchor.constraint(equalToConstant: 0)
@@ -283,6 +282,7 @@ class MainView: UIView {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
                 self?.chatView.isHidden = false
                 self?.scrollView.isScrollEnabled = false
+                self?.delegate?.reloadChatView()
 
             }
         }
@@ -317,12 +317,12 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return InstructionTableViewCell.height
+       if tableView == ingredientTableView {
+            return 50
+        } else  {
+            return InstructionTableViewCell.height
+        }
       }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-         return InstructionTableViewCell.height
-     }
      
      func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
          let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
@@ -331,7 +331,7 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
          label.textColor = UIColor.label
          label.font = UIFont.boldSystemFont(ofSize: 18)
          if tableView == ingredientTableView{
-             label.text = "Ingredient"
+             label.text = "Ingredients"
              
          } else {
              label.text = "Instruction"

@@ -168,6 +168,10 @@ class RecipeDetailViewController: UIViewController {
 
 
 extension RecipeDetailViewController: MainViewDelegate {
+    func reloadChatView() {
+        chatViewController.chatTableView.reloadData()
+    }
+    
     func presentImage(viewModel: InstructionTableViewCellViewModel) {
         let vc = PresentImageViewController()
         vc.modalPresentationStyle = .custom

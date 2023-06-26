@@ -23,6 +23,7 @@ class IngredientTableViewCell: UITableViewCell {
     
     let ingredientLabel: UILabel = {
        let label = UILabel()
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

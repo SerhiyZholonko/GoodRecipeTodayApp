@@ -158,6 +158,7 @@ class ProfileViewController: UIViewController {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
                 DispatchQueue.main.async {
                     self?.viewModel.getRecipeFromFollowers()
+                    print("Main recipe: ", self?.viewModel.recipes.count)
                 }
             }
         }

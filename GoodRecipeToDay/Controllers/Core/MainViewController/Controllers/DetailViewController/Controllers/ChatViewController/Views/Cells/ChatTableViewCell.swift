@@ -22,6 +22,7 @@ class ChatTableViewCell: UITableViewCell {
             DispatchQueue.main.async { [weak self] in
                 self?.massageLabel.attributedText = viewModel.massage
                 self?.dateLabel.text = viewModel.date
+//                self?.delegate?.reloadTableView()
             }
         }
     }
@@ -29,13 +30,13 @@ class ChatTableViewCell: UITableViewCell {
          let label = UILabel()
          label.numberOfLines = 0
         //TODO: - ?
-         label.text = "some text some text some text some text some text some text some text"
          label.translatesAutoresizingMaskIntoConstraints = false
          return label
      }()
     let dateLabel: UILabel = {
        let label = UILabel()
-        label.text = "date"
+//        label.text = "date"
+        label.numberOfLines = 0
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,32 +57,33 @@ class ChatTableViewCell: UITableViewCell {
     //MARK: - Functions
     public func configure(viewModel: ChatTableViewCellViewModel) {
         self.viewModel = viewModel
-        self.viewModel?.delegate = self
+//        self.viewModel?.delegate = self
+//        self.delegate?.reloadTableView()
+
+
 
     }
  
-    override func prepareForReuse() {
-           super.prepareForReuse()
-           massageLabel.text = nil
-           dateLabel.text = nil
-//        self.delegate?.reloadTableView()
-
-       }
     private func addConstraints() {
+      
         let constraints = [
-                  massageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-                  massageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+          
+            dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+                  dateLabel.widthAnchor.constraint(equalToConstant: 100),
+            
+            massageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            massageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
                   massageLabel.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -16),
-                  massageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            massageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
 
-                  dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-                  dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                  dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-                  dateLabel.widthAnchor.constraint(equalToConstant: 100)
+       
               ]
 
               NSLayoutConstraint.activate(constraints)
-            layoutIfNeeded()
+        
+       
 
     }
 }
@@ -93,6 +95,8 @@ extension ChatTableViewCell: ChatTableViewCellViewModelDelegate {
   
     func updateViewModel(viewModel: ChatTableViewCellViewModel) {
         self.viewModel = viewModel
+        self.delegate?.reloadTableView()
+
     }
     
     

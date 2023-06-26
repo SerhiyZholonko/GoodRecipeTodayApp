@@ -14,7 +14,7 @@ class ChatViewController: UIViewController {
     
     
     
-    var viewModel: ChatViewControllerViewModel
+    var viewModel: ChatViewControllerViewModel 
         
     lazy var sendTextView: TextFildButtonView = {
         let view = TextFildButtonView()
@@ -56,8 +56,6 @@ class ChatViewController: UIViewController {
         chatTableView.dataSource = self
         
         keyboardBehavior()
-        chatTableView.estimatedRowHeight = 100
-        chatTableView.rowHeight = UITableView.automaticDimension
     }
     
     deinit {
@@ -130,12 +128,19 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.delegate = self
+
         cell.configure(viewModel: ChatTableViewCellViewModel(chat: viewModel.getSingleChat(indexPath: indexPath)))
-        cell.contentView.layoutIfNeeded() // Add this line to force layout update
         return cell
     }
 
 
+     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+         return UITableView.automaticDimension
+     }
+
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+         return UITableView.automaticDimension
+     }
 }
 
 //MARK: - delegate
@@ -144,7 +149,6 @@ extension ChatViewController: TextFildButtonViewDelegate {
     func massageSended(massage: String) {
         viewModel.saveMassage(massage: massage)
         sendTextView.endEditing(true)
-
     }
 }
 extension ChatViewController: ChatViewControllerViewModelViewModelDelegate {
@@ -157,7 +161,6 @@ extension ChatViewController: ChatViewControllerViewModelViewModelDelegate {
 
 extension ChatViewController: ChatTableViewCellDelegate {
     func reloadTableView() {
-//        viewModel.getChats()
-//        chatTableView.reloadData()
+        chatTableView.reloadData()
     }
 }

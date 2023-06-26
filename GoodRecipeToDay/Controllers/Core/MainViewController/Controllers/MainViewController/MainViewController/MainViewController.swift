@@ -254,3 +254,12 @@ extension MainViewController: MainSearchViewDelegate {
 
 //MARK: - Delegate mainView
 
+//extension MainViewController: RecipeDetailViewControllerDelegate {
+//    func reloadCollectionView() {
+//        viewModel.getingRecipes()
+//        viewModel.uploadRecipes()
+//        detailView.collectionView?.reloadData()
+//    }
+//
+//
+//}

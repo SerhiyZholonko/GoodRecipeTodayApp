@@ -16,6 +16,7 @@ final class FavoriteViewControllerViewModel {
     //MARK: - Properties
     weak var delegate: FavoriteViewControllerViewModelDelegate?
     let coredataManager = CoreDataManager.shared
+    let firebaseManager = FirebaseManager.shared
     let title = "here are the best recipes"
      var recipes: [CDRecipe] = []
     //MARK: - Init
@@ -25,7 +26,6 @@ final class FavoriteViewControllerViewModel {
     //MARK: - Functions
     public  func configure() {
         self.recipes = coredataManager.fetchData(entityName: "CDRecipe")
-       
         delegate?.reloadCollectionView()
     }
     

@@ -42,7 +42,7 @@ final class ProfileViewControllerViewModel {
         return followers.count
     }
     private var user: GUser? = nil
-    private var recipesFromFollowers: [Recipe] = []
+    private var recipesFromFollowers: [Recipe] = [] 
     private var followers: [GUser] = []
     private var following: [GUser] = []
     //MARK: - Init
@@ -55,13 +55,14 @@ final class ProfileViewControllerViewModel {
             NotificationCenter.default.post(name: .signUp, object: nil, userInfo: nil)
     }
      public func configure() {
-        fetchCurrentUserRecipe()
+         fetchCurrentUserRecipe()
          fetchAllFollowers()
          fetchAllFollowing()
     }
     public func getRecipe(indexPath: IndexPath) -> Recipe {
         return self.recipes[indexPath.item]
     }
+    
     public func fetchCurrentUserRecipe() {
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
             guard let user = user else { return }
@@ -83,47 +84,48 @@ final class ProfileViewControllerViewModel {
             self?.firebaseManager.getAllFollowing(username: currentUser.username, completion: { [weak self] result in
                 switch result {
                 case .success(let users):
-                    self?.followers = users
+                    self?.following = users
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             })
-
+            self?.fetchAllFollowers()
         }
 
     }
     public func fetchAllFollowers() {
         firebaseManager.fetchCurrentUser { [weak self] currentUser in
             guard let currentUser = currentUser else { return }
+            var currentFolloews: [GUser] = []
             self?.firebaseManager.getAllFollowersForUser(username: currentUser.username, completion: { [weak self] result in
                 switch result {
                 case .success(let users):
-                    self?.followers = users
+                    currentFolloews  = users
+                    self?.followers = currentFolloews
+                    return
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             })
-
         }
 
     }
  
     public func getRecipeFromFollowers() {
-        recipes = [] // Clear the recipes array before adding new recipes
-        
-        for user in followers {
-            self.firebaseManager.getAllRecipesForUser(username: user.username) { result in
-                switch result {
-                    
-                case .success(let recipes):
-                    self.recipes.append(contentsOf: recipes)
-                case .failure(let error):
-                    print(error)
-                }
-            }
+          recipes = [] // Clear the recipes array before adding new recipes
+          
+          for user in followers {
+              self.firebaseManager.getAllRecipesForUser(username: user.username) { result in
+                  switch result {
+                  case .success(let recipes):
+                      self.recipes.append(contentsOf: recipes)
+                  case .failure(let error):
+                      print(error)
+                  }
+              }
 
-        }
-    }
+          }
+      }
 
     public func setImage(_ image: UIImage, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let user = user else { return }
@@ -157,9 +159,7 @@ final class ProfileViewControllerViewModel {
                 self.firebaseManager.updateImageUrlForUser(username: username, urlString: imageUrlString) { error in
                     guard let error = error else {
                         NotificationCenter.default.post(name: .reloadMainViewControlelr, object: nil, userInfo: nil)
-
                         return }
-
                     print(error.localizedDescription)
                 }
             case .failure(let error):

@@ -466,7 +466,7 @@ extension AddViewController: AddIngredientTableViewCellDelegate {
            
 
                UIView.animate(withDuration: 0.3) {
-                   self.view.frame.origin.y = -150
+                   self.contentView.frame.origin.y = -150
                }
     }
     
@@ -482,7 +482,7 @@ extension AddViewController: AddIngredientTableViewCellDelegate {
 extension AddViewController: CookingTableViewCellDelegate {
     func textFieldShouldBeginEditingCooking() {
         UIView.animate(withDuration: 0.3) {
-            self.view.frame.origin.y = -350
+            self.contentView.frame.origin.y = -350
         }
     }
     

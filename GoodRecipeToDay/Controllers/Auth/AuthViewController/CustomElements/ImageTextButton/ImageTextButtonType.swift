@@ -10,15 +10,15 @@ import UIKit
 enum ImageTextButtonType {
     case email
     case google
-    case apple
+    case facebook
     var title: String {
         switch self {
         case .email:
             return "Sign up with email"
         case .google:
             return "Sign Up with google"
-        case .apple:
-            return "Sign Up with apple"
+        case .facebook:
+            return "Sign Up with facebook"
         }
     }
     var image: UIImage? {
@@ -28,8 +28,8 @@ enum ImageTextButtonType {
             return UIImage(systemName: "envelope")
         case .google:
             return UIImage(named: "google")
-        case .apple:
-            return UIImage(systemName: "apple.logo")
+        case .facebook:
+            return UIImage(named: "facebook")
 
         }
     }

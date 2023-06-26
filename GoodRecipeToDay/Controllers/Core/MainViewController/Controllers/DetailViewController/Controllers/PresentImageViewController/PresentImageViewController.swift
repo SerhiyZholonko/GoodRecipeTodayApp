@@ -40,6 +40,7 @@ class PresentImageViewController: UIViewController {
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = .label
         label.textAlignment = .left
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

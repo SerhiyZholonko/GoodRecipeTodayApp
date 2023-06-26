@@ -21,6 +21,7 @@ protocol MainViewControllerViewModelProtocol: AnyObject {
      init()
     var delegate: MainViewControllerViewModelDelegate? {get set}
      func uploadRecipes()
+    func getingRecipes()
     func setUser(complition: @escaping (GUser?) -> Void )
 
      func createCategorySectionLayout() -> NSCollectionLayoutSection
@@ -61,7 +62,7 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
         }
     }
 
-    @objc  private func getingRecipes() {
+    @objc  func getingRecipes() {
         firebaseManager.getAllRecipes { result in
             switch result {
             case .success(let recipes):

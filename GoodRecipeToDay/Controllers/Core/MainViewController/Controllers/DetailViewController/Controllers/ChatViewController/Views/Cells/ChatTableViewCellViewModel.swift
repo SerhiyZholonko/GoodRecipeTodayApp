@@ -40,7 +40,7 @@ final class ChatTableViewCellViewModel {
     public var date: String? {
         return createdDateString ?? "no date"
     }
-    private let chat: Chat
+    private var chat: Chat 
     //MARK: - Init
     init(chat: Chat) {
         self.chat = chat

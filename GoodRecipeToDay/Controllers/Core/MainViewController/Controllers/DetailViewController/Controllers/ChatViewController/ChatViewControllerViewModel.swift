@@ -13,7 +13,7 @@ protocol ChatViewControllerViewModelViewModelDelegate: AnyObject {
 final class ChatViewControllerViewModel {
     weak var delegate: ChatViewControllerViewModelViewModelDelegate?
     public var massage: String = ""
-    public var chats: [Chat] = [] 
+    public var chats: [Chat] = []
     private let firebaseManager = FirebaseManager.shared
     private let recipe: Recipe
     
@@ -73,6 +73,7 @@ final class ChatViewControllerViewModel {
                                 print(error.localizedDescription)
                             }
                             strongSelf.getChats()
+
                         })
                     case .failure(let error):
                         print(error.localizedDescription)
@@ -96,8 +97,9 @@ final class ChatViewControllerViewModel {
                         print(error.localizedDescription)
                     } else if let chat = chat {
                         strongSelf.chats = chat
-                        strongSelf.delegate?.reloadTableView(viewModel: strongSelf)
+
                     }
+
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -115,8 +117,8 @@ final class ChatViewControllerViewModel {
                         print(error.localizedDescription)
                     } else if let chat = chat {
                         strongSelf.chats = chat
-                        strongSelf.delegate?.reloadTableView(viewModel: strongSelf)
                     }
+                    strongSelf.delegate?.reloadTableView(viewModel: strongSelf)
                 }
             case .failure(let error):
                 print(error.localizedDescription)

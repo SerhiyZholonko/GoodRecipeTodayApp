@@ -9,7 +9,7 @@ import Foundation
 
 
 class RecipeDetailViewControllerViewModel {
-    
+    let firebaseManager = FirebaseManager.shared
     let coredataManager = CoreDataManager.shared
     public var mainImageUrl: URL? {
         return URL(string: recipe.mainImage)
@@ -32,7 +32,10 @@ class RecipeDetailViewControllerViewModel {
     
     public func saveInCoredata() {
         guard !checkIsFavorite() else { return }
+        let username = firebaseManager.curenUser()?.displayName
+        print(username)
         let recipe = CDRecipe(context: CoreDataManager.shared.managedObjectContext)
+//        recipe.username = username
         recipe.id = self.recipe.key
         recipe.nameRecipe = self.recipe.title
         recipe.rateCounter = Int16(self.recipe.rateCounter)

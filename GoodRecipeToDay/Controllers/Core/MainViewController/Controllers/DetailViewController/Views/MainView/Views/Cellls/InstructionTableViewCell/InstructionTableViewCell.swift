@@ -17,7 +17,7 @@ class InstructionTableViewCell: UITableViewCell {
     weak var delegate: InstructionTableViewCellDelegate?
     var viewModel: InstructionTableViewCellViewModel?
     static let identifair = "InstructionTableViewCell"
-    static let height: CGFloat = 50
+    static let height: CGFloat = 100
     
     lazy var instructionImageView: UIImageView = {
        let iv = UIImageView()
@@ -26,7 +26,7 @@ class InstructionTableViewCell: UITableViewCell {
     }()
     let instructionLabel: UILabel = {
        let label = UILabel()
-        label.text = "Title"
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
