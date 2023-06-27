@@ -19,15 +19,24 @@ final class FavoriteViewControllerViewModel {
     let firebaseManager = FirebaseManager.shared
     let title = "here are the best recipes"
      var recipes: [CDRecipe] = []
+    var username: String?
     //MARK: - Init
     init() {
         configure()
+        setUsername()
     }
     //MARK: - Functions
-    public  func configure() {
-        self.recipes = coredataManager.fetchData(entityName: "CDRecipe")
+    public func configure() {
+        guard let username = username else { return }
+        guard let recipes = coredataManager.fetchData(entityName: "CDRecipe") as? [CDRecipe] else { return }
+        for recipe in recipes  {
+            if recipe.username == username {
+                self.recipes.append(recipe)
+            }
+        }
         delegate?.reloadCollectionView()
     }
+
     
     public func delete(indexPath: IndexPath) {
         
@@ -38,5 +47,11 @@ final class FavoriteViewControllerViewModel {
             // Update the collection view
             delegate?.reloadCollectionView()
         
+    }
+    private func setUsername() {
+        firebaseManager.fetchCurrentUser { [weak self] user in
+            guard let username = user?.username else { return }
+         self?.username = username
+        }
     }
 }

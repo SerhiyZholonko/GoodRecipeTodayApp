@@ -15,7 +15,12 @@ class RecipeDetailViewController: UIViewController {
     
     
     weak var delegate: RecipeDetailViewControllerDelegate?
-    let viewModel: RecipeDetailViewControllerViewModel
+    var viewModel: RecipeDetailViewControllerViewModel {
+        didSet {
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+
+        }
+    }
     lazy var mainImageView: UIImageView = {
        let iv = UIImageView()
 //        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedMainImage)))
@@ -59,6 +64,7 @@ class RecipeDetailViewController: UIViewController {
     init(viewModel: RecipeDetailViewControllerViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -138,7 +144,7 @@ class RecipeDetailViewController: UIViewController {
         //TODO: - will save in coredata
         if viewModel.checkIsFavorite() {
             viewModel.deleteWithFavorite()
-            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+//            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
             NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
@@ -146,7 +152,8 @@ class RecipeDetailViewController: UIViewController {
 
         } else {
             viewModel.saveInCoredata()
-            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+//            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+//            print("viewModel.checkIsFavorite(): ", viewModel.checkIsFavorite())
             NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
@@ -183,5 +190,10 @@ extension RecipeDetailViewController: MainViewDelegate {
 
 
 
-
-
+extension RecipeDetailViewController: RecipeDetailViewControllerViewModelDelegate {
+    func update(with viewModel: RecipeDetailViewControllerViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    
+}

@@ -15,7 +15,15 @@ class ChatViewController: UIViewController {
     
     
     var viewModel: ChatViewControllerViewModel 
-        
+     
+    let emptyChatLabel: UILabel = {
+       let label = UILabel()
+        label.text = "No Massages"
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     lazy var sendTextView: TextFildButtonView = {
         let view = TextFildButtonView()
         view.backgroundColor = .secondarySystemBackground
@@ -49,7 +57,7 @@ class ChatViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(chatTableView)
         view.addSubview(sendTextView)
-        
+        view.addSubview(emptyChatLabel)
         addConstraints()
         
         chatTableView.delegate = self
@@ -111,6 +119,11 @@ class ChatViewController: UIViewController {
             chatTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
         ]
         NSLayoutConstraint.activate(chatTableViewConstraints)
+        let emptyChatLabelCoctraints = [
+            emptyChatLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyChatLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ]
+        NSLayoutConstraint.activate(emptyChatLabelCoctraints)
     }
 }
 
@@ -120,6 +133,11 @@ class ChatViewController: UIViewController {
 
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if viewModel.returnChatCount() == 0 {
+            emptyChatLabel.isHidden = false
+        } else {
+            emptyChatLabel.isHidden = true
+        }
         return viewModel.returnChatCount()
     }
     

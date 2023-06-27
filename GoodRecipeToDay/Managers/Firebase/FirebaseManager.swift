@@ -20,7 +20,7 @@ class FirebaseManager {
     private let database = Firestore.firestore()
     
     public var isUser = Auth.auth().currentUser == nil
-    
+    public var user: GUser? = nil
     let db = Firestore.firestore()
 
     private var usersRef: CollectionReference {
@@ -29,7 +29,7 @@ class FirebaseManager {
     
     var mainUser: GUser? {
         didSet {
-            
+            print("DSDSAFSF: ", mainUser?.username)
         }
     }
     func curenUser() -> Firebase.User? {
@@ -644,6 +644,7 @@ class FirebaseManager {
             for user in users {
                 if user.uid == uid {
                     self.mainUser = user
+                    
                     completion(user)
                     return
                 }

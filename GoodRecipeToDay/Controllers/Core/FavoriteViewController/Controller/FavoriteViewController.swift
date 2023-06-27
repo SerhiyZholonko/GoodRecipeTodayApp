@@ -18,7 +18,6 @@ class FavoriteViewController: UIViewController {
         segmentedControl.insertSegment(withTitle: "Subscriptions", at: 1, animated: false)
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
-
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentedControl
     }()
