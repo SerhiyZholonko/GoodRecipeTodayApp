@@ -71,6 +71,8 @@ class CoreDataManager {
              print("Error deleting objects in \(entityName) entity: \(error.localizedDescription)")
          }
      }
+    
+ 
     // MARK: - Data Fetching
 
     func fetchData<T: NSManagedObject>(entityName: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> [T] {

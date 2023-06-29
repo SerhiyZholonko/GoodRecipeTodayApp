@@ -7,15 +7,20 @@
 
 import UIKit
 
-
+protocol ChatViewControllerDelegate: AnyObject {
+   func reloadVM()
+}
 
 class ChatViewController: UIViewController {
     //MARK: - Properties
+
+    var viewModel: ChatViewControllerViewModel
     
+    weak var delegate: ChatViewControllerDelegate?
     
+    var cellHeights: [IndexPath: CGFloat] = [:]
+
     
-    var viewModel: ChatViewControllerViewModel 
-     
     let emptyChatLabel: UILabel = {
        let label = UILabel()
         label.text = "No Massages"
@@ -146,19 +151,21 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.delegate = self
-
         cell.configure(viewModel: ChatTableViewCellViewModel(chat: viewModel.getSingleChat(indexPath: indexPath)))
+        if let cellHeight = cellHeights[indexPath] {
+            cell.heightConstraint.constant = cellHeight
+        }
         return cell
     }
 
 
-     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-         return UITableView.automaticDimension
-     }
-
-     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         return UITableView.automaticDimension
-     }
+//     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//         return UITableView.automaticDimension
+//     }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 100
+//    }
+    
 }
 
 //MARK: - delegate
@@ -167,18 +174,36 @@ extension ChatViewController: TextFildButtonViewDelegate {
     func massageSended(massage: String) {
         viewModel.saveMassage(massage: massage)
         sendTextView.endEditing(true)
+        delegate?.reloadVM()
     }
 }
 extension ChatViewController: ChatViewControllerViewModelViewModelDelegate {
     func reloadTableView(viewModel: ChatViewControllerViewModel) {
         self.viewModel = viewModel
+        delegate?.reloadVM()
         chatTableView.reloadData()
+
     }
 }
 
 
 extension ChatViewController: ChatTableViewCellDelegate {
-    func reloadTableView() {
-        chatTableView.reloadData()
+    func cellHeightUpdated(for cell: ChatTableViewCell) {
+        guard let indexPath = chatTableView.indexPath(for: cell) else {
+            return
+        }
+        
+        let previousHeight = cellHeights[indexPath] ?? 0
+        let newHeight = cell.heightConstraint.constant
+        
+        if previousHeight != newHeight {
+            cellHeights[indexPath] = newHeight
+            chatTableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+
     }
+//    func reloadTableView() {
+//        delegate?.reloadVM()
+//        chatTableView.reloadData()
+//    }
 }

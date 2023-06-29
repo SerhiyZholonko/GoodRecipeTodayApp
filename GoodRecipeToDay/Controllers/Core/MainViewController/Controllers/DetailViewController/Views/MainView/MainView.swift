@@ -8,6 +8,7 @@ import Cosmos
 protocol MainViewDelegate: AnyObject {
     func presentImage(viewModel: InstructionTableViewCellViewModel)
     func reloadChatView()
+    func reloadVM()
 }
 
 class MainView: UIView {
@@ -72,6 +73,7 @@ class MainView: UIView {
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
             viewModel.updateRecipeRate(rate: rating)
             view.text = rateString
+            self?.delegate?.reloadVM()
             NotificationCenter.default.post(name: .didUpdateCoredata, object: nil, userInfo: nil)
         }
         view.settings.textColor = .systemGreen
@@ -332,9 +334,9 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
          label.font = UIFont.boldSystemFont(ofSize: 18)
          if tableView == ingredientTableView{
              label.text = "Ingredients"
-             
          } else {
              label.text = "Instruction"
+             label.backgroundColor = .systemBackground
          }
          headerView.addSubview(label)
          return headerView

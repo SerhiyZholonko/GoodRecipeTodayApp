@@ -36,7 +36,7 @@ class CategoryCell: UICollectionViewCell {
     }()
     lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.tintColor = .gray
+        
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold, scale: .default)
         button.setImage(UIImage(systemName: "bookmark", withConfiguration: imageConfig), for: .normal)
         button.backgroundColor = .white
@@ -89,6 +89,7 @@ class CategoryCell: UICollectionViewCell {
     //MARK: - Functions
     public func configure(viewModel: CategoryCellViewModel) {
         self.viewModel = viewModel
+     
     }
     private func addConstraints() {
        let categoryImageConstraints = [

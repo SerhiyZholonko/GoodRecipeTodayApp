@@ -29,7 +29,6 @@ class RecipeDetailViewControllerViewModel {
         return recipe.steps
     }
      var username: String?
-//    var isFavorite: ((Bool) -> Void)?
 
     private var recipe: Recipe
     init(recipe: Recipe) {
@@ -55,23 +54,23 @@ class RecipeDetailViewControllerViewModel {
        
     }
     public func saveInCoredata() {
-        firebaseManager.fetchCurrentUser { [weak self] user in
-            guard let username = user?.username, let strongSelf = self else { return }
+      
+        guard let username = firebaseManager.mainUser?.username else { return }
             let recipe = CDRecipe(context: CoreDataManager.shared.managedObjectContext)
-            recipe.id = strongSelf.recipe.key
-            recipe.username = username
-            recipe.nameRecipe = strongSelf.recipe.title
-            recipe.rateCounter = Int16(strongSelf.recipe.rateCounter)
-            recipe.stringImageURL = strongSelf.recipe.mainImage
-            recipe.time = strongSelf.recipe.time
-            recipe.numberOfSteps = Int16(strongSelf.recipe.steps.count)
-            if let totalRate = strongSelf.recipe.rate {
-                let currentRate = totalRate / Double(strongSelf.recipe.rateCounter)
+        recipe.id = self.recipe.key
+        recipe.username = username
+        recipe.nameRecipe = self.recipe.title
+        recipe.rateCounter = Int16(self.recipe.rateCounter)
+        recipe.stringImageURL = self.recipe.mainImage
+        recipe.time = self.recipe.time
+        recipe.numberOfSteps = Int16(self.recipe.steps.count)
+        if let totalRate = self.recipe.rate {
+            let currentRate = totalRate / Double(self.recipe.rateCounter)
                 recipe.rate = currentRate
             }
-            strongSelf.coredataManager.save(recipe)
-            strongSelf.delegate?.update(with: strongSelf)
-        }
+            coredataManager.save(recipe)
+        delegate?.update(with: self)
+        
     }
 
     public func checkIsFavorite() -> Bool {

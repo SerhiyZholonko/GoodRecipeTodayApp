@@ -109,5 +109,11 @@ extension MainSearchCollectionViewController: MainSearchCollectionViewController
 
 
 extension MainSearchCollectionViewController: RecipeDetailViewControllerDelegate {
+  
+    
+    func reloadVM() {
+        
+    }
+    
    
 }

@@ -51,13 +51,19 @@ final class CategoryCellViewModel {
     }
     public func checkIsFavorite() -> Bool {
         let recipes: [CDRecipe] = CoreDataManager.shared.fetchData(entityName: "CDRecipe")
-        for recipe in recipes {
-            if recipe.id == self.recipe.key {
-                return true
-            }
-        }
-        return false
+      
+           
+        guard let username = firebaseManager.mainUser?.username else { return false }
+                for recipe in recipes {
+                    guard let currentUsername = recipe.username else { return false }
+                    if recipe.id == self.recipe.key, currentUsername == username {
+                         // Unwrap and call the closure
+                        return true
+                    }
+                }
+          return false
     }
+
     public func deleteWithFavorite() {
         let recipes: [CDRecipe] = CoreDataManager.shared.fetchData(entityName: "CDRecipe")
         for recipe in recipes {
@@ -67,9 +73,11 @@ final class CategoryCellViewModel {
         }
     }
     public func saveInCoredata() {
-        guard !checkIsFavorite() else { return }
-        let recipe = CDRecipe(context: CoreDataManager.shared.managedObjectContext)
+      
+        guard let username = firebaseManager.mainUser?.username else { return }
+            let recipe = CDRecipe(context: CoreDataManager.shared.managedObjectContext)
         recipe.id = self.recipe.key
+        recipe.username = username
         recipe.nameRecipe = self.recipe.title
         recipe.rateCounter = Int16(self.recipe.rateCounter)
         recipe.stringImageURL = self.recipe.mainImage
@@ -77,8 +85,9 @@ final class CategoryCellViewModel {
         recipe.numberOfSteps = Int16(self.recipe.steps.count)
         if let totalRate = self.recipe.rate {
             let currentRate = totalRate / Double(self.recipe.rateCounter)
-            recipe.rate = currentRate
-        }
-        coredataManager.save(recipe)
+                recipe.rate = currentRate
+            }
+            coredataManager.save(recipe)
+        
     }
 }

@@ -91,5 +91,11 @@ extension SearchCollectionViewController: SearchCollectionViewControllerViewMode
     
 }
 extension SearchCollectionViewController: RecipeDetailViewControllerDelegate {
+    func reloadVM() {
+        
+    }
+    
+
+    
     
 }

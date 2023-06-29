@@ -13,7 +13,11 @@ protocol ChatViewControllerViewModelViewModelDelegate: AnyObject {
 final class ChatViewControllerViewModel {
     weak var delegate: ChatViewControllerViewModelViewModelDelegate?
     public var massage: String = ""
-    public var chats: [Chat] = []
+    public var chats: [Chat] = [] {
+        didSet {
+            print("TestChat: ", chats.count)
+        }
+    }
     private let firebaseManager = FirebaseManager.shared
     private let recipe: Recipe
     
@@ -72,7 +76,6 @@ final class ChatViewControllerViewModel {
                             if let error = error {
                                 print(error.localizedDescription)
                             }
-                            strongSelf.getChats()
 
                         })
                     case .failure(let error):
@@ -83,6 +86,8 @@ final class ChatViewControllerViewModel {
                 print(error.localizedDescription)
             }
         }
+        getChats()
+
     }
     public func getChats() {
         firebaseManager.getRecipeIDForUser(username: recipe.username, recipeName: recipe.title) { [weak self] result in

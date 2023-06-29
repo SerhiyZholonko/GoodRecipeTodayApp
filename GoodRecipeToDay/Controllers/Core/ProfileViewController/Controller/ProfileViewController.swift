@@ -268,6 +268,10 @@ extension ProfileViewController: ProfileViewControllerViewModelDelegate {
 
 
 extension ProfileViewController: RecipeDetailViewControllerDelegate {
+    func reloadVM() {
+
+    }
+    
     func reloadCollectionView() {
         collectionView.reloadData()
     }

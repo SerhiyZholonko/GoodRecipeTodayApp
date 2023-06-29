@@ -186,7 +186,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .recomend(viewModel: let viewModel):
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
-//            vc.delegate = self
+            
+            vc.delegate = self
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
@@ -195,7 +196,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .oftheWeek(viewModel: let viewModel):
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
-//            vc.delegate = self
+            vc.delegate = self
 
             vc.modalPresentationStyle = .fullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -254,12 +255,17 @@ extension MainViewController: MainSearchViewDelegate {
 
 //MARK: - Delegate mainView
 
-//extension MainViewController: RecipeDetailViewControllerDelegate {
-//    func reloadCollectionView() {
-//        viewModel.getingRecipes()
-//        viewModel.uploadRecipes()
-//        detailView.collectionView?.reloadData()
-//    }
-//
-//
-//}
+extension MainViewController: RecipeDetailViewControllerDelegate {
+    func reloadVC() {
+        viewModel = MainViewControllerViewModel()
+    }
+    
+    func reloadCollectionView() {
+        
+    }
+    
+    func reloadVM() {
+        viewModel = MainViewControllerViewModel()
+    }
+    
+}

@@ -8,7 +8,8 @@
 import UIKit
 
 protocol ChatTableViewCellDelegate: AnyObject {
-    func reloadTableView()
+//    func reloadTableView()
+    func cellHeightUpdated(for cell: ChatTableViewCell)
 }
 
 class ChatTableViewCell: UITableViewCell {
@@ -22,10 +23,12 @@ class ChatTableViewCell: UITableViewCell {
             DispatchQueue.main.async { [weak self] in
                 self?.massageLabel.attributedText = viewModel.massage
                 self?.dateLabel.text = viewModel.date
-//                self?.delegate?.reloadTableView()
             }
         }
     }
+    
+    var heightConstraint: NSLayoutConstraint!
+
     lazy var massageLabel: UILabel = {
          let label = UILabel()
          label.numberOfLines = 0
@@ -41,31 +44,42 @@ class ChatTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+    //MARK: - Lifecycle
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // Calculate the height needed for the textLabel and update the height constraint
+        let textLabelHeight = calculateTextLabelHeight()
+        heightConstraint.constant = textLabelHeight
+        
+        // Notify the delegate (controller) about the updated height
+        delegate?.cellHeightUpdated(for: self)
+        
+
+    }
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(dateLabel)
-        addSubview(massageLabel)
         addConstraints()
-        
+
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        addConstraints()
+
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     //MARK: - Functions
     public func configure(viewModel: ChatTableViewCellViewModel) {
         self.viewModel = viewModel
-//        self.viewModel?.delegate = self
+        self.viewModel?.delegate = self
 //        self.delegate?.reloadTableView()
-
-
-
     }
  
     private func addConstraints() {
-      
+        addSubview(dateLabel)
+        addSubview(massageLabel)
         let constraints = [
           
             dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
@@ -83,8 +97,23 @@ class ChatTableViewCell: UITableViewCell {
 
               NSLayoutConstraint.activate(constraints)
         
-       
+        // Add a height constraint to the contentView
+             heightConstraint = contentView.heightAnchor.constraint(equalToConstant: 0)
+             heightConstraint.isActive = true
 
+    }
+    private func calculateTextLabelHeight() -> CGFloat {
+        guard let text = massageLabel.text, let font = massageLabel.font else {
+            return 0
+        }
+        
+        let labelSize = CGSize(width: contentView.bounds.width - 32, height: .greatestFiniteMagnitude)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        let attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font]
+        
+        let estimatedSize = NSString(string: text).boundingRect(with: labelSize, options: options, attributes: attributes, context: nil)
+        
+        return ceil(estimatedSize.height) + 16 // Add padding
     }
 }
 
@@ -95,7 +124,6 @@ extension ChatTableViewCell: ChatTableViewCellViewModelDelegate {
   
     func updateViewModel(viewModel: ChatTableViewCellViewModel) {
         self.viewModel = viewModel
-        self.delegate?.reloadTableView()
 
     }
     

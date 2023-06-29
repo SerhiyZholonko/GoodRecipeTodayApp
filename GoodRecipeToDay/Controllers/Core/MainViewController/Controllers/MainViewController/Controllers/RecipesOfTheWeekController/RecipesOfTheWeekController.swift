@@ -33,15 +33,11 @@ class RecipesOfTheWeekController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
           super.viewWillAppear(animated)
           navigationController?.setNavigationBarHidden(false, animated: animated)
-        viewModel.startListeningForChanges()
 
-        viewModel.fetchFirstPage()
     }
     
     //MARK: - Functions
-    private func fetchNextPage() {
-        viewModel.fetchNextPage()
-    }
+
     private func setupBasicUI() {
         view.backgroundColor = .systemBackground
         navigationItem.title = viewModel.title
@@ -80,10 +76,7 @@ extension RecipesOfTheWeekController: UICollectionViewDelegate, UICollectionView
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let lastRowIndex = collectionView.numberOfItems(inSection: 0) - 1
-        if indexPath.row == lastRowIndex {
-            self.fetchNextPage()
-        }
+
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -137,6 +130,10 @@ extension RecipesOfTheWeekController: RecipesOfTheWeekControllerViewModelDelegat
 
 extension RecipesOfTheWeekController:
     RecipeDetailViewControllerDelegate {
+    func reloadVM() {
+        
+    }
+    
         func reloadCollectionView() {
             collectionView.reloadData()
         }

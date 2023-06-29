@@ -15,7 +15,6 @@ class CategoryViewController: UIViewController {
             guard let viewModel = viewModel else { return }
             DispatchQueue.main.async { [weak self] in
                 self?.titleLabel.text = viewModel.title
-
             }
         }
     }
@@ -58,16 +57,12 @@ class CategoryViewController: UIViewController {
         categoriesCollectionView.delegate = self
         categoriesCollectionView.dataSource = self
         viewModel?.delegate = self
-        viewModel?.startListeningForChanges()
 
-        viewModel?.fetchFirstPage()
     }
     public func configure(viewModel: CategoryViewControllerViewModel) {
         self.viewModel = viewModel
     }
-    private func fetchNextPage() {
-        viewModel?.fetchNextPage()
-    }
+
     //MARK: - Functions
     private func addConstraints() {
         let titleLabelConstraints = [
@@ -107,16 +102,13 @@ extension CategoryViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = categoriesCollectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
-        if let viewModel = viewModel {
-            cell.configure(viewModel: CategoryCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
-        }
+
+        guard let viewModel = viewModel else { return UICollectionViewCell() }
+        cell.configure(viewModel: CategoryCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let lastRowIndex = collectionView.numberOfItems(inSection: 0) - 1
-        if indexPath.row == lastRowIndex {
-            self.fetchNextPage()
-        }
+
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            // Return the desired size of each item (cell)
@@ -175,5 +167,6 @@ extension CategoryViewController: CategoryViewControllerViewModelDelegate {
 //MARK: - delegate
 
 extension CategoryViewController: RecipeDetailViewControllerDelegate {
-    
+    func reloadVM() {
+    }
 }

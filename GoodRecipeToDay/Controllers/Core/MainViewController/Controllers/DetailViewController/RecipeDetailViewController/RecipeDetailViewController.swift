@@ -9,6 +9,7 @@ import UIKit
 
 protocol RecipeDetailViewControllerDelegate: AnyObject {
     func reloadCollectionView()
+    func reloadVM()
 }
 
 class RecipeDetailViewController: UIViewController {
@@ -17,7 +18,7 @@ class RecipeDetailViewController: UIViewController {
     weak var delegate: RecipeDetailViewControllerDelegate?
     var viewModel: RecipeDetailViewControllerViewModel {
         didSet {
-            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+//            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
 
         }
     }
@@ -144,7 +145,7 @@ class RecipeDetailViewController: UIViewController {
         //TODO: - will save in coredata
         if viewModel.checkIsFavorite() {
             viewModel.deleteWithFavorite()
-//            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
             NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
@@ -152,8 +153,8 @@ class RecipeDetailViewController: UIViewController {
 
         } else {
             viewModel.saveInCoredata()
-//            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
-//            print("viewModel.checkIsFavorite(): ", viewModel.checkIsFavorite())
+            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
+
             NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
@@ -175,6 +176,12 @@ class RecipeDetailViewController: UIViewController {
 
 
 extension RecipeDetailViewController: MainViewDelegate {
+    func reloadVM() {
+        delegate?.reloadVM()
+    }
+    
+  
+    
     func reloadChatView() {
         chatViewController.chatTableView.reloadData()
     }

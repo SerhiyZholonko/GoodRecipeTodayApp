@@ -138,7 +138,6 @@ extension FavoriteViewController: FavoriteCollectionViewCellDelegate {
             NotificationCenter.default.post(name: .reloadSearchController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadMainSearchController, object: nil, userInfo: nil)
             NotificationCenter.default.post(name: .reloadFavoriteController, object: nil, userInfo: nil)
-
          }
     }
     
@@ -147,5 +146,7 @@ extension FavoriteViewController: FavoriteCollectionViewCellDelegate {
     }
 }
 extension FavoriteViewController: FavoriteViewControllerViewModelDelegate {
+  
+    
     
 }
