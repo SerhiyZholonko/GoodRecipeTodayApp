@@ -12,6 +12,14 @@ class RecipesOfTheWeekController: UIViewController {
     
     var viewModel = RecipesOfTheWeekControllerViewModel()
     
+    lazy var reversFilterButton: UIBarButtonItem = {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+
+        let button = UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down", withConfiguration: configuration), landscapeImagePhone: nil, style: .plain, target: self, action: #selector(didTapRevers))
+        button.tintColor = .label
+        return button
+    }()
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -44,6 +52,8 @@ class RecipesOfTheWeekController: UIViewController {
      
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBack))
         navigationItem.leftBarButtonItem?.tintColor = .label
+        navigationItem.rightBarButtonItem = reversFilterButton
+
 
     }
     
@@ -58,6 +68,9 @@ class RecipesOfTheWeekController: UIViewController {
     }
     @objc private func didTapBack() {
         navigationController?.popToRootViewController(animated: true)
+    }
+    @objc private func didTapRevers() {
+        
     }
 }
 

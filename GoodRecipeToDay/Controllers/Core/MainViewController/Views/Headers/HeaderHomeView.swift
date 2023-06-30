@@ -48,7 +48,7 @@ class HeaderHomeView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-     func configure(viewModel: MainViewControllerViewModelProtocol) {
+     func configure(viewModel: MainViewControllerViewModel) {
          viewModel.setUser { user in
              guard let user = user else { return }
              DispatchQueue.main.async {

@@ -14,29 +14,39 @@ enum SectionType {
     case oftheWeek(viewModel: [WeekViewCellViewModel])
 }
 
-protocol MainViewControllerViewModelProtocol: AnyObject {
-    var sections: [SectionType] { get }
-    var title: String { get }
-    var completion: ((GUser?) -> Void)? {get set}
-     init()
-    var delegate: MainViewControllerViewModelDelegate? {get set}
-     func uploadRecipes()
-    func getingRecipes()
-    func setUser(complition: @escaping (GUser?) -> Void )
-
-     func createCategorySectionLayout() -> NSCollectionLayoutSection
-     func createRecomendSectionLayout() -> NSCollectionLayoutSection
-     func createOfTheWeekSectionLayout() -> NSCollectionLayoutSection
-}
+//protocol MainViewControllerViewModelProtocol: AnyObject {
+//    var sections: [SectionType] { get }
+//    var title: String { get }
+//    var completion: ((GUser?) -> Void)? {get set}
+//     init()
+//    var delegate: MainViewControllerViewModelDelegate? {get set}
+//     func uploadRecipes()
+//    func getingRecipes()
+//    func setUser(complition: @escaping (GUser?) -> Void )
+//
+//     func createCategorySectionLayout() -> NSCollectionLayoutSection
+//     func createRecomendSectionLayout() -> NSCollectionLayoutSection
+//     func createOfTheWeekSectionLayout() -> NSCollectionLayoutSection
+//}
 protocol MainViewControllerViewModelDelegate: AnyObject {
     func reloadCollection()
 }
-final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
+final class MainViewControllerViewModel {
     weak var delegate: MainViewControllerViewModelDelegate?
-    var completion: ((GUser?) -> Void)?
+//    var completion: ((GUser?) -> Void)?
     let allCategories = Categories.allCases
     let firebaseManager = FirebaseManager.shared
     var title = "Home"
+    private var isDateSorted: Bool = false {
+        didSet {
+            getingRecipes()
+        }
+    }
+    private var isRateSorted: Bool = false {
+        didSet {
+            getingRecipes()
+        }
+    }
     public var sections: [SectionType] = []
     private lazy var recomendRecipes: [RecomendViewCellViewModel] = [] {
         didSet {
@@ -56,7 +66,7 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(getingRecipes), name: .updateRecipes, object: nil)
     }
     //MARK: functions
-    func setUser(complition: @escaping (GUser?) -> Void) {
+    public func setUser(complition: @escaping (GUser?) -> Void) {
         firebaseManager.fetchCurrentUser {  guser in
             complition(guser)
         }
@@ -66,9 +76,22 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
         firebaseManager.getAllRecipes { result in
             switch result {
             case .success(let recipes):
-                self.recomendRecipes = recipes.map{.init(recomendRecipe: $0)}
+                let newRecipes = recipes.sorted {  recipe1, recipe2 in
+                   
+                    let rate1 = recipe1.rate ?? 0.0
+                    let rate2 = recipe2.rate ?? 0.0
+                    let counter1 = recipe1.rateCounter
+                    let counter2 = recipe2.rateCounter
+
+                    let value1 = counter1 == 0 ? 0 : rate1 / Double(counter1)
+                    let value2 = counter2 == 0 ? 0 : rate2 / Double(counter2)
+
+                    return self.isRateSorted ? value1 > value2 : value1 < value2
+                }
+                let recomendRecipes = newRecipes.map{RecomendViewCellViewModel(recomendRecipe: $0)}
+                self.recomendRecipes = recomendRecipes
                 let weekRecipe = recipes.map{WeekViewCellViewModel(weekRecipe: $0)}
-                self.weekRecipe = weekRecipe.sorted { $0.craetedDate > $1.craetedDate }
+                self.weekRecipe = weekRecipe.sorted { self.isDateSorted ? $0.craetedDate > $1.craetedDate : $0.craetedDate < $1.craetedDate}
                 self.delegate?.reloadCollection()
                 //TODO: - filter recomend
             case .failure(_):
@@ -77,13 +100,19 @@ final class MainViewControllerViewModel: MainViewControllerViewModelProtocol {
         }
 
     }
-     func uploadRecipes() {
+     private func uploadRecipes() {
          let categoryViewModels = allCategories.map { CategoryViewCellViewModel(category: $0) }
         self.sections = [
             .category(viewModel: categoryViewModels),
             .recomend(viewModel: recomendRecipes),
                 .oftheWeek(viewModel: weekRecipe)
             ]
+    }
+    public func sortedRecipeByDate() {
+        isDateSorted.toggle()
+    }
+    public func sortedRecipesByRate() {
+        isRateSorted.toggle()
     }
     //MARK: - layout
     

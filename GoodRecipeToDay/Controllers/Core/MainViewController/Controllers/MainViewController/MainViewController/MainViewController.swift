@@ -8,7 +8,7 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    var viewModel: MainViewControllerViewModelProtocol 
+    var viewModel: MainViewControllerViewModel
     var  headerView: HeaderHomeView
     lazy var searchView: MainSearchView = {
        let view = MainSearchView()
@@ -61,7 +61,7 @@ class MainViewController: UIViewController {
     private func setupBasicUI() {
         view.backgroundColor = .secondarySystemBackground
         tapGesture.isEnabled = false // Disable the gesture recognizer initially
-        detailView.addGestureRecognizer(tapGesture)
+        view.addGestureRecognizer(tapGesture)
     }
     private func addConstraints() {
        let  headerViewConstraints = [
@@ -208,6 +208,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 }
 //MARK: - Delegate Header
 extension MainViewController: MainWeekHeaderViewDelegate {
+    func didTapReversionWeekRecipes() {
+        UIView.animate(withDuration: 0.4) { [weak self] in
+            self?.viewModel.sortedRecipeByDate()
+        }
+    }
+    
     func didTapWeek() {
         let vc = RecipesOfTheWeekController()
         navigationController?.pushViewController(vc, animated: true)
@@ -216,6 +222,14 @@ extension MainViewController: MainWeekHeaderViewDelegate {
 }
 
 extension MainViewController: MainRecomendHeaderViewDelegate {
+ 
+    func didTapReversionRecomend() {
+        UIView.animate(withDuration: 0.4) { [weak self] in
+            self?.viewModel.sortedRecipesByRate()
+        }
+        
+    }
+    
     func didTapRecomend() {
         let vc = RecomendViewController()
         navigationController?.pushViewController(vc, animated: true)
@@ -240,9 +254,14 @@ extension MainViewController: MainViewControllerViewModelDelegate {
 //MARK: - Delegate search view
 
 extension MainViewController: MainSearchViewDelegate {
+    func filterRevers() {
+        searchCollectionViewController.viewModel.changeRevers()
+    }
+    
     func dismissSearchView() {
         UIView.animate(withDuration: 0.4, delay: 0) {
             self.searchCollectionView.alpha = 0
+            
         }
     }
     func passSearchText(text: String) {
@@ -260,9 +279,7 @@ extension MainViewController: RecipeDetailViewControllerDelegate {
         viewModel = MainViewControllerViewModel()
     }
     
-    func reloadCollectionView() {
-        
-    }
+    func reloadCollectionView() {}
     
     func reloadVM() {
         viewModel = MainViewControllerViewModel()

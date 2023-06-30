@@ -40,11 +40,25 @@ class CategoryViewController: UIViewController {
         button.backgroundColor = .white
         button.tintColor = .black
         button.layer.cornerRadius = 25
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.label.cgColor
         button.addTarget(self, action: #selector(didTappedBack), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    lazy var reversFilterButton: UIButton = {
+        let button = UIButton(type: .system)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+        button.setImage(UIImage(systemName: "arrow.up.arrow.down", withConfiguration: configuration), for: .normal)
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.layer.cornerRadius = 6
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.label.cgColor
+        button.addTarget(self, action: #selector(didTappedBack), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     //MARK: - Init
     
     override func viewDidLoad() {
@@ -52,6 +66,7 @@ class CategoryViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         view.addSubview(titleLabel)
         view.addSubview(arrowBack)
+        view.addSubview(reversFilterButton)
         view.addSubview(categoriesCollectionView)
         addConstraints()
         categoriesCollectionView.delegate = self
@@ -77,7 +92,13 @@ class CategoryViewController: UIViewController {
             arrowBack.heightAnchor.constraint(equalToConstant: 50)
         ]
         NSLayoutConstraint.activate(arrowBackConstraints)
-
+        let reversFilterButtonConstraints = [
+            reversFilterButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            reversFilterButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
+            reversFilterButton.widthAnchor.constraint(equalToConstant: 50),
+            reversFilterButton.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        NSLayoutConstraint.activate(reversFilterButtonConstraints)
         let categoriesCollectionViewConstraints = [
             categoriesCollectionView.topAnchor.constraint(equalTo: arrowBack.bottomAnchor, constant: 20),
             categoriesCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),

@@ -38,14 +38,17 @@ final class SearchCollectionViewControllerViewModel {
         }
     }
    
-    
-    private var typeForFilter: CheckmarkTextViewType = .all
+    private var isRevers: Bool = false
+    private var typeForFilter: CheckmarkTextViewType = .date
 
     //MARK: - Init
 
     init() {}
     //MARK: - Functions
-    
+    public func changeRevers() {
+        isRevers.toggle()
+        getingRecipes()
+    }
     public func setupType(type: CheckmarkTextViewType) {
         self.typeForFilter = type
         getingRecipes()
@@ -73,7 +76,8 @@ final class SearchCollectionViewControllerViewModel {
             firebaseManager.getAllRecipes { [weak self] result in
                 switch result {
                 case .success(let recipes):
-                    let newRecipes = recipes.sorted { recipe1, recipe2 in
+                    let newRecipes = recipes.sorted { [weak self] recipe1, recipe2 in
+                        guard let strongsSelf = self else { return false}
                         let rate1 = recipe1.rate ?? 0.0
                         let rate2 = recipe2.rate ?? 0.0
                         let counter1 = recipe1.rateCounter
@@ -82,7 +86,7 @@ final class SearchCollectionViewControllerViewModel {
                         let value1 = counter1 == 0 ? 0 : rate1 / Double(counter1)
                         let value2 = counter2 == 0 ? 0 : rate2 / Double(counter2)
 
-                        return value1 > value2
+                        return strongsSelf.isRevers ? value1 > value2 : value1 < value2
                     }
 
                     self?.recipes = newRecipes
@@ -96,7 +100,10 @@ final class SearchCollectionViewControllerViewModel {
             firebaseManager.getAllRecipes { [weak self] result in
                 switch result {
                 case .success(let recipes):
-                    let newRecipes = recipes.sorted{$0.time < $1.time}
+                    let newRecipes = recipes.sorted{ [weak self] in
+                        guard let strongsSelf = self else { return false}
+                        return strongsSelf.isRevers ? $0.time < $1.time : $0.time > $1.time
+                    }
                     self?.recipes = newRecipes
                     //TODO: - filter recomend
                 case .failure(_):
@@ -108,9 +115,10 @@ final class SearchCollectionViewControllerViewModel {
             firebaseManager.getAllRecipes { [weak self] result in
                 switch result {
                 case .success(let recipes):
-                    let newRecipes = recipes.sorted { recipe1, recipe2 in
+                    let newRecipes = recipes.sorted { [weak self] recipe1, recipe2 in
+                        guard let strongsSelf = self else { return false}
                         if let createdAt1 = recipe1.createdAt, let createdAt2 = recipe2.createdAt {
-                            return createdAt1 < createdAt2
+                            return strongsSelf.isRevers ? createdAt1 < createdAt2 : createdAt1 > createdAt2
                         } else {
                             // Handle the case where createdAt is nil for either recipe
                             // You can decide how to handle this scenario based on your requirements

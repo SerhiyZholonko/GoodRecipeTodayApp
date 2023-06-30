@@ -14,7 +14,7 @@ struct SearchViewControllerViewModel {
         return typeForFilter
     }
     
-    private var typeForFilter: CheckmarkTextViewType = .all
+    private var typeForFilter: CheckmarkTextViewType = .date
 
     //MARK: - Init
     

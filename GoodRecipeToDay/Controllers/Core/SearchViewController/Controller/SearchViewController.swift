@@ -73,7 +73,7 @@ class SearchViewController: UIViewController {
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.leftAnchor.constraint(equalTo: view.leftAnchor),
             headerView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            headerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
+            headerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3)
         ]
         NSLayoutConstraint.activate(headerViewConstraints)
         let collectionViewConstraints = [
@@ -103,9 +103,9 @@ class SearchViewController: UIViewController {
 //MARK: - header delegate
 extension SearchViewController: HeaderSearchViewDelegate {
     func didTouchFilterButton() {
-        let filterControllert = FilterController()
-        filterControllert.delegate = self
-        self.present(filterControllert, animated: true)
+        UIView.animate(withDuration: 0.4) { [weak self] in
+            self?.searchCollectionViewController.viewModel.changeRevers()
+        }
     }
     
     func passSearchText(text: String) {
@@ -114,16 +114,16 @@ extension SearchViewController: HeaderSearchViewDelegate {
     }
     func dismissSearchView() {
     }
+    func getFilterType(type: CheckmarkTextViewType) {
+        searchCollectionViewController.viewModel.setupType(type: type)
+    }
 }
 
 
 //MARK: - Delegate filter view
 
 extension SearchViewController: FilterControllerDelegate {
-    func getFilterType(type: CheckmarkTextViewType) {
-        searchCollectionViewController.viewModel.setupType(type: type)
-      
-    }
+   
 }
 
 

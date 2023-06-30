@@ -10,6 +10,8 @@ import UIKit
 protocol HeaderSearchViewDelegate: AnyObject {
     func passSearchText(text: String)
     func didTouchFilterButton()
+    func getFilterType(type: CheckmarkTextViewType)
+
 }
 
 class HeaderSearchView: UIView {
@@ -17,7 +19,6 @@ class HeaderSearchView: UIView {
     //MARK: - Properties
     weak var delegate: HeaderSearchViewDelegate?
 
-    
     var viewModel = HeaderSearchViewViewModel()
     
     let titleLabel: UILabel = {
@@ -29,8 +30,9 @@ class HeaderSearchView: UIView {
     }()
     lazy var filterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "checklist.unchecked"), for: .normal)
-        button.tintColor = .systemGreen
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
+        button.setImage(UIImage(systemName: "arrow.left.arrow.right", withConfiguration: imageConfig), for: .normal)
+        button.tintColor = .systemGray
         button.backgroundColor = .secondarySystemBackground
         button.layer.cornerRadius = 6
         button.layer.borderColor = UIColor.gray.cgColor
@@ -57,6 +59,16 @@ class HeaderSearchView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    lazy var segmentedControl: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl()
+        segmentedControl.insertSegment(withTitle: "Date", at: 0, animated: false)
+        segmentedControl.insertSegment(withTitle: "Rate", at: 1, animated: false)
+        segmentedControl.insertSegment(withTitle: "Time", at: 2, animated: false)
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        return segmentedControl
+    }()
     //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,6 +76,7 @@ class HeaderSearchView: UIView {
         addSubview(filterButton)
         addSubview(divaderView)
         addSubview(searchTextField)
+        addSubview(segmentedControl)
         setupUI()
         addConstraints()
         configure()
@@ -90,11 +103,12 @@ class HeaderSearchView: UIView {
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
             titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
-            titleLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5)
+            titleLabel.heightAnchor.constraint(equalToConstant: 100)
         ]
         NSLayoutConstraint.activate(titleLabelConstraint)
         let  filterViewConstrints = [
-            filterButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            
+            filterButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
             filterButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -40),
             filterButton.widthAnchor.constraint(equalToConstant: 40),
             filterButton.heightAnchor.constraint(equalToConstant: 40)
@@ -115,28 +129,45 @@ class HeaderSearchView: UIView {
             searchTextField.heightAnchor.constraint(equalToConstant: 40)
         ]
         NSLayoutConstraint.activate(searchTextFieldConstraints)
+        let segmentedControlConstraints = [
+            segmentedControl.topAnchor.constraint(equalTo: divaderView.bottomAnchor, constant: 10),
+            segmentedControl.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
+            segmentedControl.rightAnchor.constraint(equalTo: rightAnchor, constant: -16),
+            segmentedControl.heightAnchor.constraint(equalToConstant: 50),
+            segmentedControl.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
+        ]
+        NSLayoutConstraint.activate(segmentedControlConstraints)
     }
     @objc private func didTouchFilterButton() {
         delegate?.didTouchFilterButton()
     }
-    
+    @objc private func segmentedControlValueChanged() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+          
+            UIView.animate(withDuration: 0.5) {[weak self] in
+                self?.delegate?.getFilterType(type: .date)
+            }
+        } else if segmentedControl.selectedSegmentIndex == 1 {
+            UIView.animate(withDuration: 0.5) {[weak self] in
+                self?.delegate?.getFilterType(type: .rate)
+            }
+        } else {
+            UIView.animate(withDuration: 0.5) {[weak self] in
+                self?.delegate?.getFilterType(type: .time)
+            }
+        }
+    }
 }
 
 
 
 extension HeaderSearchView: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-//        if let text = textField.text, text.isEmpty {
-//            delegate?.dismissSearchView()
-//        }
         if let text = textField.text {
             delegate?.passSearchText(text: text)
         }
     }
     func textFieldDidChangeSelection(_ textField: UITextField) {
-//        if let text = textField.text, text.isEmpty {
-//            delegate?.dismissSearchView()
-//        }
         if let text = textField.text {
             delegate?.passSearchText(text: text)
         }

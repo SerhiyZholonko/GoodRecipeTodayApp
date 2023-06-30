@@ -10,16 +10,17 @@ import UIKit
 protocol MainSearchViewDelegate: AnyObject {
     func passSearchText(text: String)
     func dismissSearchView()
+    func filterRevers()
 }
 
 class MainSearchView: UIView {
     //MARK: - Properties
     weak var delegate: MainSearchViewDelegate?
-//    let filterView: FilterView = {
-//       let view = FilterView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
+    let filterView: FilterView = {
+       let view = FilterView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     lazy var searchTextField: UITextField = {
        let tf = UITextField()
         tf.placeholder = "Search any recipe"
@@ -36,9 +37,10 @@ class MainSearchView: UIView {
         super.init(frame: frame)
         setupBasicUI()
         translatesAutoresizingMaskIntoConstraints = false
-//        addSubview(filterView)
+        addSubview(filterView)
         addSubview(searchTextField)
         addConstraints()
+        filterView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -51,25 +53,24 @@ class MainSearchView: UIView {
         clipsToBounds = true
     }
     private func addConstraints() {
-//       let  filterViewConstrints = [
-//            filterView.topAnchor.constraint(equalTo: topAnchor),
-//            filterView.rightAnchor.constraint(equalTo: rightAnchor),
-//            filterView.bottomAnchor.constraint(equalTo: bottomAnchor),
-//            filterView.widthAnchor.constraint(equalToConstant: 50)
-//
-//        ]
-//        NSLayoutConstraint.activate(filterViewConstrints)
+       let  filterViewConstrints = [
+            filterView.topAnchor.constraint(equalTo: topAnchor),
+            filterView.rightAnchor.constraint(equalTo: rightAnchor),
+            filterView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            filterView.widthAnchor.constraint(equalToConstant: 50)
+        ]
+        NSLayoutConstraint.activate(filterViewConstrints)
         let searchTextFieldConstraints = [
             searchTextField.topAnchor.constraint(equalTo: topAnchor),
             searchTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
             searchTextField.bottomAnchor.constraint(equalTo: bottomAnchor),
-            searchTextField.rightAnchor.constraint(equalTo: rightAnchor, constant: -10)
+            searchTextField.rightAnchor.constraint(equalTo: filterView.leftAnchor, constant: -4)
         ]
         NSLayoutConstraint.activate(searchTextFieldConstraints)
     }
 }
 
-
+//MARK: - Delegate
 extension MainSearchView: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text, text.isEmpty {
@@ -84,5 +85,12 @@ extension MainSearchView: UITextFieldDelegate {
         }
         guard  let text = textField.text, !text.isEmpty else { return }
         delegate?.passSearchText(text: text)
+    }
+}
+
+
+extension MainSearchView: FilterViewDelegate {
+    func didTapReversButton() {
+        delegate?.filterRevers()
     }
 }

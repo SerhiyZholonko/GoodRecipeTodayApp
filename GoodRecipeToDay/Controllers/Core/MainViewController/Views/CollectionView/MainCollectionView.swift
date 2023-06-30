@@ -9,7 +9,7 @@ import UIKit
 
 class MainCollectionView: UIView {
     public var collectionView: UICollectionView?
-    private var viewModel: MainViewControllerViewModelProtocol {
+    private var viewModel: MainViewControllerViewModel {
         didSet {
             
         }
@@ -22,7 +22,7 @@ class MainCollectionView: UIView {
         return spiner
     }()
 
-    init(frame: CGRect, viewModel: MainViewControllerViewModelProtocol) {
+    init(frame: CGRect, viewModel: MainViewControllerViewModel) {
         self.viewModel = viewModel
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false

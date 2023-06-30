@@ -9,6 +9,7 @@ import UIKit
 
 protocol MainWeekHeaderViewDelegate: AnyObject {
     func didTapWeek()
+    func didTapReversionWeekRecipes()
 }
 
 class MainWeekHeaderView: UICollectionReusableView {
@@ -20,8 +21,19 @@ weak var delegate:  MainWeekHeaderViewDelegate?
         label.text = "Recipes Of The Week"
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
-       
         return label
+    }()
+    lazy var reversionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.tintColor = .label
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 10, weight: .heavy, scale: .default)
+        button.setImage(UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imageConfig), for: .normal)
+        button.layer.cornerRadius = 6
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.label.cgColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didOnReversionButton), for: .touchUpInside)
+        return button
     }()
     lazy var seeAllLabel: UILabel = {
        let label = UILabel()
@@ -29,7 +41,6 @@ weak var delegate:  MainWeekHeaderViewDelegate?
         label.font = .systemFont(ofSize: 12, weight: .bold)
         label.textColor = .systemGreen
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapSeeAll)))
         return label
     }()
    //MARK: - Init
@@ -38,8 +49,10 @@ weak var delegate:  MainWeekHeaderViewDelegate?
         super.init(frame: frame)
         addGesture()
         addSubview(titleLabel)
+        addSubview(reversionButton)
         addSubview(seeAllLabel)
         addConstraints()
+
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -53,6 +66,13 @@ weak var delegate:  MainWeekHeaderViewDelegate?
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
         NSLayoutConstraint.activate(titleLabelConstraints)
+        let reversionButtonConstraints = [
+            reversionButton.leftAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 8),
+            reversionButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            reversionButton.widthAnchor.constraint(equalToConstant: 20),
+            reversionButton.heightAnchor.constraint(equalToConstant: 20)
+        ]
+        NSLayoutConstraint.activate(reversionButtonConstraints)
         let seeAllLabelConstraints = [
             seeAllLabel.topAnchor.constraint(equalTo: topAnchor),
             seeAllLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
@@ -67,7 +87,9 @@ weak var delegate:  MainWeekHeaderViewDelegate?
     }
     
     @objc  func didTapSeeAll() {
-        print("Tap")
         delegate?.didTapWeek()
+    }
+    @objc func didOnReversionButton() {
+        delegate?.didTapReversionWeekRecipes()
     }
 }

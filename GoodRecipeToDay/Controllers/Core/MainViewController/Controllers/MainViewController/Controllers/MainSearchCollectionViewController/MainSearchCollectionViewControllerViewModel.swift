@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Firebase
+
 
 protocol MainSearchCollectionViewControllerViewModelDelegate: AnyObject {
     func reloadCollectionView()
@@ -34,9 +36,16 @@ final class MainSearchCollectionViewControllerViewModel {
             self.delegate?.reloadCollectionView()
         }
     }
-
+    private var isRevers: Bool = false {
+        didSet {
+            getingRecipes()
+        }
+    }
     init() {
     self.getingRecipes()
+    }
+    public func changeRevers() {
+        isRevers.toggle()
     }
     public func updateSearchText(newText: String) {
         self.searchText = newText
@@ -46,9 +55,13 @@ final class MainSearchCollectionViewControllerViewModel {
     }
     private func getingRecipes() {
         firebaseManager.getAllRecipes { [weak self] result in
+            guard let strongSelf = self else { return }
             switch result {
             case .success(let recipes):
-                self?.recipes = recipes
+                strongSelf.recipes = recipes.sorted  {
+                    strongSelf.isRevers ? $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date()) :
+                    $0.createdAt ?? Timestamp(date: Date()) < $1.createdAt ?? Timestamp(date: Date())
+                }
                 
                 //TODO: - filter recomend
             case .failure(_):
@@ -57,5 +70,6 @@ final class MainSearchCollectionViewControllerViewModel {
         }
 
     }
+    
    
 }

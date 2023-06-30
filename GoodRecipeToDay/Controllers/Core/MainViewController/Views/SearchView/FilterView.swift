@@ -7,13 +7,22 @@
 
 import UIKit
 
+protocol FilterViewDelegate: AnyObject {
+    func didTapReversButton()
+}
+
 class FilterView: UIView {
     //MARK: - Properties
-    let filterButtons: UIButton = {
+    
+    weak var delegate: FilterViewDelegate?
+    
+    private lazy var reversButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "checklist.unchecked"), for: .normal)
-        button.tintColor = .systemGreen
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold, scale: .default)
+        button.setImage(UIImage(systemName: "arrow.left.arrow.right", withConfiguration: imageConfig), for: .normal)
+        button.tintColor = .systemGray3
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapReversButton), for: .touchUpInside)
         return button
     }()
     let diviredView: UIView = {
@@ -26,7 +35,7 @@ class FilterView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(diviredView)
-        addSubview(filterButtons)
+        addSubview(reversButton)
         addConstraints()
     }
     
@@ -43,11 +52,15 @@ class FilterView: UIView {
         ]
         NSLayoutConstraint.activate(diviredViewconstraints)
         let filterButtonsConstraints = [
-            filterButtons.topAnchor.constraint(equalTo: topAnchor, constant: 3),
-            filterButtons.leftAnchor.constraint(equalTo: diviredView.rightAnchor, constant: 3),
-            filterButtons.rightAnchor.constraint(equalTo: rightAnchor, constant: -10 ),
-            filterButtons.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 3)
+            reversButton.topAnchor.constraint(equalTo: topAnchor, constant: 3),
+            reversButton.leftAnchor.constraint(equalTo: diviredView.rightAnchor, constant: 3),
+            reversButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -10 ),
+            reversButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 3)
         ]
         NSLayoutConstraint.activate(filterButtonsConstraints)
+    }
+    @objc private func didTapReversButton() {
+//        print("Test touch filter view")
+        delegate?.didTapReversButton()
     }
 }

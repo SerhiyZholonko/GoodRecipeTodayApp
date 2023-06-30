@@ -72,7 +72,6 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
         let recipe = viewModel.getRecipe(indexParh: indexPath)
         let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
         vc.delegate = self
-
         vc.modalPresentationStyle = .fullScreen
         vc.modalTransitionStyle = .crossDissolve
         UIView.animate(withDuration: 0.5) {

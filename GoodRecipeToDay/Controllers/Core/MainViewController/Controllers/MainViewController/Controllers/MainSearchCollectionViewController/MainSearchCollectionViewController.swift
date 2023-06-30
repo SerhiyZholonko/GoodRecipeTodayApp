@@ -10,11 +10,7 @@ import UIKit
 
 class MainSearchCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    var viewModel = MainSearchCollectionViewControllerViewModel() {
-        didSet{
-//            collectionView.reloadData()
-        }
-    }
+    var viewModel = MainSearchCollectionViewControllerViewModel()
     let emptyLabel: UIImageView = {
       let view = UIImageView()
         view.image = UIImage(named: "search-engine")
