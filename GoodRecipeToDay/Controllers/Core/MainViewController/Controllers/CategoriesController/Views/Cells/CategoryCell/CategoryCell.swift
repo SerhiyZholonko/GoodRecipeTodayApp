@@ -21,6 +21,7 @@ class CategoryCell: UICollectionViewCell {
                 self?.titleLabel.text = viewModel.title
                 self?.usernameLabel.text = viewModel.username
                 self?.userImage.sd_setImage(with: viewModel.userPhotoUrl)
+                self?.dateLabel.text = viewModel.createdDateString
                 self?.favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
             }
         }
@@ -66,6 +67,15 @@ class CategoryCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Username"
         label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    let dateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "date"
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -80,6 +90,7 @@ class CategoryCell: UICollectionViewCell {
         contentView.addSubview(titleLabel)
         contentView.addSubview(userImage)
         contentView.addSubview(usernameLabel)
+        contentView.addSubview(dateLabel)
         addConstraints()
     }
     
@@ -125,6 +136,12 @@ class CategoryCell: UICollectionViewCell {
             usernameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10)
         ]
         NSLayoutConstraint.activate(usernameLabelConstraints)
+        let dateLabelConstraints = [
+            dateLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 10),
+            dateLabel.leftAnchor.constraint(equalTo: usernameLabel.leftAnchor),
+            dateLabel.rightAnchor.constraint(equalTo: usernameLabel.rightAnchor),
+        ]
+        NSLayoutConstraint.activate(dateLabelConstraints)
     }
     @objc private func didTapFavoriteButton() {
         guard let viewModel = viewModel else { return }

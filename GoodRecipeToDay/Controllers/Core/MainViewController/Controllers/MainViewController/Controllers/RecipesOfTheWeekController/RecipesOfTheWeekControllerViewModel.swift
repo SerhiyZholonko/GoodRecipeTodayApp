@@ -19,31 +19,43 @@ final class RecipesOfTheWeekControllerViewModel {
     weak var delegate: RecipesOfTheWeekControllerViewModelDelegate?
     let title = "The Week"
     let firebaseManager = FirebaseManager.shared
-    private(set) var dataSource: [Recipe] = []
+    public var dataSource: [Recipe] = []
+    var filteredData: [Recipe] = []
 
     private let pageSize: Int = 10
     private var lastSnapshot: DocumentSnapshot?
     private var isFetchingData: Bool = false
-
+    private var isRevers: Bool = false {
+        didSet {
+            getingRecipes()
+        }
+    }
     //MARK: - Init
     init() {
         getingRecipes()
     }
     //MARK: - Functions
     public func getRecipe(indexParh: IndexPath) -> Recipe {
-        return dataSource[indexParh.item]
+        return filteredData[indexParh.item]
+    }
+    public func changeRevers() {
+        isRevers.toggle()
     }
     public func getRecipesCount() -> Int {
         return dataSource.count
     }
     func getingRecipes() {
-        firebaseManager.getAllRecipes { result in
+        firebaseManager.getAllRecipes {[weak self] result in
+            guard let strongSelf = self else { return }
+
             switch result {
             case .success(let recipes):
-                self.dataSource = recipes.sorted  {
-                    $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date())
+                strongSelf.dataSource = recipes.sorted  {
+                    strongSelf.isRevers ? $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date()) :
+                    $0.createdAt ?? Timestamp(date: Date()) < $1.createdAt ?? Timestamp(date: Date())
                 }
-                self.delegate?.didFetchData()
+                strongSelf.filteredData = strongSelf.dataSource
+                strongSelf.delegate?.didFetchData()
                 //TODO: - filter recomend
             case .failure(_):
                 print("error recomendRecipes")

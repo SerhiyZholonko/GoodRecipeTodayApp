@@ -14,6 +14,14 @@ class SubViewController: UIViewController {
             collectionView.reloadData()
         }
     }
+    let emptyUsersLabel: UILabel = {
+      let label = UILabel()
+        label.text = "No Users"
+        label.font = .boldSystemFont(ofSize: 16)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -28,6 +36,7 @@ class SubViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
+        view.addSubview(emptyUsersLabel)
         addConstraints()
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -42,12 +51,22 @@ class SubViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(collectionViewConstraints)
+        let emptyUsersLabelConstraints = [
+            emptyUsersLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            emptyUsersLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(emptyUsersLabelConstraints)
     }
 }
 
 
 extension SubViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if viewModel.followers.isEmpty {
+            emptyUsersLabel.isHidden = false
+        } else {
+            emptyUsersLabel.isHidden = true
+        }
         return viewModel.followers.count
     }
     

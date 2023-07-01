@@ -26,6 +26,10 @@ class TabBarViewController: RecipeTabBar {
         button.layer.borderColor = UIColor.systemGray3.cgColor
         button.layer.borderWidth = 2
         button.addTarget(self, action: #selector(didTapAdd), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonTouched), for: .touchDown)
+        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        button.adjustsImageWhenHighlighted = false // Disable tint adjustment
+
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -106,7 +110,22 @@ class TabBarViewController: RecipeTabBar {
     }
     @objc func didSignUp(){
         isShowAuthController()
-        
+    }
+    
+    
+    // behavioer for button
+    @objc func buttonTouched() {
+        UIView.animate(withDuration: 0.4) {
+            self.addButton.tintColor = UIColor.green // Set the desired tint color when the button is touched
+        }
+    }
+
+    @objc func buttonReleased() {
+        UIView.animate(withDuration: 0.4) {
+            self.addButton.tintColor = UIColor.clear // Set the normal tint color when the button is released
+        }
+        self.addButton.tintColor = UIColor.systemGray // Set the normal tint color when the button is released
+
     }
 }
 

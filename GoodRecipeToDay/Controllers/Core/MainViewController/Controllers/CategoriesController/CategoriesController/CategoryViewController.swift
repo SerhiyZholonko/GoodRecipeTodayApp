@@ -55,7 +55,7 @@ class CategoryViewController: UIViewController {
         button.layer.cornerRadius = 6
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.label.cgColor
-        button.addTarget(self, action: #selector(didTappedBack), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapSortedRevers), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -111,6 +111,11 @@ class CategoryViewController: UIViewController {
     @objc func didTappedBack() {
         UIView.animate(withDuration: 0.5, delay: 0) {
             self.dismiss(animated: true)
+        }
+    }
+    @objc func didTapSortedRevers() {
+        UIView.animate(withDuration: 0.4) {
+            self.viewModel?.changeRevers()
         }
     }
 

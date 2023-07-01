@@ -12,6 +12,10 @@ class RecipesOfTheWeekController: UIViewController {
     
     var viewModel = RecipesOfTheWeekControllerViewModel()
     
+    // Search Controller
+    let searchController = UISearchController(searchResultsController: nil)
+
+    
     lazy var reversFilterButton: UIBarButtonItem = {
         let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
 
@@ -33,6 +37,7 @@ class RecipesOfTheWeekController: UIViewController {
         super.viewDidLoad()
         view.addSubview(collectionView)
         setupBasicUI()
+        configureSearchController()
         addConstraints()
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -53,10 +58,15 @@ class RecipesOfTheWeekController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(didTapBack))
         navigationItem.leftBarButtonItem?.tintColor = .label
         navigationItem.rightBarButtonItem = reversFilterButton
-
-
     }
-    
+    private func configureSearchController() {
+        // Configure Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
     private func addConstraints() {
         let collectionViewConstraints = [
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -70,16 +80,31 @@ class RecipesOfTheWeekController: UIViewController {
         navigationController?.popToRootViewController(animated: true)
     }
     @objc private func didTapRevers() {
-        
+        UIView.animate(withDuration: 0.4) {
+            self.viewModel.changeRevers()
+        }
     }
 }
 
+extension RecipesOfTheWeekController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            viewModel.filteredData = searchText.isEmpty ? viewModel.dataSource : viewModel.dataSource.filter { recipe in
+                recipe.title.localizedCaseInsensitiveContains(searchText) ||
+                    recipe.description.localizedCaseInsensitiveContains(searchText) ||
+                    recipe.category.localizedCaseInsensitiveContains(searchText) ||
+                    recipe.ingredients.contains { $0.title.localizedCaseInsensitiveContains(searchText) }
+            }
+            collectionView.reloadData()
+        }
+    }
+}
 
 //MARK: - delegate
 
 extension RecipesOfTheWeekController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.getRecipesCount()
+        return viewModel.filteredData.count
 
     }
     

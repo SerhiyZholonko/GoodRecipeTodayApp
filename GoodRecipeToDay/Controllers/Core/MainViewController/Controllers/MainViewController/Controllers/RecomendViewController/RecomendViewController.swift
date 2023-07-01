@@ -13,6 +13,8 @@ final class RecomendViewController: UIViewController {
 
     var viewModel = RecomendViewControllerViewModel()
     
+    // Search Controller
+    let searchController = UISearchController(searchResultsController: nil)
 
     lazy var reversFilterButton: UIBarButtonItem = {
         let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
@@ -41,6 +43,7 @@ final class RecomendViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(collectionView)
         setupBasicUI()
+        configureSearchController()
         addConstraints()
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -58,6 +61,14 @@ final class RecomendViewController: UIViewController {
         navigationItem.rightBarButtonItem = reversFilterButton
 
     }
+    private func configureSearchController() {
+        // Configure Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
     private func addConstraints() {
         let collectionViewConstraints = [
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -67,18 +78,21 @@ final class RecomendViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(collectionViewConstraints)
     }
+
     @objc private func didTapBack() {
         navigationController?.popToRootViewController(animated: true)
     }
     @objc private func didTapRevers() {
-        
+        UIView.animate(withDuration: 0.4) {
+            self.viewModel.changeRevers()
+        }
     }
 }
 //MARK: - delegate
 
 extension RecomendViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.dataSource.count
+        return viewModel.filteredData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -120,6 +134,20 @@ extension RecomendViewController: UICollectionViewDelegate, UICollectionViewData
     }
 }
 
+
+extension RecomendViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            viewModel.filteredData = searchText.isEmpty ? viewModel.dataSource : viewModel.dataSource.filter { recipe in
+                recipe.title.localizedCaseInsensitiveContains(searchText) ||
+                    recipe.description.localizedCaseInsensitiveContains(searchText) ||
+                    recipe.category.localizedCaseInsensitiveContains(searchText) ||
+                    recipe.ingredients.contains { $0.title.localizedCaseInsensitiveContains(searchText) }
+            }
+            collectionView.reloadData()
+        }
+    }
+}
 
 extension RecomendViewController: RecomendViewControllerViewModelDelegate {
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 protocol CategoryCellViewModelDelegate: AnyObject {
     func reloadCollection(viewModel: CategoryCellViewModel)
@@ -29,6 +30,20 @@ final class CategoryCellViewModel {
     public var userPhotoUrl: URL? {
         guard let user = user else { return nil }
         return URL(string: user.urlString ?? "")
+    }
+    public var createdDateString: String? {
+        guard let timestamp: Timestamp = recipe.createdAt else { return nil }
+
+        // Create a DateFormatter instance
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMM YYYY"  // Customize the format according to your needs
+
+        // Convert the Timestamp to a Date object
+        let date = timestamp.dateValue()
+
+        // Convert the Date to a string representation
+        let dateString = dateFormatter.string(from: date)
+        return "From \(dateString)"
     }
     private let recipe: Recipe
     private var user: GUser?

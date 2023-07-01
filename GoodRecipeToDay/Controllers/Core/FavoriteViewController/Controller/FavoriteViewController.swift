@@ -21,7 +21,15 @@ class FavoriteViewController: UIViewController {
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentedControl
     }()
-    
+    let emptyRecipesLabel: UILabel = {
+      let label = UILabel()
+        label.text = "No Recipes"
+        label.isHidden = true
+        label.font = .boldSystemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -56,6 +64,7 @@ class FavoriteViewController: UIViewController {
         view.addSubview(segmentedControl)
         view.addSubview(collectionView)
         view.addSubview(subscriptionsView)
+        view.addSubview(emptyRecipesLabel)
         addConstraints()
         addChildViewController(subViewController, to: subscriptionsView)
         collectionView.dataSource = self
@@ -86,7 +95,12 @@ class FavoriteViewController: UIViewController {
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(collectionViewConstraints)
-        
+        let emptyLabelConstraints = [
+            emptyRecipesLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            emptyRecipesLabel.centerYAnchor.constraint(equalTo: collectionView.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(emptyLabelConstraints)
+       
        let subscriptionsViewConstraints = [
         subscriptionsView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
             subscriptionsView.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -103,8 +117,18 @@ class FavoriteViewController: UIViewController {
     @objc private func segmentedControlValueChanged() {
         if segmentedControl.selectedSegmentIndex == 0 {
             subscriptionsView.isHidden = true
+           
+            subViewController.emptyUsersLabel.isHidden = true
+            emptyRecipesLabel.isHidden = true
+            collectionView.reloadData()
+
         } else {
             subscriptionsView.isHidden = false
+            subViewController.emptyUsersLabel.isHidden = true
+            emptyRecipesLabel.isHidden = true
+            subViewController.collectionView.reloadData()
+
+            
         }
     }
 }
@@ -112,6 +136,11 @@ class FavoriteViewController: UIViewController {
 //MARK: - delegate collection view
 extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if viewModel.recipes.isEmpty {
+            emptyRecipesLabel.isHidden = false
+        } else {
+            emptyRecipesLabel.isHidden = true
+        }
         return viewModel.recipes.count
     }
     

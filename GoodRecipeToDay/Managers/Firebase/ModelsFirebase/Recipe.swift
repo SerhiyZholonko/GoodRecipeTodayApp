@@ -404,3 +404,16 @@ struct Step: Hashable{
             lhs.imageUrl == rhs.imageUrl
     }
 }
+
+
+extension Recipe {
+    func matchesSearchQuery(_ query: String) -> Bool {
+        let lowercaseQuery = query.lowercased()
+        
+        return title.localizedCaseInsensitiveContains(lowercaseQuery) ||
+            description.localizedCaseInsensitiveContains(lowercaseQuery) ||
+            category.localizedCaseInsensitiveContains(lowercaseQuery) ||
+            ingredients.contains { $0.title.localizedCaseInsensitiveContains(lowercaseQuery) }
+        // Add additional properties as needed for your search criteria
+    }
+}

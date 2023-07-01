@@ -27,6 +27,7 @@ class HeaderHomeView: UIView {
     let photoImageView: UIImageView = {
        let iv = UIImageView()
         iv.image = UIImage(named: "chef")
+        iv.backgroundColor = .systemGray
         iv.layer.cornerRadius = 25
         iv.clipsToBounds = true
         iv.layer.borderColor = UIColor.systemGray.cgColor
@@ -53,7 +54,8 @@ class HeaderHomeView: UIView {
              guard let user = user else { return }
              DispatchQueue.main.async {
                  self.helloLabel.text = "Hallo, \(user.username)"
-                 self.photoImageView.sd_setImage(with: URL(string: user.urlString ?? ""))
+                 guard let usrString = user.urlString else { return }
+                 self.photoImageView.sd_setImage(with: URL(string: usrString), placeholderImage: UIImage(named: "chef"))
              }
          }
        

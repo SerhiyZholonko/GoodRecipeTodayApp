@@ -23,7 +23,11 @@ final class CategoryViewControllerViewModel {
     private let pageSize: Int = 10
     private var lastSnapshot: DocumentSnapshot?
     private var isFetchingData: Bool = false
-    
+    private var isRevers: Bool = false {
+        didSet {
+            getingRecipes()
+        }
+    }
     public var title: String {
         return category.title
     }
@@ -39,12 +43,20 @@ final class CategoryViewControllerViewModel {
     public func getRecipe(indexParh: IndexPath) -> Recipe {
         return dataSource[indexParh.item]
     }
+    public func changeRevers() {
+        isRevers.toggle()
+    }
      func getingRecipes() {
-        firebaseManager.getAllRecipes { result in
+        firebaseManager.getAllRecipes {[weak self] result in
+            guard let strongSelf = self else { return }
+
             switch result {
             case .success(let recipes):
-                self.dataSource = recipes
-                self.delegate?.didFetchData()
+                strongSelf.dataSource = recipes.sorted  {
+                    strongSelf.isRevers ? $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date()) :
+                    $0.createdAt ?? Timestamp(date: Date()) < $1.createdAt ?? Timestamp(date: Date())
+                }
+                strongSelf.delegate?.didFetchData()
                 //TODO: - filter recomend
             case .failure(_):
                 print("error recomendRecipes")

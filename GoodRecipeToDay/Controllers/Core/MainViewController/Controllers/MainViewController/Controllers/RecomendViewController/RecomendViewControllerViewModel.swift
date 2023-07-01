@@ -24,8 +24,14 @@ final class RecomendViewControllerViewModel {
     private let pageSize: Int = 10
     private var lastSnapshot: DocumentSnapshot?
     private var isFetchingData: Bool = false
-    
-    private(set) var dataSource: [Recipe] = []
+    private var isRevers: Bool = false {
+        didSet {
+            getingRecipes()
+        }
+    }
+    var filteredData: [Recipe] = [] 
+
+    var dataSource: [Recipe] = []
 
     //MARK: - Init
     init() {
@@ -33,13 +39,18 @@ final class RecomendViewControllerViewModel {
     }
     //MARK: - Functions
     public func getRecipe(indexParh: IndexPath) -> Recipe {
-        return dataSource[indexParh.item]
+        return filteredData[indexParh.item]
+    }
+    public func changeRevers() {
+        isRevers.toggle()
     }
     public func getRecipesCount() -> Int {
         return dataSource.count
     }
     func getingRecipes() {
-        firebaseManager.getAllRecipes { result in
+        firebaseManager.getAllRecipes {[weak self] result in
+            guard let strongSelf = self else { return }
+
             switch result {
             case .success(let recipes):
                 let newRecipes = recipes.sorted { recipe1, recipe2 in
@@ -51,11 +62,12 @@ final class RecomendViewControllerViewModel {
                     let value1 = counter1 == 0 ? 0 : rate1 / Double(counter1)
                     let value2 = counter2 == 0 ? 0 : rate2 / Double(counter2)
 
-                    return value1 > value2
+                    return strongSelf.isRevers ? value1 > value2 : value1 < value2
                 }
 
-                self.dataSource = newRecipes
-                self.delegate?.didFetchData()
+                strongSelf.dataSource = newRecipes
+                strongSelf.filteredData = strongSelf.dataSource
+                strongSelf.delegate?.didFetchData()
                 //TODO: - filter recomend
             case .failure(_):
                 print("error recomendRecipes")
