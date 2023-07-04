@@ -129,11 +129,13 @@ final class GUser: Hashable, Decodable, Equatable {
     }
     
     func contains(filter: String?) -> Bool {
-        guard let filter = filter else { return true }
-        if filter.isEmpty { return true }
+        guard let filter = filter, !filter.isEmpty else {
+            return true // If filter is nil or empty, return true to include the user
+        }
         let lowercasedFilter = filter.lowercased()
         return username.lowercased().contains(lowercasedFilter)
     }
+
 }
 
 

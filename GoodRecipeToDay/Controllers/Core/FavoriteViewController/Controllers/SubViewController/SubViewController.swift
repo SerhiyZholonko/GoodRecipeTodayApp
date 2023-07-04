@@ -41,6 +41,8 @@ class SubViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         viewModel.delegate = self
+        viewModel.filteredData = viewModel.followers
+        collectionView.reloadData()
     }
     //MARK: - Functions
     private func addConstraints() {
@@ -62,12 +64,12 @@ class SubViewController: UIViewController {
 
 extension SubViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if viewModel.followers.isEmpty {
+        if viewModel.filteredData.isEmpty {
             emptyUsersLabel.isHidden = false
         } else {
             emptyUsersLabel.isHidden = true
         }
-        return viewModel.followers.count
+        return viewModel.filteredData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -77,7 +79,10 @@ extension SubViewController: UICollectionViewDataSource, UICollectionViewDelegat
         cell.configure(viewModel: SubCollectionViewCellViewModel(user: user))
         return cell
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = UserViewController(viewModel: UserViewControllerViewModel(user: viewModel.getUser(indexPath: indexPath)))
+        navigationController?.pushViewController(vc, animated: true)
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: SubCollectionViewCell.height)
     }

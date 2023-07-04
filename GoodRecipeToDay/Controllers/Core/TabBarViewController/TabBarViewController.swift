@@ -14,6 +14,7 @@ class TabBarViewController: RecipeTabBar {
     //MARK: - Properties
     let firebaseManager = FirebaseManager.shared
     let viewModel = TabBarViewControllerViewModel()
+    
     lazy var addButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .white
@@ -33,7 +34,7 @@ class TabBarViewController: RecipeTabBar {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    var mainViewController = UINavigationController(rootViewController: MainViewController())
+    var mainViewController = UINavigationController(rootViewController: ContentViewController())
     let searchViewController =  UINavigationController(rootViewController: SearchViewController())
     let addViewController = AddViewController()
     var favoriteController = UINavigationController(rootViewController: FavoriteViewController())

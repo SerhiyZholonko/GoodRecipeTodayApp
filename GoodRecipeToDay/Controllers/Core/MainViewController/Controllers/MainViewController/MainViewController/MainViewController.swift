@@ -6,8 +6,14 @@
 //
 
 import UIKit
+protocol MainViewControllerDelegate: AnyObject {
+    func didTapMenuButton()
+}
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
+    
+    weak var delegate: MainViewControllerDelegate?
+    
     var viewModel: MainViewControllerViewModel
     var  headerView: HeaderHomeView
     lazy var searchView: MainSearchView = {
@@ -47,7 +53,7 @@ class MainViewController: UIViewController {
         addConstraints()
         detailView.collectionView?.delegate = self
         detailView.collectionView?.dataSource = self
-        
+        headerView.delegate = self
         addChildViewController(searchCollectionViewController, to: searchCollectionView)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -285,4 +291,12 @@ extension MainViewController: RecipeDetailViewControllerDelegate {
         viewModel = MainViewControllerViewModel()
     }
     
+}
+
+
+extension MainViewController: HeaderHomeViewDelegate {
+    func photoImageViewTapped() {
+        // Handle the photoImageView tap event in the main view controller
+        delegate?.didTapMenuButton()
+    }
 }

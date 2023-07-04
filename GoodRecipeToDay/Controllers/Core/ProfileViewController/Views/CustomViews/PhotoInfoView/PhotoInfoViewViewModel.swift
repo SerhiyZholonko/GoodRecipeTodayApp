@@ -39,10 +39,25 @@ final class PhotoInfoViewViewModel {
     private var user: GUser?
     private var followers: [GUser] = []
     private var following: [GUser] = []
+    private let type: TypePhotoInfoView
     //MARK: - Init
-    init() {
+    init(type: TypePhotoInfoView, user: GUser? = nil) {
+        self.type = type
+        switch type {
+            
+        case .profile:
+            getUser()
+
+        case .followers:
+            guard let user = user else { return }
+            self.user = user
+            getRecipes(username: user.username)
+            getFollowing(username: user.username)
+            getFollowers(username: user.username)
+        case .menu:
+            getUser()
+        }
      
-        getUser()
     }
 
     //MARK: - Functions
@@ -59,54 +74,60 @@ final class PhotoInfoViewViewModel {
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
             guard let user = user else { return }
             self?.user = user
-            self?.firebaseManager.getAllRecipesForUser(username: user.username) { result in
-                guard let strongSelf = self else { return }
-
-                switch result {
-                case .success(let recipes):
-                    strongSelf.recipes = recipes
-                    strongSelf.delegate?.updateUser(viewModel: strongSelf)
-
-                case .failure(let err):
-                    print(err.localizedDescription)
-                }
-            }
-
+            self?.getRecipes(username: user.username)
         })
+    }
+    private func getRecipes (username: String) {
+        firebaseManager.getAllRecipesForUser(username: username) {[weak self] result in
+            guard let strongSelf = self else { return }
+
+            switch result {
+            case .success(let recipes):
+                strongSelf.recipes = recipes
+                strongSelf.delegate?.updateUser(viewModel: strongSelf)
+
+            case .failure(let err):
+                print(err.localizedDescription)
+            }
+        }
     }
     private func fetchAllFollowing() {
         firebaseManager.fetchCurrentUser { [weak self] currentUser in
             guard let currentUser = currentUser else { return }
-            self?.firebaseManager.getAllFollowing(username: currentUser.username, completion: { [weak self] result in
-                guard let strongSelf = self else { return }
-                switch result {
-                case .success(let users):
-                    strongSelf.following = users
-                    strongSelf.delegate?.updateUser(viewModel: strongSelf)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            })
-
+            self?.getFollowing(username: currentUser.username)
         }
 
+    }
+    private func getFollowing(username: String) {
+        firebaseManager.getAllFollowing(username: username, completion: { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let users):
+                strongSelf.following = users
+                strongSelf.delegate?.updateUser(viewModel: strongSelf)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
     }
     private func fetchAllFollowers() {
         firebaseManager.fetchCurrentUser { [weak self] currentUser in
             guard let currentUser = currentUser else { return }
-            self?.firebaseManager.getAllFollowersForUser(username: currentUser.username, completion: { [weak self] result in
-                guard let strongSelf = self else { return }
-                switch result {
-                case .success(let users):
-                    strongSelf.followers = users
-                    strongSelf.delegate?.updateUser(viewModel: strongSelf)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            })
-
+            self?.getFollowers(username: currentUser.username)
         }
 
+    }
+    private func getFollowers(username: String) {
+        firebaseManager.getAllFollowersForUser(username: username, completion: { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let users):
+                strongSelf.followers = users
+                strongSelf.delegate?.updateUser(viewModel: strongSelf)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
     }
 }
 

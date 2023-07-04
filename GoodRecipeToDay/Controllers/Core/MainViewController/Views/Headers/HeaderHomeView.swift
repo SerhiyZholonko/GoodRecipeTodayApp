@@ -8,8 +8,14 @@
 import UIKit
 import SDWebImage
 
+protocol HeaderHomeViewDelegate: AnyObject {
+    func photoImageViewTapped()
+}
+
 class HeaderHomeView: UIView {
   
+    weak var delegate: HeaderHomeViewDelegate?
+    
     let helloLabel: UILabel = {
        let label = UILabel()
        
@@ -43,6 +49,9 @@ class HeaderHomeView: UIView {
         addSubview(questionLabel)
         addSubview(photoImageView)
         addConstraints()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(photoImageViewTapped))
+        photoImageView.isUserInteractionEnabled = true
+        photoImageView.addGestureRecognizer(tapGesture)
        
     }
     
@@ -80,5 +89,8 @@ class HeaderHomeView: UIView {
             questionLabel.rightAnchor.constraint(equalTo: photoImageView.leftAnchor, constant: -10),
         ]
         NSLayoutConstraint.activate(questionLabelConstraints)
+    }
+    @objc private func photoImageViewTapped() {
+        delegate?.photoImageViewTapped()
     }
 }

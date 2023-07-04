@@ -17,7 +17,8 @@ final class FavoriteViewControllerViewModel {
     weak var delegate: FavoriteViewControllerViewModelDelegate?
     let coredataManager = CoreDataManager.shared
     let firebaseManager = FirebaseManager.shared
-    let title = "here are the best recipes"
+    let titleFaworiteRecipes = "here are the best recipes"
+    let titleFolowers = "followers"
     var recipes: [CDRecipe] = [] {
         didSet {
             print(recipes.count)

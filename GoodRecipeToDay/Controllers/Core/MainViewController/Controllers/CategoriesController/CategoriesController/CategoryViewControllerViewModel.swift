@@ -52,7 +52,9 @@ final class CategoryViewControllerViewModel {
 
             switch result {
             case .success(let recipes):
-                strongSelf.dataSource = recipes.sorted  {
+                let filteredRecipes = recipes.filter { $0.category == strongSelf.category.rawValue }
+
+                strongSelf.dataSource = filteredRecipes.sorted  {
                     strongSelf.isRevers ? $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date()) :
                     $0.createdAt ?? Timestamp(date: Date()) < $1.createdAt ?? Timestamp(date: Date())
                 }

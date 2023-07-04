@@ -12,6 +12,9 @@ class FavoriteViewController: UIViewController {
     
     var viewModel = FavoriteViewControllerViewModel()
     
+    // Search Controller
+    let searchController = UISearchController(searchResultsController: nil)
+    
     lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl()
         segmentedControl.insertSegment(withTitle: "Favorites", at: 0, animated: false)
@@ -40,7 +43,7 @@ class FavoriteViewController: UIViewController {
     }()
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = self.viewModel.title
+        label.text = self.viewModel.titleFaworiteRecipes
         label.numberOfLines = 2
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 30)
@@ -51,7 +54,6 @@ class FavoriteViewController: UIViewController {
        let view = UIView()
         view.backgroundColor = .white
         view.isHidden = true
-
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -61,6 +63,7 @@ class FavoriteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBasicUI()
+        configureSearchController()
         view.addSubview(segmentedControl)
         view.addSubview(collectionView)
         view.addSubview(subscriptionsView)
@@ -72,14 +75,24 @@ class FavoriteViewController: UIViewController {
         viewModel.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(reloadFavoriteCollection), name: .reloadFavoriteController, object: nil)
         reloadFavoriteCollection()
+
     }
   
     //MARK: - Functions
     private func setupBasicUI() {
         view.backgroundColor = .systemBackground
         navigationItem.titleView = titleLabel
+//        navigationItem.hidesSearchBarWhenScrolling = true
+        searchController.searchBar.alpha = 0
     }
-  
+    private func configureSearchController() {
+        // Configure Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
     private func addConstraints() {
         let segmentedControlConstraints = [
             segmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -117,12 +130,17 @@ class FavoriteViewController: UIViewController {
     @objc private func segmentedControlValueChanged() {
         if segmentedControl.selectedSegmentIndex == 0 {
             subscriptionsView.isHidden = true
-           
+            searchController.searchBar.alpha = 0
+            titleLabel.text = viewModel.titleFaworiteRecipes
+            navigationItem.titleView = titleLabel
             subViewController.emptyUsersLabel.isHidden = true
             emptyRecipesLabel.isHidden = true
             collectionView.reloadData()
 
         } else {
+            searchController.searchBar.alpha = 1
+            titleLabel.text = viewModel.titleFolowers
+            navigationItem.titleView = titleLabel
             subscriptionsView.isHidden = false
             subViewController.emptyUsersLabel.isHidden = true
             emptyRecipesLabel.isHidden = true
@@ -158,6 +176,22 @@ extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewData
 }
 
 
+extension FavoriteViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            let viewModel = subViewController.viewModel
+            
+            if searchText.isEmpty {
+                viewModel.filteredData = viewModel.followers
+            } else {
+                viewModel.filteredData = viewModel.followers.filter { $0.contains(filter: searchText) }
+            }
+            
+            subViewController.collectionView.reloadData()
+        }
+    }
+
+}
 
 //MARK: - delegate
 extension FavoriteViewController: FavoriteCollectionViewCellDelegate {

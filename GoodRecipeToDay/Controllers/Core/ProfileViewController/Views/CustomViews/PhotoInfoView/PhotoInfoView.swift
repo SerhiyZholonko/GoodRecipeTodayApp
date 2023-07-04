@@ -8,6 +8,12 @@ import UIKit
 import SDWebImage
 
 
+enum TypePhotoInfoView {
+    case profile
+    case followers
+    case menu
+}
+
 protocol PhotoInfoViewDelegate: AnyObject {
     func setPhotoImageView()
     func reloadPhotoInfoView()
@@ -38,30 +44,33 @@ class PhotoInfoView: UIView {
     let photoImageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .systemGray
-//        iv.image = UIImage(named: "chef")
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
     lazy var editImageButton: UIButton = {
         let button = UIButton(type: .system)
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .default)
-        button.setImage(UIImage(systemName: "plus", withConfiguration: imageConfig), for: .normal)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: type == .followers ? 14 : 20, weight: .bold, scale: .default)
+        button.setImage(UIImage(systemName: type == .followers ? "envelope" : "plus", withConfiguration: imageConfig), for: .normal)
         button.tintColor = .systemGreen
         button.backgroundColor = .systemBackground
         button.layer.cornerRadius = 25 / 2
         button.layer.borderColor = UIColor.label.cgColor
         button.layer.borderWidth = 1
+        button.isHidden = type == .menu ? true : false
+
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
+        button.addTarget(self, action:  type == .followers ? #selector(didTapEmail) : #selector(didTapEdit), for: .touchUpInside)
         return button
     }()
-    let nameView: TitleTextView = {
+    lazy var nameView: TitleTextView = {
         let view = TitleTextView()
-        
+        view.titleLabel.isHidden = type == .menu ? true : false
+        view.textLabel.textAlignment = type == .menu ? .center : .left
         return view
     }()
-    let emailView: TitleTextView = {
+    lazy var emailView: TitleTextView = {
         let view = TitleTextView()
+        view.isHidden = type == .menu ? true : false
         return view
     }()
     
@@ -86,13 +95,18 @@ class PhotoInfoView: UIView {
             followersView,
             followingView
         ])
+        sv.isHidden = type == .menu
         sv.axis = .horizontal
         sv.distribution = .fillProportionally
         sv.translatesAutoresizingMaskIntoConstraints = false
         return sv
     }()
+    private let type: TypePhotoInfoView
+    private let user: GUser?
     // MARK: - Init
-    override init(frame: CGRect) {
+    init(frame: CGRect, type: TypePhotoInfoView = .profile, user: GUser? = nil) {
+        self.type = type
+        self.user = user
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(photoImageView)
@@ -102,7 +116,7 @@ class PhotoInfoView: UIView {
         addSubview(bottomViewStack)
         addConstraints()
         
-        configure(viewModel: PhotoInfoViewViewModel())
+        configure(viewModel: PhotoInfoViewViewModel(type: type, user: user))
         viewModel?.delegate = self
         
     }
@@ -117,8 +131,8 @@ class PhotoInfoView: UIView {
     }
     private func addConstraints() {
         let photoImageViewConstraints = [
-            photoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.25),
-            photoImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 0.25),
+            photoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: type == .menu ? 0.3 : 0.25),
+            photoImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: type == .menu ? 0.3 : 0.25),
             photoImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             photoImageView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ]
@@ -132,21 +146,21 @@ class PhotoInfoView: UIView {
         NSLayoutConstraint.activate(editImageButtonConstraints)
         let nameViewConstraints = [
             nameView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: 10),
-            nameView.leftAnchor.constraint(equalTo: leftAnchor, constant: 40),
-            nameView.rightAnchor.constraint(equalTo: rightAnchor, constant: -40),
+            nameView.leftAnchor.constraint(equalTo: leftAnchor, constant: type == .menu ? 0 : 40),
+            nameView.rightAnchor.constraint(equalTo: rightAnchor, constant:  type == .menu ? 0 : -40),
             nameView.heightAnchor.constraint(equalToConstant: 30)
         ]
         NSLayoutConstraint.activate(nameViewConstraints)
         
         let emailViewConstaints = [
             emailView.topAnchor.constraint(equalTo: nameView.bottomAnchor),
-            emailView.leftAnchor.constraint(equalTo: leftAnchor, constant: 40),
-            emailView.rightAnchor.constraint(equalTo: rightAnchor, constant: -40),
+            emailView.leftAnchor.constraint(equalTo: leftAnchor, constant: type == .menu ? 0 : 40),
+            emailView.rightAnchor.constraint(equalTo: rightAnchor, constant: type == .menu ? 0 : -40),
             emailView.heightAnchor.constraint(equalToConstant: 30)
         ]
         NSLayoutConstraint.activate(emailViewConstaints)
         let bottomViewStackConstraints = [
-            bottomViewStack.topAnchor.constraint(equalTo: emailView.bottomAnchor),
+            bottomViewStack.topAnchor.constraint(equalTo:  emailView.bottomAnchor, constant:  type == .menu ? -40 : 0),
             bottomViewStack.leftAnchor.constraint(equalTo: leftAnchor),
             bottomViewStack.rightAnchor.constraint(equalTo: rightAnchor),
             bottomViewStack.heightAnchor.constraint(equalToConstant: 60)
@@ -165,6 +179,9 @@ class PhotoInfoView: UIView {
     }
     @objc private func didTapEdit() {
         delegate?.setPhotoImageView()
+    }
+    @objc private func didTapEmail() {
+        print("Email")
     }
 }
 

@@ -17,10 +17,13 @@ final class SubViewControllerViewModel {
     
     private let firebaseManager = FirebaseManager.shared
     var followers: [GUser] = [] 
+    var filteredData: [GUser] = []
+
     var user: GUser?
     //MARK: - Init
     init() {
         getAllFollowersForUser()
+        
     }
     //MARK: - Functions
     public func getUser(indexPath: IndexPath) -> GUser{
