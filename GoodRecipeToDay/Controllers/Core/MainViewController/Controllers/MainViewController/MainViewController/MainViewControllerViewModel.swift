@@ -14,20 +14,7 @@ enum SectionType {
     case oftheWeek(viewModel: [WeekViewCellViewModel])
 }
 
-//protocol MainViewControllerViewModelProtocol: AnyObject {
-//    var sections: [SectionType] { get }
-//    var title: String { get }
-//    var completion: ((GUser?) -> Void)? {get set}
-//     init()
-//    var delegate: MainViewControllerViewModelDelegate? {get set}
-//     func uploadRecipes()
-//    func getingRecipes()
-//    func setUser(complition: @escaping (GUser?) -> Void )
-//
-//     func createCategorySectionLayout() -> NSCollectionLayoutSection
-//     func createRecomendSectionLayout() -> NSCollectionLayoutSection
-//     func createOfTheWeekSectionLayout() -> NSCollectionLayoutSection
-//}
+
 protocol MainViewControllerViewModelDelegate: AnyObject {
     func reloadCollection()
 }

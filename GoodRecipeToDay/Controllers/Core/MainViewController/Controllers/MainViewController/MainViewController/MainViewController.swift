@@ -7,7 +7,9 @@
 
 import UIKit
 protocol MainViewControllerDelegate: AnyObject {
+    func touchDisMiss()
     func didTapMenuButton()
+    func updateImageInMenu()
 }
 
 final class MainViewController: UIViewController {
@@ -15,6 +17,17 @@ final class MainViewController: UIViewController {
     weak var delegate: MainViewControllerDelegate?
     
     var viewModel: MainViewControllerViewModel
+    lazy var darkView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black.withAlphaComponent(0.2)
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDarkViewTap(_:)))
+        view.addGestureRecognizer(tapGesture)
+
+        return view
+    }()
     var  headerView: HeaderHomeView
     lazy var searchView: MainSearchView = {
        let view = MainSearchView()
@@ -50,6 +63,7 @@ final class MainViewController: UIViewController {
         view.addSubview(searchView)
         view.addSubview(detailView)
         view.addSubview(searchCollectionView)
+        view.addSubview(darkView)
         addConstraints()
         detailView.collectionView?.delegate = self
         detailView.collectionView?.dataSource = self
@@ -97,9 +111,24 @@ final class MainViewController: UIViewController {
             searchCollectionView.bottomAnchor.constraint(equalTo: detailView.bottomAnchor)
         ]
         NSLayoutConstraint.activate(searchCollectionViewConstraints)
+        let darkViewConstraints = [
+            darkView.topAnchor.constraint(equalTo: view.topAnchor),
+            darkView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            darkView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            darkView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        ]
+        NSLayoutConstraint.activate(darkViewConstraints)
+        
+    }
+    @objc private func handleDarkViewTap(_ gesture: UITapGestureRecognizer) {
+        // Handle the tap gesture here
+        // For example, you can toggle the visibility of the darkView or perform any other desired action
+//        darkView.isHidden = true
+        delegate?.touchDisMiss()
     }
     @objc func reloadDataMainController() {
             self.headerView.configure(viewModel: self.viewModel)
+        delegate?.updateImageInMenu()
     }
     @objc func handleTapGestureResignFirstResponder() {
         searchView.searchTextField.resignFirstResponder()

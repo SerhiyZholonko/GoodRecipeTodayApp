@@ -18,7 +18,6 @@ class HeaderHomeView: UIView {
     
     let helloLabel: UILabel = {
        let label = UILabel()
-       
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

@@ -17,7 +17,7 @@ class TextFildButtonView: UIView {
     
     weak var delegate: TextFildButtonViewDelegate?
     
-    private lazy var textField: UITextField = {
+     lazy var textField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Message..."
         tf.backgroundColor = .systemGray3

@@ -9,18 +9,32 @@ import Foundation
 
 
 import UIKit
+import SDWebImage
+
+protocol MenuViewControllerDelegate: AnyObject {
+    func configureHeaderView()
+}
 
 class MenuViewController: UIViewController {
     //MARK: - Properties
-    let headerView: PhotoInfoView = {
-        let headerView = PhotoInfoView(frame: .zero, type: .menu)
+    weak var delegate: MenuViewControllerDelegate?
+    
+    var viewModel = MenuViewControllerViewModel()
+
+    let firebaseManager = FirebaseManager.shared
+    lazy var headerView: PhotoInfoView = {
+        let headerView = PhotoInfoView(frame: .zero, type: .menu, user: viewModel.user)
         return headerView
-        
     }()
+
     lazy var  messageView: ImageTextView = {
         let itv = ImageTextView()
         itv.configure(viewModel: ImageTextViewViewModel(imageName: "email", titleText: "Messges"))
         itv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapMessage(_:)))
+        itv.addGestureRecognizer(tapGesture)
+        itv.isUserInteractionEnabled = true
+
         itv.translatesAutoresizingMaskIntoConstraints = false
         return itv
     }()
@@ -60,19 +74,33 @@ class MenuViewController: UIViewController {
         return stack
     }()
     //MARK: - Init
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .secondarySystemBackground
+       
         view.addSubview(headerView)
         view.addSubview(menuStack)
         addConstraints()
+        
+        
     }
     //MARK: - Functions
+    public func setupImageAndName() {
+        headerView.configure(viewModel: PhotoInfoViewViewModel(type: .menu, user: viewModel.user))
+    }
     private func addConstraints() {
         let headerViewConstraints = [
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             headerView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 120),
-            headerView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20),
+            headerView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -40),
             headerView.heightAnchor.constraint(equalToConstant: 150)
         ]
         NSLayoutConstraint.activate(headerViewConstraints)
@@ -83,7 +111,25 @@ class MenuViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(menuStackConstraints)
     }
-    
-
+  
+    @objc func handleTapMessage(_ gesture: UITapGestureRecognizer) {
+        // Action to be performed when the gesture is recognized
+        let vc = SenderViewController()
+       let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+    }
 
 }
+
+
+//delegate
+
+extension MenuViewController: MenuViewControllerViewModelDelegate {
+    func updateViewModel(viewModel: MenuViewControllerViewModel) {
+        self.viewModel = viewModel
+    }
+}
+
+
+

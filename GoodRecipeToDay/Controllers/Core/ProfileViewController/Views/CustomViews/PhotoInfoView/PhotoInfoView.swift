@@ -17,6 +17,7 @@ enum TypePhotoInfoView {
 protocol PhotoInfoViewDelegate: AnyObject {
     func setPhotoImageView()
     func reloadPhotoInfoView()
+    func sendMessges()
 }
 
 class PhotoInfoView: UIView {
@@ -128,6 +129,7 @@ class PhotoInfoView: UIView {
     // MARK: - Functions
     public func configure(viewModel: PhotoInfoViewViewModel) {
         self.viewModel = viewModel
+        self.viewModel?.delegate = self
     }
     private func addConstraints() {
         let photoImageViewConstraints = [
@@ -182,6 +184,7 @@ class PhotoInfoView: UIView {
     }
     @objc private func didTapEmail() {
         print("Email")
+        delegate?.sendMessges()
     }
 }
 

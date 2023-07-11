@@ -27,10 +27,11 @@ final class SubViewControllerViewModel {
     }
     //MARK: - Functions
     public func getUser(indexPath: IndexPath) -> GUser{
-       return self.followers[indexPath.item]
+            return self.followers[indexPath.item]
     }
 
    public  func getAllFollowersForUser() {
+       
         firebaseManager.fetchCurrentUser { [weak self] user in
             guard let user = user else {
                 print("No user")

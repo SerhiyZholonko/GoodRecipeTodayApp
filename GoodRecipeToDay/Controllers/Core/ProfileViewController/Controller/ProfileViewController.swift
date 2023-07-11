@@ -222,6 +222,8 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
 // MARK: - delegate
 
 extension ProfileViewController: PhotoInfoViewDelegate {
+    func sendMessges() {}
+    
     func reloadPhotoInfoView() {
 //        photoInfoView.configure(viewModel: PhotoInfoViewViewModel())
     }

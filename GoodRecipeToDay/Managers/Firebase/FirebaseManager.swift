@@ -27,11 +27,7 @@ class FirebaseManager {
         return db.collection("users")
     }
     
-    var mainUser: GUser? {
-        didSet {
-            print("DSDSAFSF: ", mainUser?.username)
-        }
-    }
+    var mainUser: GUser? 
     func curenUser() -> Firebase.User? {
         return auth.currentUser
     }
@@ -631,15 +627,12 @@ class FirebaseManager {
                 completion(nil)
                 return
             }
-            print(users.count)
 
             guard let currentUser = Auth.auth().currentUser else {
                 print("No current user")
                 completion(nil)
                 return
             }
-            print(currentUser.uid)
-            print(users.count)
             let uid = currentUser.uid
             for user in users {
                 if user.uid == uid {
@@ -672,7 +665,88 @@ class FirebaseManager {
             completion(users, nil)
         }
     }
+    //MARK: - Messages
     
+    func updateMessageForUser(username: String, currentUsername: String, sender: String, chatMessage: String, completion: @escaping (Error?) -> Void) {
+        let db = Firestore.firestore()
+        let currentUserDocumentRef = db.collection("users").document(username).collection("messages").document(currentUsername)
+        print("Sender: ", currentUsername)
+        currentUserDocumentRef.getDocument { (document, error) in
+            if let document = document {
+                if var existingChats = document.data()?["messages"] as? [[String: Any]] {
+                    // If "messages" field exists, update the array
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()), username: sender)
+                    existingChats.append(newChat.toDictionary())
+
+                    currentUserDocumentRef.updateData(["messages": existingChats]) { error in
+                        if let error = error {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                } else {
+                    // Create a new document
+                    let newChat = Chat(title: chatMessage, createdAt: Timestamp(date: Date()), username: currentUsername)
+                    let newData = ["messages": [newChat.toDictionary()]]
+
+                    currentUserDocumentRef.setData(newData) { error in
+                        if let error = error {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                }
+            } else {
+                completion(error)
+            }
+        }
+    }
+
+    func getMessageForUser(currentUser: String, for username: String, completion: @escaping ([Chat]?, Error?) -> Void) {
+        let db = Firestore.firestore()
+        let messagesCollectionRef = db.collection("users").document(currentUser).collection("messages")
+        
+        let usernameDocumentRef = messagesCollectionRef.document(username)
+        
+        usernameDocumentRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let chatsData = document.data()?["messages"] as? [[String: Any]] {
+                    // Convert the dictionary data to an array of Chat objects
+                    let chats = chatsData.compactMap { Chat(dict: $0) }
+                    completion(chats, nil)
+                } else {
+                    // No chats found
+                    completion([], nil)
+                }
+            } else if let error = error {
+                // Error occurred while fetching the document
+                completion(nil, error)
+            } else {
+                // Document does not exist
+                completion([], nil)
+            }
+        }
+    }
+    func getAllUsernamesMessages(currentUser: String, completion: @escaping ([String]?, Error?) -> Void) {
+        let db = Firestore.firestore()
+        let messagesCollectionRef = db.collection("users").document(currentUser).collection("messages")
+        
+        messagesCollectionRef.getDocuments { (querySnapshot, error) in
+            if let error = error {
+                // Error occurred while fetching the documents
+                completion(nil, error)
+            } else {
+                var usernames: [String] = []
+                for document in querySnapshot?.documents ?? [] {
+                    let username = document.documentID
+                    usernames.append(username)
+                }
+                completion(usernames, nil)
+            }
+        }
+    }
     //MARK: - Chats
     func updateRecipeMainForChat(username: String, currentUsername: String, recipeID: String, chatMessage: String, recipe: Recipe, completion: @escaping (Error?) -> Void) {
         let recipeDocumentRef = database.collection("recipes").document(recipeID)
@@ -806,8 +880,6 @@ extension FirebaseManager {
                         completion(error)
                         return
                     }
-//                    let user = GUser(uid: uid, email: email, username: username)
-//                    self?.currentUser = user
                     completion(nil)
                 }
             }

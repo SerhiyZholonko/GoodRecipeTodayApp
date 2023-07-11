@@ -26,6 +26,7 @@ final class UserViewControllerViewModel {
     }
     public var recipes: [Recipe] = []
     private let user: GUser
+    private lazy var currentUser: GUser? = firebaseManager.mainUser
     //MARK: - Init
     init(user: GUser) {
         self.user = user
@@ -34,6 +35,23 @@ final class UserViewControllerViewModel {
     //MARK: - Functions
     public func getRecipe(indexPath: IndexPath) -> Recipe {
         return self.recipes[indexPath.item]
+    }
+    public func saveMessage(message: String) {
+        guard let currentUser = currentUser else { return }
+        firebaseManager.updateMessageForUser(username: user.username, currentUsername: currentUser.username, sender: currentUser.username, chatMessage: message) { error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("Succussfully, saved message")
+            }
+        }
+        firebaseManager.updateMessageForUser(username: currentUser.username, currentUsername: user.username, sender: currentUser.username, chatMessage: message) { error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("Succussfully, saved message")
+            }
+        }
     }
     private func configure() {
         fetchCurrentUserRecipe()

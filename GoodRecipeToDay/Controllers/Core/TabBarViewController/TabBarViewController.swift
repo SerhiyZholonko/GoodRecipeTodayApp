@@ -43,7 +43,7 @@ class TabBarViewController: RecipeTabBar {
     //MARK: - Lovecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        isShowAuthController()
+//        isShowAuthController()
         favoriteController = UINavigationController(rootViewController: FavoriteViewController())
         profileViewController = UINavigationController(rootViewController: ProfileViewController())
         viewDidLoad()
@@ -52,7 +52,7 @@ class TabBarViewController: RecipeTabBar {
         super.viewDidLoad()
         favoriteController.viewDidLoad()
         
-        setupObserver()
+//        setupObserver()
         view.addSubview(addButton)
         setControllers()
         viewControllers = [
@@ -90,28 +90,28 @@ class TabBarViewController: RecipeTabBar {
         ]
         NSLayoutConstraint.activate(addButtonConstraints)
     }
-    private func setupObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didSignUp), name: .signUp, object: nil)
-    }
-    private func isShowAuthController() {
-
-        if viewModel.isAuth() {
-            let vc = AuthViewController()
-            vc.delegate = self
-            let navVC = UINavigationController(rootViewController: vc)
-            navVC.modalPresentationStyle = .fullScreen
-            self.present(navVC, animated: true)
-        }
-    }
+//    private func setupObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(didSignUp), name: .signUp, object: nil)
+//    }
+//    private func isShowAuthController() {
+//
+//        if viewModel.isAuth() {
+//            let vc = AuthViewController()
+//            vc.delegate = self
+//            let navVC = UINavigationController(rootViewController: vc)
+//            navVC.modalPresentationStyle = .fullScreen
+//            self.present(navVC, animated: true)
+//        }
+//    }
     @objc private func didTapAdd() {
         let addViewController = AddViewController()
         addViewController.modalTransitionStyle = .coverVertical
         addViewController.modalPresentationStyle = .fullScreen
         self.present(addViewController, animated: true)
     }
-    @objc func didSignUp(){
-        isShowAuthController()
-    }
+//    @objc func didSignUp(){
+//        isShowAuthController()
+//    }
     
     
     // behavioer for button
@@ -133,16 +133,16 @@ class TabBarViewController: RecipeTabBar {
 
 //MARK: - AuthViewControllerDelegate
 
-extension TabBarViewController: AuthViewControllerDelegate {
-    func didSuccess(isAuth: Bool) {
-        if isAuth {
-            
-            dismiss(animated: true)
-        }
-    }
-    
-    
-}
+//extension TabBarViewController: AuthViewControllerDelegate {
+//    func didSuccess(isAuth: Bool) {
+//        if isAuth {
+//            
+//            dismiss(animated: true)
+//        }
+//    }
+//    
+//    
+//}
 
 
 

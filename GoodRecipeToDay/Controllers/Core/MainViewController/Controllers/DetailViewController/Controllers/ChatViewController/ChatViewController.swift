@@ -158,13 +158,6 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 
-
-//     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//         return UITableView.automaticDimension
-//     }
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 100
-//    }
     
 }
 
@@ -202,8 +195,5 @@ extension ChatViewController: ChatTableViewCellDelegate {
         }
 
     }
-//    func reloadTableView() {
-//        delegate?.reloadVM()
-//        chatTableView.reloadData()
-//    }
+
 }

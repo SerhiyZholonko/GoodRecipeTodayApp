@@ -11,6 +11,7 @@ class SubViewController: UIViewController {
     //MARK: - Properties
     var viewModel = SubViewControllerViewModel() {
         didSet {
+            viewModel.filteredData = viewModel.followers
             collectionView.reloadData()
         }
     }
@@ -75,8 +76,10 @@ extension SubViewController: UICollectionViewDataSource, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SubCollectionViewCell.identifier, for: indexPath) as? SubCollectionViewCell else { return UICollectionViewCell() }
         cell.delegate = self
-        let user = viewModel.getUser(indexPath: indexPath)
-        cell.configure(viewModel: SubCollectionViewCellViewModel(user: user))
+        if !viewModel.followers.isEmpty{
+            let user = viewModel.getUser(indexPath: indexPath)
+            cell.configure(viewModel: SubCollectionViewCellViewModel(user: user))
+        }
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -94,6 +97,7 @@ extension SubViewController: UICollectionViewDataSource, UICollectionViewDelegat
 extension SubViewController: SubCollectionViewCellDelegate {
     func reloadTableView() {
         viewModel.getAllFollowersForUser()
+      
     }
 }
 
