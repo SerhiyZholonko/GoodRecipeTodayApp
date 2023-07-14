@@ -36,8 +36,7 @@ class InstructionTableViewCell: UITableViewCell {
         backgroundColor = .clear
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-        instructionImageView.isUserInteractionEnabled = true
-        instructionImageView.addGestureRecognizer(tapGestureRecognizer)
+        addGestureRecognizer(tapGestureRecognizer)
         contentView.addSubview(instructionImageView)
         contentView.addSubview(instructionLabel)
         addConstraints()

@@ -52,7 +52,6 @@ final class ProfileViewControllerViewModel {
     //MARK: - Functions
     public func signOut() {
         firebaseManager.signOut()
-            NotificationCenter.default.post(name: .signUp, object: nil, userInfo: nil)
     }
      public func configure() {
          fetchCurrentUserRecipe()

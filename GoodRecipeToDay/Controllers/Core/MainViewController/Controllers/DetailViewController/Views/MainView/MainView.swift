@@ -6,7 +6,7 @@ import SDWebImage
 import Cosmos
 
 protocol MainViewDelegate: AnyObject {
-    func presentImage(viewModel: InstructionTableViewCellViewModel)
+    func presentInstruction(step:[Step], indexPath: IndexPath)
     func reloadChatView()
     func reloadVM()
 }
@@ -312,7 +312,7 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
             cell.delegate = self
             guard let viewModel = viewModel else { return UITableViewCell() }
             let instructionStep = viewModel.getInstruction(indexPath: indexPath)
-            cell.configure(viewModel: InstructionTableViewCellViewModel(step: instructionStep))
+            cell.configure(viewModel: InstructionTableViewCellViewModel(step: instructionStep, indexPath: indexPath))
             return cell
         } else {
             return UITableViewCell()
@@ -352,7 +352,8 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
 
 extension MainView: InstructionTableViewCellDelegate {
     func showImage(viewModel: InstructionTableViewCellViewModel) {
-        delegate?.presentImage(viewModel: viewModel)
+        guard let mainViewModel = self.viewModel else { return }
+            delegate?.presentInstruction(step: mainViewModel.instruction, indexPath: viewModel.indexPath)
     }
 }
 extension MainView: UserViewDelegate {

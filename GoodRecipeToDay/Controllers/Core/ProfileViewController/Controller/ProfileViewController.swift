@@ -65,6 +65,7 @@ class ProfileViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         viewModel.delegate = self
+        
         photoInfoView.viewModel?.getUser()
         viewModel.configure()
     }
@@ -142,9 +143,8 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func didTappedSignOut() {
-        viewModel.signOut()
+        presentAlertOkCansel(massage: "Are you sure you want to sign out?")
         
-        tabBarController?.selectedIndex = 0
         
     }
     
@@ -159,7 +159,6 @@ class ProfileViewController: UIViewController {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
                 DispatchQueue.main.async {
                     self?.viewModel.getRecipeFromFollowers()
-                    print("Main recipe: ", self?.viewModel.recipes.count)
                 }
             }
         }
@@ -234,7 +233,14 @@ extension ProfileViewController: PhotoInfoViewDelegate {
         imagePicker.delegate = self
         present(imagePicker, animated: true, completion: nil)
     }
-    
+    func presentAlertOkCansel(massage: String) {
+        DispatchQueue.main.async {
+            let alertVC = AlertControllerOKCansel(viewModel: AlertControllerOKCanselViewModel(massageText: massage))
+            alertVC.modalTransitionStyle = .crossDissolve
+            alertVC.delegate = self
+            self.present(alertVC, animated: true)
+        }
+    }
     
 }
 
@@ -277,6 +283,21 @@ extension ProfileViewController: RecipeDetailViewControllerDelegate {
     
     func reloadCollectionView() {
         collectionView.reloadData()
+    }
+    
+    
+}
+
+
+
+extension ProfileViewController: AlertControllerOKCanselDelegate {
+    func didSingOut() {
+                viewModel.signOut()
+        NotificationCenter.default.post(name: .signUp, object: nil, userInfo: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.tabBarController?.selectedIndex = 0
+        }
+
     }
     
     

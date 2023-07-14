@@ -10,19 +10,37 @@ import UIKit
 import SDWebImage
 
 class PresentImageViewController: UIViewController {
+    
+    private var viewModel: PresentImageViewControllerViewModel? {
+        didSet {
+            guard let viewModel = viewModel else { return }
+            DispatchQueue.main.async {
+                self.currentImageView.sd_setImage(with: viewModel.imageUrl)
+                self.descriptionLabel.text = viewModel.description
+            }
+        }
+    }
+    private var barsStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        return sv
+    }()
     private lazy var closeButton: UIButton = {
         let button = UIButton(type: .close)
         button.addTarget(self, action: #selector(didTapDismiss), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    private let currentImageView: UIImageView = {
+    private lazy var currentImageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .green
+        iv.backgroundColor = .systemGray3
         iv.layer.cornerRadius = 20
         iv.layer.borderWidth = 2
         iv.layer.borderColor = UIColor.systemGray3.cgColor
         iv.clipsToBounds = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didChangeImage))
+        iv.addGestureRecognizer(tapGesture)
+        iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -53,6 +71,7 @@ class PresentImageViewController: UIViewController {
         view.addSubview(backgroundDescription)
         backgroundDescription.addSubview(descriptionLabel)
         addConstraints()
+        setupBarsStackView()
         view.backgroundColor = .clear
 
     }
@@ -60,9 +79,26 @@ class PresentImageViewController: UIViewController {
     // MARK: - Functions
     
     public func configure(viewModel: PresentImageViewControllerViewModel) {
-        DispatchQueue.main.async {
-            self.currentImageView.sd_setImage(with: viewModel.imageUrl)
-            self.descriptionLabel.text = viewModel.description
+        self.viewModel = viewModel
+    }
+    private func setupBarsStackView() {
+        view.addSubview(barsStackView)
+        
+        let barsStackViewconstraints = [
+            barsStackView.bottomAnchor.constraint(equalTo: currentImageView.bottomAnchor, constant: -10),
+            barsStackView.leftAnchor.constraint(equalTo: currentImageView.leftAnchor, constant: 8),
+            barsStackView.rightAnchor.constraint(equalTo: currentImageView.rightAnchor, constant: -8),
+            barsStackView.heightAnchor.constraint(equalToConstant: 4)
+        ]
+        NSLayoutConstraint.activate(barsStackViewconstraints)
+        
+        barsStackView.spacing = 4
+        barsStackView.distribution = .fillEqually
+        guard let viewModel = self.viewModel else { return }
+        (0..<viewModel.countInstruction() ).forEach { item in
+            let barView = UIView()
+            barView.backgroundColor = item == viewModel.item ? .white : .systemGray
+            barsStackView.addArrangedSubview(barView)
         }
     }
     private func setBlur() {
@@ -105,5 +141,17 @@ class PresentImageViewController: UIViewController {
     
     @objc private func didTapDismiss(_ sender: UITapGestureRecognizer) {
             dismiss(animated: true)
+    }
+    @objc private func didChangeImage(gesture: UITapGestureRecognizer) {
+        let tapLocation = gesture.location(in: nil)
+        let shouldAdvanceNextPhoto = tapLocation.x > currentImageView.frame.width / 2 ? true : false
+        
+        shouldAdvanceNextPhoto ? viewModel?.updateAddingIndexPath() : viewModel?.updateSubtractIndexPath()
+        
+        barsStackView.arrangedSubviews.forEach { v in
+            v.backgroundColor = .systemGray
+        }
+        guard let viewModel = viewModel else { return }
+        barsStackView.arrangedSubviews[viewModel.item].backgroundColor = .white
     }
 }

@@ -47,6 +47,7 @@
 		182926F42A3C6E8C00405B6B /* TextFildButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182926F32A3C6E8C00405B6B /* TextFildButtonView.swift */; };
 		182926F82A3C924900405B6B /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182926F72A3C924900405B6B /* ChatTableViewCell.swift */; };
 		182926FA2A3C925900405B6B /* ChatTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182926F92A3C925900405B6B /* ChatTableViewCellViewModel.swift */; };
+		182E84172A5D38F6003C5B76 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182E84162A5D38F6003C5B76 /* LaunchScreenView.swift */; };
 		183BDE432A51533000179A52 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183BDE422A51533000179A52 /* UserViewController.swift */; };
 		183BDE452A5153A100179A52 /* UserViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183BDE442A5153A100179A52 /* UserViewControllerViewModel.swift */; };
 		183EA6062A14A5C900ECE4E7 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 183EA6052A14A5C900ECE4E7 /* SDWebImage */; };
@@ -146,6 +147,8 @@
 		18CEEC0A2A19EE840019B11F /* InstructionTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CEEC092A19EE840019B11F /* InstructionTableViewCellViewModel.swift */; };
 		18CEEC0D2A1A4B860019B11F /* PresentImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CEEC0C2A1A4B860019B11F /* PresentImageViewController.swift */; };
 		18D1C4052A42C16400B32AC0 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D1C4042A42C16400B32AC0 /* credentials.plist */; };
+		18D266DC2A5E8A3C004CF417 /* AlertControllerOKCansel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D266DB2A5E8A3C004CF417 /* AlertControllerOKCansel.swift */; };
+		18D266DE2A5E8FD7004CF417 /* AlertControllerOKCanselViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D266DD2A5E8FD7004CF417 /* AlertControllerOKCanselViewModel.swift */; };
 		18D440212A36430E00311B6C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D440202A36430E00311B6C /* GoogleService-Info.plist */; };
 		18D440242A36452900311B6C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 18D440232A36452900311B6C /* GoogleSignIn */; };
 		18D440262A36452900311B6C /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 18D440252A36452900311B6C /* GoogleSignInSwift */; };
@@ -216,6 +219,7 @@
 		182926F32A3C6E8C00405B6B /* TextFildButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFildButtonView.swift; sourceTree = "<group>"; };
 		182926F72A3C924900405B6B /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		182926F92A3C925900405B6B /* ChatTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		182E84162A5D38F6003C5B76 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
 		183BDE422A51533000179A52 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		183BDE442A5153A100179A52 /* UserViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewControllerViewModel.swift; sourceTree = "<group>"; };
 		183EA60A2A14ED8F00ECE4E7 /* RecipeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewController.swift; sourceTree = "<group>"; };
@@ -312,6 +316,8 @@
 		18CEEC092A19EE840019B11F /* InstructionTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		18CEEC0C2A1A4B860019B11F /* PresentImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentImageViewController.swift; sourceTree = "<group>"; };
 		18D1C4042A42C16400B32AC0 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
+		18D266DB2A5E8A3C004CF417 /* AlertControllerOKCansel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllerOKCansel.swift; sourceTree = "<group>"; };
+		18D266DD2A5E8FD7004CF417 /* AlertControllerOKCanselViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllerOKCanselViewModel.swift; sourceTree = "<group>"; };
 		18D440202A36430E00311B6C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18D946AA2A0CE60E0008948F /* Extension+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Notification.swift"; sourceTree = "<group>"; };
 		18D9A5F52A2B07BB00649CFA /* TitleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTextView.swift; sourceTree = "<group>"; };
@@ -552,9 +558,9 @@
 		1817E0B12A0CD19400F23009 /* TabBarViewController */ = {
 			isa = PBXGroup;
 			children = (
+				182E84152A5D38C4003C5B76 /* Views */,
 				18C098D52A29B6680034A95E /* CustomTabBar */,
-				1816E70329FC0E9500A87487 /* TabBarViewController.swift */,
-				1817E0B22A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift */,
+				182E84142A5D38B0003C5B76 /* TabBarViewController */,
 			);
 			path = TabBarViewController;
 			sourceTree = "<group>";
@@ -594,6 +600,23 @@
 				182926F92A3C925900405B6B /* ChatTableViewCellViewModel.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		182E84142A5D38B0003C5B76 /* TabBarViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1816E70329FC0E9500A87487 /* TabBarViewController.swift */,
+				1817E0B22A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift */,
+			);
+			path = TabBarViewController;
+			sourceTree = "<group>";
+		};
+		182E84152A5D38C4003C5B76 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				182E84162A5D38F6003C5B76 /* LaunchScreenView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		183BDE402A51530200179A52 /* SubViewController */ = {
@@ -1274,6 +1297,7 @@
 		18CE673529FC268E0057BE58 /* ProfileViewController */ = {
 			isa = PBXGroup;
 			children = (
+				18D266DA2A5E8A06004CF417 /* Controllers */,
 				18C098D82A2A5B790034A95E /* Controller */,
 				18C098D92A2A5BAB0034A95E /* Views */,
 			);
@@ -1324,6 +1348,15 @@
 			children = (
 				18ABCED42A1B41EE00AD97A2 /* PresentImageViewController */,
 				182926EF2A3C5AD700405B6B /* ChatViewController */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		18D266DA2A5E8A06004CF417 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				18D266DB2A5E8A3C004CF417 /* AlertControllerOKCansel.swift */,
+				18D266DD2A5E8FD7004CF417 /* AlertControllerOKCanselViewModel.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1613,7 +1646,9 @@
 				18FFF1D42A2F5E5C004AE7B9 /* userView.swift in Sources */,
 				18A6DECF2A1F874E00EEFA76 /* MainSearchCollectionViewController.swift in Sources */,
 				1816E6F029FC0DE900A87487 /* AppDelegate.swift in Sources */,
+				18D266DE2A5E8FD7004CF417 /* AlertControllerOKCanselViewModel.swift in Sources */,
 				18C23E3429FD3A0F00B06C53 /* MainWeekHeaderView.swift in Sources */,
+				18D266DC2A5E8A3C004CF417 /* AlertControllerOKCansel.swift in Sources */,
 				182926F12A3C5AEB00405B6B /* ChatViewControllerViewModel.swift in Sources */,
 				187C070A2A53E63C00D9A570 /* ContentViewController.swift in Sources */,
 				180935CA2A20E2410062F1E9 /* ImageTextViewViewModel.swift in Sources */,
@@ -1679,6 +1714,7 @@
 				18C8C5C12A18F5E10078E4C3 /* IngredientTableViewCellViewModel.swift in Sources */,
 				18C5986829FE79DD001506D7 /* CategoryModel.swift in Sources */,
 				18538B6D2A34A4C100EF161F /* RecomendViewControllerViewModel.swift in Sources */,
+				182E84172A5D38F6003C5B76 /* LaunchScreenView.swift in Sources */,
 				18531B4E2A2314B600DAA0F9 /* InsetCollectionViewFlowLayout.swift in Sources */,
 				183EA6112A1525E700ECE4E7 /* MainView.swift in Sources */,
 				18A0A3BB2A0125D800DA6FAB /* LabelTextfieldView.swift in Sources */,

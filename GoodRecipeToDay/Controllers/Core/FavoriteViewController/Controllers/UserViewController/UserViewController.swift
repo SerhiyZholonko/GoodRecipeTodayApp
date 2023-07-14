@@ -281,6 +281,7 @@ extension UserViewController: TextFildButtonViewDelegate {
     func massageSended(massage: String) {
         viewModel.saveMessage(message: massage)
         sendTextView.endEditing(true)
+        darkView.isHidden = true
     }
 }
 

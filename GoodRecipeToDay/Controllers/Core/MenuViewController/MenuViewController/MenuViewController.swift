@@ -10,6 +10,7 @@ import Foundation
 
 import UIKit
 import SDWebImage
+import StoreKit
 
 protocol MenuViewControllerDelegate: AnyObject {
     func configureHeaderView()
@@ -20,13 +21,13 @@ class MenuViewController: UIViewController {
     weak var delegate: MenuViewControllerDelegate?
     
     var viewModel = MenuViewControllerViewModel()
-
+    
     let firebaseManager = FirebaseManager.shared
     lazy var headerView: PhotoInfoView = {
         let headerView = PhotoInfoView(frame: .zero, type: .menu, user: viewModel.user)
         return headerView
     }()
-
+    
     lazy var  messageView: ImageTextView = {
         let itv = ImageTextView()
         itv.configure(viewModel: ImageTextViewViewModel(imageName: "email", titleText: "Messges"))
@@ -34,7 +35,7 @@ class MenuViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapMessage(_:)))
         itv.addGestureRecognizer(tapGesture)
         itv.isUserInteractionEnabled = true
-
+        
         itv.translatesAutoresizingMaskIntoConstraints = false
         return itv
     }()
@@ -42,6 +43,8 @@ class MenuViewController: UIViewController {
         let itv = ImageTextView()
         itv.configure(viewModel: ImageTextViewViewModel(imageName: "star", titleText: "Rate Us"))
         itv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapRateUs(_:)))
+        itv.addGestureRecognizer(tapGesture)
         itv.translatesAutoresizingMaskIntoConstraints = false
         return itv
     }()
@@ -49,6 +52,9 @@ class MenuViewController: UIViewController {
         let itv = ImageTextView()
         itv.configure(viewModel: ImageTextViewViewModel(imageName: "share", titleText: "Share App"))
         itv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapShare(_:)))
+        itv.addGestureRecognizer(tapGesture)
         itv.translatesAutoresizingMaskIntoConstraints = false
         return itv
     }()
@@ -56,6 +62,8 @@ class MenuViewController: UIViewController {
         let itv = ImageTextView()
         itv.configure(viewModel: ImageTextViewViewModel(imageName: "contact-mail", titleText: "Contact Us"))
         itv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapContact(_:)))
+        itv.addGestureRecognizer(tapGesture)
         itv.translatesAutoresizingMaskIntoConstraints = false
         return itv
     }()
@@ -63,6 +71,8 @@ class MenuViewController: UIViewController {
         let itv = ImageTextView()
         itv.configure(viewModel: ImageTextViewViewModel(imageName: "privacy", titleText: "Privacy Policy"))
         itv.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapPrivacy(_:)))
+        itv.addGestureRecognizer(tapGesture)
         itv.translatesAutoresizingMaskIntoConstraints = false
         return itv
     }()
@@ -85,7 +95,7 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .secondarySystemBackground
-       
+        
         view.addSubview(headerView)
         view.addSubview(menuStack)
         addConstraints()
@@ -111,18 +121,51 @@ class MenuViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(menuStackConstraints)
     }
-  
+    
     @objc func handleTapMessage(_ gesture: UITapGestureRecognizer) {
         // Action to be performed when the gesture is recognized
         let vc = SenderViewController()
-       let navVC = UINavigationController(rootViewController: vc)
+        let navVC = UINavigationController(rootViewController: vc)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
     }
+    @objc func handleTapRateUs(_ gesture: UITapGestureRecognizer) {
 
+            if let windowScene = view.window?.windowScene{
+                SKStoreReviewController.requestReview(in: windowScene)
+            
+        }
+    }
+    
+    @objc func handleTapShare(_ gesture: UITapGestureRecognizer) {
+        UIGraphicsBeginImageContext(view.frame.size)
+             view.layer.render(in: UIGraphicsGetCurrentContext()!)
+             let image = UIGraphicsGetImageFromCurrentImageContext()
+             UIGraphicsEndImageContext()
+
+             let textToShare = "Check out my app"
+
+             if let myWebsite = URL(string: "http://itunes.apple.com/app/idXXXXXXXXX") {//Enter link to your app here
+                 let objectsToShare = [textToShare, myWebsite, image ?? #imageLiteral(resourceName: "app-logo")] as [Any]
+                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+
+                 //Excluded Activities
+                 activityVC.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.addToReadingList]
+           
+
+                 self.present(activityVC, animated: true, completion: nil)
+             }
+    }
+    @objc func handleTapContact(_ gesture: UITapGestureRecognizer) {
+
+       
+    }
+    @objc func handleTapPrivacy(_ gesture: UITapGestureRecognizer) {
+
+       
+    }
+    
 }
-
-
 //delegate
 
 extension MenuViewController: MenuViewControllerViewModelDelegate {

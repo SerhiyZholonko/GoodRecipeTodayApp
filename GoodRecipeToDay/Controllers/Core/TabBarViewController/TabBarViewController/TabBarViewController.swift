@@ -15,6 +15,11 @@ class TabBarViewController: RecipeTabBar {
     let firebaseManager = FirebaseManager.shared
     let viewModel = TabBarViewControllerViewModel()
     
+    let launchScreenView: LaunchScreenView = {
+      let view = LaunchScreenView()
+        view.isHidden = false
+        return view
+    }()
     lazy var addButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .white
@@ -34,7 +39,7 @@ class TabBarViewController: RecipeTabBar {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    var mainViewController = UINavigationController(rootViewController: ContentViewController())
+    var mainViewController = ContentViewController()
     let searchViewController =  UINavigationController(rootViewController: SearchViewController())
     let addViewController = AddViewController()
     var favoriteController = UINavigationController(rootViewController: FavoriteViewController())
@@ -43,7 +48,6 @@ class TabBarViewController: RecipeTabBar {
     //MARK: - Lovecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        isShowAuthController()
         favoriteController = UINavigationController(rootViewController: FavoriteViewController())
         profileViewController = UINavigationController(rootViewController: ProfileViewController())
         viewDidLoad()
@@ -52,7 +56,6 @@ class TabBarViewController: RecipeTabBar {
         super.viewDidLoad()
         favoriteController.viewDidLoad()
         
-//        setupObserver()
         view.addSubview(addButton)
         setControllers()
         viewControllers = [
@@ -62,7 +65,11 @@ class TabBarViewController: RecipeTabBar {
             favoriteController,
             profileViewController
         ]
+        view.addSubview(launchScreenView)
+
         addConstraints()
+        animateLaunchScreen()
+      
         
     }
     
@@ -89,30 +96,27 @@ class TabBarViewController: RecipeTabBar {
             addButton.heightAnchor.constraint(equalToConstant: 60)
         ]
         NSLayoutConstraint.activate(addButtonConstraints)
+        let launchScreenViewConstraints = [
+            launchScreenView.topAnchor.constraint(equalTo: view.topAnchor),
+            launchScreenView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            launchScreenView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            launchScreenView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(launchScreenViewConstraints)
+
     }
-//    private func setupObserver() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(didSignUp), name: .signUp, object: nil)
-//    }
-//    private func isShowAuthController() {
-//
-//        if viewModel.isAuth() {
-//            let vc = AuthViewController()
-//            vc.delegate = self
-//            let navVC = UINavigationController(rootViewController: vc)
-//            navVC.modalPresentationStyle = .fullScreen
-//            self.present(navVC, animated: true)
-//        }
-//    }
+    private func animateLaunchScreen() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.launchScreenView.isHidden = true
+        }
+    }
     @objc private func didTapAdd() {
         let addViewController = AddViewController()
         addViewController.modalTransitionStyle = .coverVertical
         addViewController.modalPresentationStyle = .fullScreen
         self.present(addViewController, animated: true)
     }
-//    @objc func didSignUp(){
-//        isShowAuthController()
-//    }
-    
+
     
     // behavioer for button
     @objc func buttonTouched() {
@@ -133,16 +137,7 @@ class TabBarViewController: RecipeTabBar {
 
 //MARK: - AuthViewControllerDelegate
 
-//extension TabBarViewController: AuthViewControllerDelegate {
-//    func didSuccess(isAuth: Bool) {
-//        if isAuth {
-//            
-//            dismiss(animated: true)
-//        }
-//    }
-//    
-//    
-//}
+
 
 
 

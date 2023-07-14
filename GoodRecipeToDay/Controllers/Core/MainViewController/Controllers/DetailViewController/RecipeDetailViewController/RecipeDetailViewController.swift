@@ -16,15 +16,10 @@ class RecipeDetailViewController: UIViewController {
     
     
     weak var delegate: RecipeDetailViewControllerDelegate?
-    var viewModel: RecipeDetailViewControllerViewModel {
-        didSet {
-//            favoriteButton.tintColor = viewModel.checkIsFavorite() ? .systemPink : .black
-
-        }
-    }
+    var viewModel: RecipeDetailViewControllerViewModel
     lazy var mainImageView: UIImageView = {
        let iv = UIImageView()
-//        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedMainImage)))
+
         iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
@@ -176,6 +171,13 @@ class RecipeDetailViewController: UIViewController {
 
 
 extension RecipeDetailViewController: MainViewDelegate {
+    func presentInstruction(step: [Step], indexPath: IndexPath) {
+        let vc = PresentImageViewController()
+        vc.modalPresentationStyle = .custom
+        vc.configure(viewModel: PresentImageViewControllerViewModel(step: step, indexPath: indexPath))
+        self.present(vc, animated: true)
+    }
+    
     func reloadVM() {
         delegate?.reloadVM()
     }
@@ -186,12 +188,7 @@ extension RecipeDetailViewController: MainViewDelegate {
         chatViewController.chatTableView.reloadData()
     }
     
-    func presentImage(viewModel: InstructionTableViewCellViewModel) {
-        let vc = PresentImageViewController()
-        vc.modalPresentationStyle = .custom
-        vc.configure(viewModel: PresentImageViewControllerViewModel(step: viewModel.instructionStep))
-        self.present(vc, animated: true)
-    }
+ 
 }
 
 

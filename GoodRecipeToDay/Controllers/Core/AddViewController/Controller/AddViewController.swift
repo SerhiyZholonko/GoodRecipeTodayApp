@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class AddViewController: UIViewController {
     //MARK: - Properties
@@ -291,11 +292,45 @@ class AddViewController: UIViewController {
         contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
     }
+//    @objc func didTapBestImageView() {
+//        let imagePicker = UIImagePickerController()
+//        imagePicker.delegate = self
+//        present(imagePicker, animated: true, completion: nil)
+//        isMainImage = true
+//    }
     @objc func didTapBestImageView() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        present(imagePicker, animated: true, completion: nil)
-        isMainImage = true
+        
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+            // Check if the device has a camera available
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)
+                self.isMainImage = true
+            } else {
+                // Camera not available, display an alert
+                let alert = UIAlertController(title: "Camera Unavailable", message: "Sorry, the camera is not available on this device.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { _ in
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
+            self.isMainImage = true
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        actionSheet.addAction(cameraAction)
+        actionSheet.addAction(photoLibraryAction)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true, completion: nil)
     }
     @objc private func didTappedAddInstruction() {
         viewModel.addOneInfredient()

@@ -19,8 +19,10 @@ struct InstructionTableViewCellViewModel {
     public var instructionStep: Step {
         return step
     }
+    public let indexPath: IndexPath
     private var step: Step
-    init(step: Step) {
+    init(step: Step, indexPath: IndexPath) {
         self.step = step
+        self.indexPath = indexPath
     }
 }
