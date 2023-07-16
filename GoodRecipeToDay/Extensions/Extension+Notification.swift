@@ -13,6 +13,7 @@ extension Notification.Name{
 
     static let authVCClose = Notification.Name("authVCClose")
     static let updateRecipes = Notification.Name("updateRecipes")
+    static let updateUsername = Notification.Name("updateUsername")
     static let reloadMainViewControlelr = Notification.Name("reloadMainViewControlelr")
     static let reloadFavoriteController = Notification.Name("reloadFavoriteController")
     static let reloadSearchController = Notification.Name("reloadSearchController")

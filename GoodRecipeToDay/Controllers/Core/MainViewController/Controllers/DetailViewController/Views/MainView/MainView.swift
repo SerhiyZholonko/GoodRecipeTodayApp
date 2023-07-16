@@ -9,6 +9,7 @@ protocol MainViewDelegate: AnyObject {
     func presentInstruction(step:[Step], indexPath: IndexPath)
     func reloadChatView()
     func reloadVM()
+    func changeSize()
 }
 
 class MainView: UIView {
@@ -28,9 +29,10 @@ class MainView: UIView {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
-    let topGayView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemGray
+    lazy var topGayView: TopGrayView = {
+        let view = TopGrayView()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -67,7 +69,6 @@ class MainView: UIView {
         // TODO: - get rate from server
         view.settings.starMargin = 3.3
         view.settings.fillMode = .precise
-//        view.text = "Rate me"
         view.didTouchCosmos = { [weak self] rating in
             let rateString = "You rate: \(rating.rounded(toDecimalPlaces: 1))"
             guard let strongSelf = self, let viewModel = strongSelf.viewModel else { return }
@@ -131,7 +132,6 @@ class MainView: UIView {
         backgroundColor = .systemBackground
         setupScrollView()
         setupContentView()
-        contentView.addSubview(topGayView)
         contentView.addSubview(segmentedControl)
         contentView.addSubview(rateView)
         contentView.addSubview(title)
@@ -141,6 +141,7 @@ class MainView: UIView {
         contentView.addSubview(ingredientTableView)
         contentView.addSubview(instructionTableView)
         contentView.addSubview(chatView)
+        contentView.addSubview(topGayView)
         addConstraints()
         calculateIngredientTableViewHeight()
         calculateInstructionTableViewHeight()
@@ -171,6 +172,7 @@ class MainView: UIView {
         calculateIngredientTableViewHeight()
         calculateInstructionTableViewHeight()
     }
+   
     private func setupScrollView() {
         addSubview(scrollView)
         NSLayoutConstraint.activate([
@@ -204,14 +206,14 @@ class MainView: UIView {
     }
     private func addConstraints() {
         let topGayViewConstraints = [
-            topGayView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            topGayView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            topGayView.widthAnchor.constraint(equalToConstant: 50),
-            topGayView.heightAnchor.constraint(equalToConstant: 3)
+            topGayView.topAnchor.constraint(equalTo: topAnchor),
+            topGayView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
+            topGayView.rightAnchor.constraint(equalTo: rightAnchor,constant: -20),
+            topGayView.heightAnchor.constraint(equalToConstant: 20)
         ]
         NSLayoutConstraint.activate(topGayViewConstraints)
         let segmentedControlConstraints = [
-            segmentedControl.topAnchor.constraint(equalTo: topGayView.bottomAnchor, constant: 20),
+            segmentedControl.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
             segmentedControl.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 40),
             segmentedControl.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -40),
             segmentedControl.heightAnchor.constraint(equalToConstant: 50)
@@ -288,6 +290,9 @@ class MainView: UIView {
 
             }
         }
+    }
+    @objc func handleTap(_ gesture: UITapGestureRecognizer) {
+        delegate?.changeSize()
     }
 }
 extension MainView: UITableViewDataSource, UITableViewDelegate {

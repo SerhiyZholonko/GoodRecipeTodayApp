@@ -15,7 +15,7 @@ class ProfileViewController: UIViewController {
     var viewModel = ProfileViewControllerViewModel()
     lazy var photoInfoView: PhotoInfoView = {
         let view = PhotoInfoView(frame: .zero, type: .profile)
-//        view.configure(viewModel: PhotoInfoViewViewModel(type: .profile))
+        view.editImageButton.isHidden = true
         view.delegate = self
         return view
     }()
@@ -49,6 +49,7 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
+    
     // MARK: - Livecycle
 
     override func viewDidLoad() {
@@ -59,7 +60,7 @@ class ProfileViewController: UIViewController {
         view.addSubview(segmentedControl)
         view.addSubview(collectionView)
         collectionView.addSubview(noRecipeLabel)
-        setupBasicUI()
+        setupBasicUI(isEdit: viewModel.isEdit)
         addConstraints()
         
         collectionView.dataSource = self
@@ -68,25 +69,41 @@ class ProfileViewController: UIViewController {
         
         photoInfoView.viewModel?.getUser()
         viewModel.configure()
+
     }
 
-    private func setupBasicUI() {
+    private func setupBasicUI(isEdit: Bool) {
         title = viewModel.title
         view.backgroundColor = .systemBackground
-        let barButtonItem = UIBarButtonItem(title: "LogOut", style: .plain, target: self, action: #selector(didTappedSignOut))
+        
+        let rightBarButtonItem = UIBarButtonItem(title: "LogOut", style: .plain, target: self, action: #selector(didTappedSignOut))
+        rightBarButtonItem.tintColor = UIColor.label
 
-        // Define the font attributes for the title text
-        let titleTextAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13) // Set the desired font size
+        let rightTitleTextAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)
         ]
-
-        // Set the title text attributes for the bar button item
-        barButtonItem.setTitleTextAttributes(titleTextAttributes, for: .normal)
-
-        // Assign the modified bar button item to the rightBarButtonItem of the navigation item
-        navigationItem.rightBarButtonItem = barButtonItem
+        
+        rightBarButtonItem.setTitleTextAttributes(rightTitleTextAttributes, for: .normal)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+        let leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(didTapEdit))
+        
+        let leftTitleTextAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)
+        ]
+        
+        if !isEdit {
+            leftBarButtonItem.tintColor = .red
+        } else {
+            leftBarButtonItem.tintColor = UIColor.label
+        }
+        
+        leftBarButtonItem.setTitleTextAttributes(leftTitleTextAttributes, for: .normal)
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+        
         navigationItem.rightBarButtonItem?.tintColor = UIColor.label
     }
+
 
     // MARK: - Functions
     
@@ -141,11 +158,43 @@ class ProfileViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(noRecipeLabelConstraints)
     }
-    
+    func showEditNameAlert() {
+        let alert = UIAlertController(title: "Edit Name", message: nil, preferredStyle: .alert)
+        alert.addTextField { [weak self] textField in
+            guard let strongSelf = self else { return }
+            textField.placeholder = "Enter new name"
+            textField.text = strongSelf.viewModel.username// Set the initial text if desired
+        }
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+            guard let textField = alert.textFields?.first,
+                  let newName = textField.text else {
+                return
+            }
+            
+            // Perform the necessary actions with the new name
+            self?.viewModel.updateName(newName)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+
+  
     @objc private func didTappedSignOut() {
         presentAlertOkCansel(massage: "Are you sure you want to sign out?")
         
         
+    }
+    @objc private func didTapEdit() {
+        viewModel.changeEdit()
+        setupBasicUI(isEdit: viewModel.isEdit)
+        photoInfoView.editImageButton.isHidden = viewModel.isEdit
+        photoInfoView.editNameButton.isHidden = viewModel.isEdit
     }
     
     @objc private func segmentedControlValueChanged() {
@@ -221,6 +270,10 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
 // MARK: - delegate
 
 extension ProfileViewController: PhotoInfoViewDelegate {
+    func editName() {
+        showEditNameAlert()
+    }
+    
     func sendMessges() {}
     
     func reloadPhotoInfoView() {
@@ -228,11 +281,34 @@ extension ProfileViewController: PhotoInfoViewDelegate {
     }
     
     func setPhotoImageView() {
-        
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        present(imagePicker, animated: true, completion: nil)
+
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Take Photo", style: .default) { _ in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)
+            } else {
+                // Camera not available
+                // Display an error message or alternative option
+            }
+        }
+        actionSheet.addAction(cameraAction)
+        
+        let photoLibraryAction = UIAlertAction(title: "Choose from Library", style: .default) { _ in
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+        actionSheet.addAction(photoLibraryAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true, completion: nil)
     }
+
     func presentAlertOkCansel(massage: String) {
         DispatchQueue.main.async {
             let alertVC = AlertControllerOKCansel(viewModel: AlertControllerOKCanselViewModel(massageText: massage))
@@ -270,6 +346,10 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 //MARK: - Delegate
 
 extension ProfileViewController: ProfileViewControllerViewModelDelegate {
+    func updateUsername() {
+        photoInfoView.viewModel?.getUser()
+    }
+    
     func updateRecipes() {
         collectionView.reloadData()
     }

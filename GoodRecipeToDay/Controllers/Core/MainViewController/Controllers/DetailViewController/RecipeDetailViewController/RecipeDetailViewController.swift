@@ -14,9 +14,12 @@ protocol RecipeDetailViewControllerDelegate: AnyObject {
 
 class RecipeDetailViewController: UIViewController {
     
-    
+    var mainViewTopConstraint: NSLayoutConstraint?
+
     weak var delegate: RecipeDetailViewControllerDelegate?
     var viewModel: RecipeDetailViewControllerViewModel
+    
+
     lazy var mainImageView: UIImageView = {
        let iv = UIImageView()
 
@@ -79,6 +82,7 @@ class RecipeDetailViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateCoredata), name: .didUpdateCoredata, object: nil)
         self.addChildViewController(chatViewController, to: mainView.chatView)
     }
+ 
 //MARK: - Functions
 
     private func calculateIngredientІackTableViewHeight() {
@@ -95,6 +99,16 @@ class RecipeDetailViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
+        // Create the constraint and assign it to mainViewTopConstraint
+           mainViewTopConstraint = mainView.topAnchor.constraint(equalTo: mainImageView.bottomAnchor, constant: -20)
+           
+           // Ensure the constraint is not nil
+           guard let constraint = mainViewTopConstraint else {
+               fatalError("Failed to create mainViewTopConstraint")
+           }
+           
+           // Activate the constraint
+           constraint.isActive = true
     }
     private func addConstraints() {
         let mainImageViewConstraints = [
@@ -121,14 +135,15 @@ class RecipeDetailViewController: UIViewController {
         NSLayoutConstraint.activate(favoriteButtonConstraints)
      
 
+        let mainViewTopConstraint = mainView.topAnchor.constraint(equalTo: mainImageView.bottomAnchor, constant: -20)
         let mainViewConstraints = [
-           
-            mainView.topAnchor.constraint(equalTo: mainImageView.bottomAnchor, constant: -20),
+            mainViewTopConstraint,
             mainView.leftAnchor.constraint(equalTo: view.leftAnchor),
             mainView.rightAnchor.constraint(equalTo: view.rightAnchor),
             mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ]
         NSLayoutConstraint.activate(mainViewConstraints)
+
     }
     @objc private func didTappedBack() {
         UIView.animate(withDuration: 0.5, delay: 0) {
@@ -171,6 +186,21 @@ class RecipeDetailViewController: UIViewController {
 
 
 extension RecipeDetailViewController: MainViewDelegate {
+    func changeSize() {
+        guard let mainViewTopConstraint = mainViewTopConstraint else { return }
+        if mainViewTopConstraint.constant == -20 {
+            self.mainViewTopConstraint!.constant = -80
+           } else {
+               self.mainViewTopConstraint!.constant = -20
+           }
+           
+           // Trigger layout updates
+           UIView.animate(withDuration: 0.3) {
+               self.view.layoutIfNeeded()
+           }
+    }
+    
+
     func presentInstruction(step: [Step], indexPath: IndexPath) {
         let vc = PresentImageViewController()
         vc.modalPresentationStyle = .custom

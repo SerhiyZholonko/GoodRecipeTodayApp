@@ -288,6 +288,8 @@ extension UserViewController: TextFildButtonViewDelegate {
 
 
 extension UserViewController: PhotoInfoViewDelegate {
+    func editName() { }
+    
     func setPhotoImageView() {}
     
     func reloadPhotoInfoView() {}

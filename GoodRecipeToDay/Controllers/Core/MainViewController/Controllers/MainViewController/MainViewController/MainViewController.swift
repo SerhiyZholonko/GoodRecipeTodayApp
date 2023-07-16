@@ -71,6 +71,8 @@ final class MainViewController: UIViewController {
         addChildViewController(searchCollectionViewController, to: searchCollectionView)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUsernama), name: .updateUsername, object: nil)
+
 
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -139,6 +141,9 @@ final class MainViewController: UIViewController {
 
     @objc func keyboardWillHide(notification: NSNotification) {
         tapGesture.isEnabled = false
+    }
+    @objc func updateUsernama() {
+        self.headerView.configure(viewModel: self.viewModel)
     }
 
 }

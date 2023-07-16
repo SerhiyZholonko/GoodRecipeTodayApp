@@ -31,6 +31,46 @@ class FirebaseManager {
     func curenUser() -> Firebase.User? {
         return auth.currentUser
     }
+
+    func updateUsername(newUsername: String, username: String, completion: @escaping (Error?) -> Void) {
+        let userCollectionRef = database.collection("users")
+        let recipeDocumentRef = userCollectionRef.document(username)
+        
+        recipeDocumentRef.getDocument { (document, error) in
+            if let error = error {
+                completion(error)
+                return
+            }
+            guard let documentData = document?.data() else {
+                let error = NSError(domain: "YourDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: "Document doesn't exist"])
+                completion(error)
+                return
+            }
+            let newDocumentRef = userCollectionRef.document(newUsername)
+            
+            newDocumentRef.setData(documentData) { error in
+                if let error = error {
+                    completion(error)
+                } else {
+                    recipeDocumentRef.delete { error in
+                        if let error = error {
+                            completion(error)
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                }
+            }
+        }
+        recipeDocumentRef.updateData(["username": newUsername]) { error in
+            if let error = error {
+                completion(error)
+            } else {
+                completion(nil)
+            }
+        }
+    }
+
     //MARK: - Recipe
     func createRecipe(_ recipe: Recipe, completion: @escaping (Result<Void, Error>) -> Void) {
 
@@ -513,6 +553,7 @@ class FirebaseManager {
             }
         }
     }
+    
     func getCurrentUsername(completion: @escaping (Result<String, Error>) -> Void) {
         guard let currentUser = auth.currentUser else {
             completion(.failure(FirebaseError.userNotLoggedIn))

@@ -53,6 +53,16 @@ class PresentImageViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let numberStep: UILabel = {
+        let label = UILabel()
+        label.text = "Step 1"
+        label.font = .boldSystemFont(ofSize: 20)
+        label.textAlignment = .center
+        label.textColor = .white
+        label.backgroundColor = UIColor(white: 0, alpha: 0.1)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     private  let descriptionLabel: UILabel = {
        let label = UILabel()
         label.font = .boldSystemFont(ofSize: 16)
@@ -68,6 +78,7 @@ class PresentImageViewController: UIViewController {
         
         view.addSubview(closeButton)
         view.addSubview(currentImageView)
+        view.addSubview(numberStep)
         view.addSubview(backgroundDescription)
         backgroundDescription.addSubview(descriptionLabel)
         addConstraints()
@@ -123,6 +134,12 @@ class PresentImageViewController: UIViewController {
             currentImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
         NSLayoutConstraint.activate(currentImageConstraints)
+        let numberStepConstraints = [
+            numberStep.topAnchor.constraint(equalTo: currentImageView.topAnchor, constant: 10),
+            numberStep.leftAnchor.constraint(equalTo: currentImageView.leftAnchor, constant: 10),
+            numberStep.rightAnchor.constraint(equalTo: currentImageView.rightAnchor, constant: -10)
+        ]
+        NSLayoutConstraint.activate(numberStepConstraints)
         let backgroundDescriptionconstraints = [
             backgroundDescription.topAnchor.constraint(equalTo: currentImageView.bottomAnchor, constant: 20),
             backgroundDescription.leftAnchor.constraint(equalTo: currentImageView.leftAnchor, constant: -20),
@@ -153,5 +170,6 @@ class PresentImageViewController: UIViewController {
         }
         guard let viewModel = viewModel else { return }
         barsStackView.arrangedSubviews[viewModel.item].backgroundColor = .white
+        numberStep.text = "Step \(viewModel.item + 1)"
     }
 }

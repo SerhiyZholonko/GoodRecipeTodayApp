@@ -10,6 +10,7 @@ import UIKit
 
 protocol ProfileViewControllerViewModelDelegate: AnyObject {
     func updateRecipes()
+    func updateUsername()
 }
 
 final class ProfileViewControllerViewModel {
@@ -25,6 +26,7 @@ final class ProfileViewControllerViewModel {
             uploadImageUrl(url: imageUrl)
         }
     }
+    var isEdit = true
     public var recipes: [Recipe] = [] {
         didSet {
             delegate?.updateRecipes()
@@ -50,6 +52,21 @@ final class ProfileViewControllerViewModel {
         configure()
     }
     //MARK: - Functions
+    public func updateName(_ newName: String) {
+        // Update the name with the new value
+        // You can add your logic here
+        firebaseManager.updateUsername(newUsername: newName, username: username) { [weak self] error in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            self?.delegate?.updateUsername()
+            NotificationCenter.default.post(name: .updateUsername, object: nil, userInfo: nil)
+
+        }
+    }
+    public func changeEdit() {
+        isEdit.toggle()
+    }
     public func signOut() {
         firebaseManager.signOut()
     }

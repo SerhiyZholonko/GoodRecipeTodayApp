@@ -9,11 +9,7 @@ import UIKit
 
 class MainCollectionView: UIView {
     public var collectionView: UICollectionView?
-    private var viewModel: MainViewControllerViewModel {
-        didSet {
-            
-        }
-    }
+    private var viewModel: MainViewControllerViewModel 
      let spiner: UIActivityIndicatorView = {
         let spiner = UIActivityIndicatorView(style: .large)
         spiner.color = .systemGreen
@@ -29,7 +25,6 @@ class MainCollectionView: UIView {
         let collectionView = createCollectionView()
         collectionView.backgroundColor = .secondarySystemBackground
         self.collectionView = collectionView
-
         addSubview(collectionView)
         addSubview(spiner)
         addConstraints()
@@ -61,7 +56,6 @@ class MainCollectionView: UIView {
             collectionView.leftAnchor.constraint(equalTo: leftAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             collectionView.rightAnchor.constraint(equalTo: rightAnchor)
-
         ])
     }
     private func createCollectionView() -> UICollectionView {
@@ -73,7 +67,6 @@ class MainCollectionView: UIView {
         collectionView.register(WeekViewCell.self, forCellWithReuseIdentifier: WeekViewCell.identiofier)
         collectionView.register(CategoryViewCell.self, forCellWithReuseIdentifier: CategoryViewCell.identifier)
         collectionView.register(RecomendViewCell.self, forCellWithReuseIdentifier: RecomendViewCell.identifier)
-        
         collectionView.register(MainCategoryHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainCategoryHeaderView.identifier)
         collectionView.register(MainRecomendHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainRecomendHeaderView.identifier)
         collectionView.register(MainWeekHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainWeekHeaderView.identifier)

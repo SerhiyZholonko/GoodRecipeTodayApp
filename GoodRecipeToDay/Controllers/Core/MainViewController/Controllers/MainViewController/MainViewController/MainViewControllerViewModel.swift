@@ -58,6 +58,8 @@ final class MainViewControllerViewModel {
             complition(guser)
         }
     }
+    
+ 
 
     @objc  func getingRecipes() {
         firebaseManager.getAllRecipes { result in

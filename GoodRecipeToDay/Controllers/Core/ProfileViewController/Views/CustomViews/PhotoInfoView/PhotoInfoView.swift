@@ -18,6 +18,7 @@ protocol PhotoInfoViewDelegate: AnyObject {
     func setPhotoImageView()
     func reloadPhotoInfoView()
     func sendMessges()
+    func editName()
 }
 
 class PhotoInfoView: UIView {
@@ -58,6 +59,21 @@ class PhotoInfoView: UIView {
         button.layer.borderColor = UIColor.label.cgColor
         button.layer.borderWidth = 1
         button.isHidden = type == .menu ? true : false
+
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action:  type == .followers ? #selector(didTapEmail) : #selector(didTapPotoEdit), for: .touchUpInside)
+        return button
+    }()
+    lazy var editNameButton: UIButton = {
+        let button = UIButton(type: .system)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold, scale: .default)
+        button.setImage(UIImage(systemName: "pencil", withConfiguration: imageConfig), for: .normal)
+        button.tintColor = .systemGreen
+        button.backgroundColor = .systemBackground
+        button.layer.cornerRadius = 25 / 2
+        button.layer.borderColor = UIColor.label.cgColor
+        button.layer.borderWidth = 1
+        button.isHidden = true
 
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action:  type == .followers ? #selector(didTapEmail) : #selector(didTapEdit), for: .touchUpInside)
@@ -115,6 +131,7 @@ class PhotoInfoView: UIView {
         addSubview(nameView)
         addSubview(emailView)
         addSubview(bottomViewStack)
+        addSubview(editNameButton)
         addConstraints()
         
         configure(viewModel: PhotoInfoViewViewModel(type: type, user: user))
@@ -130,6 +147,9 @@ class PhotoInfoView: UIView {
     public func configure(viewModel: PhotoInfoViewViewModel) {
         self.viewModel = viewModel
         self.viewModel?.delegate = self
+    }
+    public func editView(isEdit: Bool) {
+        editImageButton.isHidden = isEdit
     }
     private func addConstraints() {
         let photoImageViewConstraints = [
@@ -153,7 +173,13 @@ class PhotoInfoView: UIView {
             nameView.heightAnchor.constraint(equalToConstant: 30)
         ]
         NSLayoutConstraint.activate(nameViewConstraints)
-        
+        let editNameButtonConstraints = [
+            editNameButton.rightAnchor.constraint(equalTo: nameView.rightAnchor, constant: -8),
+            editNameButton.centerYAnchor.constraint(equalTo: nameView.centerYAnchor),
+            editNameButton.widthAnchor.constraint(equalToConstant: 25),
+            editNameButton.heightAnchor.constraint(equalToConstant: 25)
+        ]
+        NSLayoutConstraint.activate(editNameButtonConstraints)
         let emailViewConstaints = [
             emailView.topAnchor.constraint(equalTo: nameView.bottomAnchor),
             emailView.leftAnchor.constraint(equalTo: leftAnchor, constant: type == .menu ? 0 : 40),
@@ -179,8 +205,11 @@ class PhotoInfoView: UIView {
         photoImageView.layer.cornerRadius = photoImageView.bounds.width / 2
         photoImageView.clipsToBounds = true
     }
-    @objc private func didTapEdit() {
+    @objc private func didTapPotoEdit() {
         delegate?.setPhotoImageView()
+    }
+    @objc private func didTapEdit() {
+        delegate?.editName()
     }
     @objc private func didTapEmail() {
         print("Email")

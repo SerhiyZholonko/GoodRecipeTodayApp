@@ -530,11 +530,40 @@ extension AddViewController: CookingTableViewCellDelegate {
     }
     
     func didTappedImage(cell: CookingTableViewCell) {
-        self.index = viewModel.getIndex(cell: cell) 
+        self.index = viewModel.getIndex(cell: cell)
+
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        present(imagePicker, animated: true, completion: nil)
+
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+            // Check if the device has a camera available
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)
+            } else {
+                // Camera not available, display an alert
+                let alert = UIAlertController(title: "Camera Unavailable", message: "Sorry, the camera is not available on this device.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { _ in
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        actionSheet.addAction(cameraAction)
+        actionSheet.addAction(photoLibraryAction)
+        actionSheet.addAction(cancelAction)
+
+        present(actionSheet, animated: true, completion: nil)
     }
+
 }
 
 //MARK: - extension TopHeader

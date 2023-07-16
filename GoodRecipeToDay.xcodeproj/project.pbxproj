@@ -86,6 +86,7 @@
 		18951D3A2A0666D10064DC00 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 18951D392A0666D10064DC00 /* FirebaseDatabase */; };
 		18951D3C2A0666D10064DC00 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 18951D3B2A0666D10064DC00 /* FirebaseFirestore */; };
 		18951D3E2A0666D10064DC00 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 18951D3D2A0666D10064DC00 /* FirebaseStorage */; };
+		1896923B2A629E3F00E68417 /* TopGrayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1896923A2A629E3F00E68417 /* TopGrayView.swift */; };
 		18972F5E2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18972F5D2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift */; };
 		18972F612A0C026100D02733 /* AuthAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18972F602A0C026100D02733 /* AuthAlertViewController.swift */; };
 		189780812A5A85470038EE44 /* MenuViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189780802A5A85470038EE44 /* MenuViewControllerViewModel.swift */; };
@@ -253,6 +254,7 @@
 		187C070B2A53E6A100D9A570 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		18803E532A347A05001E1975 /* CategoryColloctionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryColloctionViewCell.swift; sourceTree = "<group>"; };
 		18803E552A347A1D001E1975 /* CategoryColloctionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryColloctionViewCellViewModel.swift; sourceTree = "<group>"; };
+		1896923A2A629E3F00E68417 /* TopGrayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopGrayView.swift; sourceTree = "<group>"; };
 		18972F5D2A0BFFB500D02733 /* SignUpViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewControllerViewModel.swift; sourceTree = "<group>"; };
 		18972F602A0C026100D02733 /* AuthAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAlertViewController.swift; sourceTree = "<group>"; };
 		189780802A5A85470038EE44 /* MenuViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewControllerViewModel.swift; sourceTree = "<group>"; };
@@ -877,6 +879,14 @@
 			path = CategoryColloctionViewCell;
 			sourceTree = "<group>";
 		};
+		189692392A629E1500E68417 /* TopGrayView */ = {
+			isa = PBXGroup;
+			children = (
+				1896923A2A629E3F00E68417 /* TopGrayView.swift */,
+			);
+			path = TopGrayView;
+			sourceTree = "<group>";
+		};
 		18972F5C2A0BFFA500D02733 /* SignUpViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1242,6 +1252,7 @@
 		18C8C5BC2A18D1F90078E4C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				189692392A629E1500E68417 /* TopGrayView */,
 				18C8C5C22A18FD270078E4C3 /* HeaderViewCells */,
 				18C8C5BD2A18D20B0078E4C3 /* Cellls */,
 			);
@@ -1695,6 +1706,7 @@
 				187655FF2A0E833C0004C9AE /* GUser.swift in Sources */,
 				1816E70429FC0E9500A87487 /* TabBarViewController.swift in Sources */,
 				18E86D222A0B60DC006BDA6E /* AuthViewType.swift in Sources */,
+				1896923B2A629E3F00E68417 /* TopGrayView.swift in Sources */,
 				1864241F2A2C4B1900355F44 /* PhotoInfoViewViewModel.swift in Sources */,
 				18DA2B472A2E37E7002C8E64 /* SubCollectionViewCellViewModel.swift in Sources */,
 				18CE673929FC26B30057BE58 /* FavoriteViewControllerViewModel.swift in Sources */,
