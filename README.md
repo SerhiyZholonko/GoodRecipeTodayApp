@@ -1,6 +1,6 @@
 #  GoodRecipeToDay
 
-![GoodFoodApp](https://github.com/SerhiyZholonko/GoodRecipeTodayApp/assets/41541490/46ee138a-df58-49f7-94f1-ea3a3a914522)
+![GoodFoodApp](https://github.com/SerhiyZholonko/GoodRecipeTodayApp/assets/41541490/cb510759-9114-4675-a021-b7023a7001ff)
 
 
 The GoodRecipeToDay App is a delightful mobile application that allows users to discover, save, and share their favorite recipes. It offers a user-friendly interface and leverages a variety of technologies to deliver a seamless cooking and recipe-sharing experience.
