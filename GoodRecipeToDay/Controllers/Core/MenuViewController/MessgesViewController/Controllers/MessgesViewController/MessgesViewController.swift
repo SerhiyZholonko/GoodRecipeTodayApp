@@ -17,7 +17,8 @@ class MessgesViewController: UIViewController {
     let emptyChatLabel: UILabel = {
        let label = UILabel()
         label.text = "No Massages"
-        label.isHidden = true
+        label.backgroundColor = .red
+//        label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -126,7 +127,11 @@ class MessgesViewController: UIViewController {
 
 extension MessgesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+//        if viewModel?.messages.count ?? 0 == 0 {
+//            emptyChatLabel.isHidden = false
+//        } else {
+//            emptyChatLabel.isHidden = true
+//        }
         return viewModel?.messages.count ?? 0
     }
     
@@ -136,7 +141,7 @@ extension MessgesViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.delegate = self
         guard let viewModel = viewModel else { return UITableViewCell() }
-//        guard let typeCell = viewModel.getTypeCell(indexPath: indexPath) else { return UITableViewCell() }
+
         cell.congifure(viewModel: MessageCellViewModel(chat: viewModel.messages[indexPath.row]))
         return cell
     }

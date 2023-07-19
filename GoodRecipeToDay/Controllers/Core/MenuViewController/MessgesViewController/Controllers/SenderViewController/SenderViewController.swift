@@ -81,7 +81,11 @@ class SenderViewController: UIViewController {
 
 extension SenderViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+        if viewModel.users.count == 0 {
+            emptyChatLabel.isHidden = false
+        } else {
+            emptyChatLabel.isHidden = true
+        }
         return viewModel.users.count
     }
     

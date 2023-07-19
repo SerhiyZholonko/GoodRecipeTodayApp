@@ -130,6 +130,8 @@ class MainView: UIView {
         super.init(frame: frame)
         scrollView.delegate = self
         backgroundColor = .systemBackground
+        instructionTableView.estimatedRowHeight = 100
+        instructionTableView.rowHeight = UITableView.automaticDimension
         setupScrollView()
         setupContentView()
         contentView.addSubview(segmentedControl)

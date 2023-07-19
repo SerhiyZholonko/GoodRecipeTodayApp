@@ -30,6 +30,7 @@ class InstructionTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+  
     //MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,8 +38,8 @@ class InstructionTableViewCell: UITableViewCell {
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         addGestureRecognizer(tapGestureRecognizer)
-        contentView.addSubview(instructionImageView)
-        contentView.addSubview(instructionLabel)
+        addSubview(instructionImageView)
+        addSubview(instructionLabel)
         addConstraints()
     }
     required init?(coder: NSCoder) {
@@ -54,19 +55,24 @@ class InstructionTableViewCell: UITableViewCell {
         }
     }
     private func addConstraints() {
+       
         let instructionImageViewConstraints = [
-            instructionImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
-            instructionImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
-            instructionImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            instructionImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20)
+            instructionImageView.heightAnchor.constraint(equalToConstant: 80),
+            instructionImageView.widthAnchor.constraint(equalToConstant: 80),
+            instructionImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            instructionImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 20)
         ]
         NSLayoutConstraint.activate(instructionImageViewConstraints)
         let instructionLabelConstraints = [
+            instructionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             instructionLabel.leftAnchor.constraint(equalTo: instructionImageView.rightAnchor, constant: 10),
-            instructionLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            instructionLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -20)
+            instructionLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            instructionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
         ]
         NSLayoutConstraint.activate(instructionLabelConstraints)
+        // Set the content hugging priority
+        instructionLabel.setContentHuggingPriority(.required, for: .vertical)
+
     }
 
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
