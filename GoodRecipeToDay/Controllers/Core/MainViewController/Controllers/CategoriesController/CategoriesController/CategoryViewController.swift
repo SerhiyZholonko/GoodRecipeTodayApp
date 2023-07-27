@@ -18,10 +18,13 @@ class CategoryViewController: UIViewController {
             }
         }
     }
+    var isLoadData: Bool = false
+
     let categoriesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
+        collectionView.register(FooterLodingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLodingCollectionReusableView.identifier)
         collectionView.backgroundColor = .secondarySystemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -133,8 +136,34 @@ extension CategoryViewController: UICollectionViewDelegate, UICollectionViewData
         cell.configure(viewModel: CategoryCellViewModel(recipe: viewModel.getRecipe(indexParh: indexPath)))
         return cell
     }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter.self else {
+            fatalError("Unsupported")
+        }
+        let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLodingCollectionReusableView.identifier, for: indexPath)
+        return footer
+    }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
+        // Check if we need to load more data when reaching the last cell
+        guard let viewModel = viewModel else { return }
+        guard !viewModel.isLastRecipe else { return }
+        if indexPath.item == viewModel.dataSource.count - 1{
+            isLoadData = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                viewModel.getingRecipes()
+                
+            print("Count dataSource:", viewModel.dataSource.count)
+                self.isLoadData = false
+            }
+        }
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard let viewModel = viewModel else {return CGSize(width: 0, height: 0) }
+        guard !isLoadData && !viewModel.isLastRecipe else {
+            return .zero
+        }
+            return CGSize(width: collectionView.frame.width, height: 150)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            // Return the desired size of each item (cell)

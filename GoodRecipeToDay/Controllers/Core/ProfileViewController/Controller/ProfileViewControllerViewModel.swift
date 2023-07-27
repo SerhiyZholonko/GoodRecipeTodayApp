@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 protocol ProfileViewControllerViewModelDelegate: AnyObject {
     func updateRecipes()
@@ -16,7 +17,19 @@ protocol ProfileViewControllerViewModelDelegate: AnyObject {
 final class ProfileViewControllerViewModel {
     //MARK: - Parameters
     weak var delegate: ProfileViewControllerViewModelDelegate?
-    
+    public var isLastRecipeOfCurrentuser: Bool = false {
+        didSet {
+            print("isLastRecipeOfCurrentuser",isLastRecipeOfCurrentuser)
+        }
+    }
+    public var isLastRecipeOfFollowers: Bool = false{
+        didSet {
+            print("isLastRecipeOfFollowers",isLastRecipeOfFollowers)
+        }
+    }
+
+    private var pageSize: Int = 4
+     var lastSnapshot: DocumentSnapshot?
     let title = "Profile"
     let firebaseManager = FirebaseManager.shared
     let firebaseImageManager = FirebaseImageManager.shared
@@ -27,11 +40,7 @@ final class ProfileViewControllerViewModel {
         }
     }
     var isEdit = true
-    public var recipes: [Recipe] = [] {
-        didSet {
-            delegate?.updateRecipes()
-        }
-    }
+    public var recipes: [Recipe] = []
     public var username: String {
         guard let user = user else { return "no user" }
         return user.username
@@ -81,19 +90,56 @@ final class ProfileViewControllerViewModel {
     
     public func fetchCurrentUserRecipe() {
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
+            guard let strongSelf = self else { return }
             guard let user = user else { return }
-            self?.user = user
-            self?.firebaseManager.getAllRecipesForUser(username: user.username) { result in
-                switch result {
-                case .success(let recipes):
-                    self?.recipes = recipes
-                case .failure(let err):
-                    print(err.localizedDescription)
+            strongSelf.user = user
+
+                        strongSelf.firebaseManager.getRecipesPageForUser(pageSize: strongSelf.pageSize, lastDocumentSnapshot: strongSelf.lastSnapshot, username: user.username) { result in
+                            switch result {
+                                
+                            case .success((let (recipes, nextSnapshot))):
+                                print("Recipes count: ", recipes)
+                                strongSelf.lastSnapshot = nextSnapshot
+                                if !strongSelf.recipes.contains(recipes) {
+                                strongSelf.recipes.append(contentsOf: recipes)
+                              
+                                    strongSelf.delegate?.updateRecipes()
+            
+                                } else {
+                                    strongSelf.isLastRecipeOfCurrentuser = true
+                                }
+                                
+                            case .failure(let error):
+                                print("Error fetching recipes in ProfileViewControllerViewModel: \(error)")                }
+                        }
+
+                    })
+            }
+    public func getRecipeFromFollowers() {
+              let users = followers.map{ user -> String in
+                  return user.username
+              }
+        print("users.count ", users.count)
+        firebaseManager.getRecipesPageForUsersAndUser(pageSize: pageSize, lastDocumentSnapshot: lastSnapshot, usernames: users, additionalUsername: nil) { result in
+            switch result {
+                
+            case .success(let (recipes, nextSnapshot)):
+                self.lastSnapshot = nextSnapshot
+                if !self.recipes.contains(recipes) {
+                self.recipes.append(contentsOf: recipes)
+            }
+                else {
+                    self.isLastRecipeOfFollowers = true
                 }
+                self.delegate?.updateRecipes()
+
+            case .failure(let error):
+                print("Error fetching recipes in ProfileViewControllerViewModel: \(error)")
             }
 
-        })
-    }
+          }
+
+      }
     public func fetchAllFollowing() {
         firebaseManager.fetchCurrentUser { [weak self] currentUser in
             guard let currentUser = currentUser else { return }
@@ -110,6 +156,7 @@ final class ProfileViewControllerViewModel {
 
     }
     public func fetchAllFollowers() {
+     
         firebaseManager.fetchCurrentUser { [weak self] currentUser in
             guard let currentUser = currentUser else { return }
             var currentFolloews: [GUser] = []
@@ -127,21 +174,7 @@ final class ProfileViewControllerViewModel {
 
     }
  
-    public func getRecipeFromFollowers() {
-          recipes = [] // Clear the recipes array before adding new recipes
-          
-          for user in followers {
-              self.firebaseManager.getAllRecipesForUser(username: user.username) { result in
-                  switch result {
-                  case .success(let recipes):
-                      self.recipes.append(contentsOf: recipes)
-                  case .failure(let error):
-                      print(error)
-                  }
-              }
-
-          }
-      }
+ 
 
     public func setImage(_ image: UIImage, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let user = user else { return }

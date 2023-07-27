@@ -19,7 +19,7 @@ class ProfileViewController: UIViewController {
         view.delegate = self
         return view
     }()
-    
+    var isLoadData: Bool = false
     lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl()
         segmentedControl.insertSegment(withTitle: "My Recipes", at: 0, animated: false)
@@ -35,6 +35,7 @@ class ProfileViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(MyReipeCollectionViewCell.self, forCellWithReuseIdentifier: MyReipeCollectionViewCell.identifier)
+        collectionView.register(FooterLodingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLodingCollectionReusableView.identifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
         // Configure collection view properties as needed
@@ -199,17 +200,26 @@ class ProfileViewController: UIViewController {
     
     @objc private func segmentedControlValueChanged() {
         if segmentedControl.selectedSegmentIndex == 0 {
+            viewModel.lastSnapshot = nil
+            viewModel.recipes = []
+            viewModel.isLastRecipeOfFollowers = false
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
                 DispatchQueue.main.async {
                     self?.viewModel.fetchCurrentUserRecipe()
                 }
             }
         } else {
+            //TODO: - make func for update recipe
+            viewModel.lastSnapshot = nil
+            viewModel.recipes = []
+            viewModel.isLastRecipeOfFollowers = false
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
                 DispatchQueue.main.async {
                     self?.viewModel.getRecipeFromFollowers()
                 }
             }
+        
+
         }
     }
 }
@@ -253,6 +263,65 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
         let spacing: CGFloat = 10 // Adjust the spacing value as needed
 
         return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Check if we need to load more data when reaching the last cell
+        let selectedSection = self.segmentedControl.selectedSegmentIndex
+        print(self.segmentedControl.selectedSegmentIndex)
+        switch selectedSection {
+        case 0:
+            guard !viewModel.isLastRecipeOfCurrentuser else { return }
+            if indexPath.item == viewModel.recipes.count - 1{
+                isLoadData = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    self.viewModel.fetchCurrentUserRecipe()
+                    self.isLoadData = false
+                }
+            }
+           
+        case 1:
+            
+            guard !viewModel.isLastRecipeOfFollowers else { return }
+            if indexPath.item == viewModel.recipes.count - 1{
+                isLoadData = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    self.viewModel.getRecipeFromFollowers()
+                    self.isLoadData = false
+                }
+            }
+          
+        default:
+            break
+        }
+       
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter.self else {
+            fatalError("Unsupported")
+        }
+        let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLodingCollectionReusableView.identifier, for: indexPath)
+        return footer
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        let selectedSection = self.segmentedControl.selectedSegmentIndex
+        switch selectedSection {
+        case 0:
+            guard !isLoadData && !viewModel.isLastRecipeOfCurrentuser else {
+                return .zero
+            }
+                return CGSize(width: collectionView.frame.width, height: 150)
+        case 1:
+            guard  !isLoadData && !viewModel.isLastRecipeOfFollowers else {
+                return .zero
+            }
+                return CGSize(width: collectionView.frame.width, height: 150)
+        default:
+            return .zero
+        }
+      
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let recipe = viewModel.getRecipe(indexPath: indexPath)
@@ -346,6 +415,8 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 //MARK: - Delegate
 
 extension ProfileViewController: ProfileViewControllerViewModelDelegate {
+
+    
     func updateUsername() {
         photoInfoView.viewModel?.getUser()
     }

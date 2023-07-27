@@ -12,7 +12,7 @@ class LaunchScreenView: UIView {
     //MARK: - Properties
     let recipeImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "recipe-book")
+        iv.image = UIImage(named: "batter")
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -36,7 +36,7 @@ class LaunchScreenView: UIView {
         addSubview(titleApp)
         addConstraints()
         shakeRecipeImageView()
-        setTitleTextWithAnimation(text: "Good Recipes", duration: 1, color: .systemGreen)
+        setTitleTextWithAnimation(text: "Good Recipes", duration: 2, color: UIColor(named: "TitleLauchScreen")!)
     }
     
     required init?(coder: NSCoder) {
@@ -103,10 +103,11 @@ class LaunchScreenView: UIView {
 
 
     private func playSoundEffect() {
-        guard let soundURL = Bundle.main.url(forResource: "letter_sound", withExtension: "mp3") else {
+        guard let soundURL = Bundle.main.url(forResource: "click-button-140881", withExtension: "mp3", subdirectory: "Sounds") else {
             return
         }
-        
+
+        print("soundURL", soundURL)
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
             audioPlayer?.prepareToPlay()

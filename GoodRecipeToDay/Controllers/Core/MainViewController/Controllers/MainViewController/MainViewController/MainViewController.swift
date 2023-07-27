@@ -165,9 +165,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .category(let viewModel):
             return viewModel.count
         case .recomend(let viewModel):
-            return viewModel.count
+            return viewModel.count > 4 ? 4 : viewModel.count
         case .oftheWeek(let viewModel):
-            return viewModel.count
+            return viewModel.count > 4 ? 4 : viewModel.count
         }
     }
     

@@ -243,7 +243,15 @@ struct Recipe: Hashable, Equatable {
             lhs.username == rhs.username &&
             lhs.createdAt == rhs.createdAt
     }
-
+    func getDocumentReference() -> DocumentReference? {
+          // Assuming you have a Firestore collection reference for "recipes"
+          // Adjust the collection reference path based on your Firestore data structure
+          guard let key = self.key else {
+              return nil
+          }
+          
+          return Firestore.firestore().collection("recipes").document(key)
+      }
 }
 
 
@@ -407,6 +415,8 @@ struct Step: Hashable{
 
 
 extension Recipe {
+    
+    
     func matchesSearchQuery(_ query: String) -> Bool {
         let lowercaseQuery = query.lowercased()
         

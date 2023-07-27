@@ -209,15 +209,332 @@ class FirebaseManager {
         }
     }
     //MARK: - //pagination
-    func getAllPaginationRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
-        let usersCollection = database.collection("users")
-        
-        var query = usersCollection.limit(to: pageSize)
-        
-        if let lastSnapshot = lastSnapshot {
+
+    // Function to fetch a page of recipes with pagination
+    func getRecipesPage(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        let collectionName = "users"
+        let recipesCollection = Firestore.firestore().collection(collectionName)
+
+        var query = recipesCollection.limit(to: pageSize)
+
+        // If there is a lastDocumentSnapshot, use it to paginate to the next page
+        if let lastSnapshot = lastDocumentSnapshot {
             query = query.start(afterDocument: lastSnapshot)
         }
+
+        query.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            var recipes = [Recipe]()
+            var nextSnapshot: DocumentSnapshot?
+
+            for document in snapshot?.documents ?? [] {
+                if let recipe = Recipe(documentSnapshot: document) {
+                    recipes.append(recipe)
+                }
+            }
+
+            // Get the last document snapshot to use for the next pagination query
+            nextSnapshot = snapshot?.documents.last
+
+            completion(.success((recipes, nextSnapshot)))
+        }
+    }
+    func getRecipesPageForCategory(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, category: Categories, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        let collectionName = "recipes"
+        var recipesCollection = Firestore.firestore().collection(collectionName).whereField("category", isEqualTo: category.title).limit(to: pageSize)
+        if let lastRecipe = lastDocumentSnapshot {
+            recipesCollection = recipesCollection.start(afterDocument: lastRecipe)
+        }
+
+
+        recipesCollection.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            var recipes = [Recipe]()
+            var nextSnapshot: DocumentSnapshot?
+
+            for document in snapshot?.documents ?? [] {
+                print(document)
+                if let recipe = Recipe(snapshot: document) {
+                        recipes.append(recipe)
+                }
+            }
+
+            // Get the last document snapshot to use for the next pagination query
+            nextSnapshot = snapshot?.documents.last
+
+            completion(.success((recipes, nextSnapshot)))
+        }
+    }
+    func getRecipesPageForPartialSearch(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, searchText: String, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        print("searchText!! ", searchText)
+
+        let collectionName = "recipes"
+        let recipesCollection = Firestore.firestore().collection(collectionName)
+
+        // For partial search, use isGreaterThanOrEqualTo and isLessThan
+        let startText = searchText
+        let endText = searchText + "\u{f8ff}"
+
+        let query = recipesCollection
+            .whereField("title", isGreaterThanOrEqualTo: startText)
+            .whereField("title", isLessThan: endText)
+            .limit(to: pageSize)
+
+        // Start the query from the lastDocumentSnapshot if provided
+        var modifiedQuery = query
+        if let lastSnapshot = lastDocumentSnapshot {
+            modifiedQuery = query.start(afterDocument: lastSnapshot)
+        }
+
+        modifiedQuery.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            var nextSnapshot: DocumentSnapshot?
+            var recipes: [Recipe] = [] {
+                didSet {
+                    print("count recipes: ", recipes.count)
+                }
+            }
+
+            for document in snapshot?.documents ?? [] {
+                print("document: ", document.data().count)
+                if let recipe = Recipe(snapshot: document) {
+                    recipes.append(recipe)
+                    print("recipes::", recipes.count)
+                }
+            }
+
+            // Get the last document snapshot to use for the next pagination query
+            nextSnapshot = snapshot?.documents.last
+            print("recipes, nextSnapshot!!: ", recipes.count)
+            completion(.success((recipes, nextSnapshot)))
+            
+        }
+    }
+
+//    func getRecipesPageForSearch(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, searchText: String, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+//        print("searchText ", searchText)
+//        let collectionName = "recipes"
+//        let recipesCollection = Firestore.firestore().collection(collectionName).whereField("title", isEqualTo: searchText).limit(to: pageSize)
+//
+//        recipesCollection.getDocuments { snapshot, error in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//
+//            var recipes = [Recipe]()
+//            var nextSnapshot: DocumentSnapshot?
+//
+//            for document in snapshot?.documents ?? [] {
+//                print("document: ", document.data().count)
+//                if let recipe = Recipe(snapshot: document) {
+//                        recipes.append(recipe)
+//                    print("recipes::", recipes.count)
+//
+//                }
+//            }
+//
+//            // Get the last document snapshot to use for the next pagination query
+//            nextSnapshot = snapshot?.documents.last
+//            completion(.success((recipes, nextSnapshot)))
+//        }
+//    }
+
+    func getRecipesPageForUser(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, username: String, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        let collectionName = "recipes"
+        let recipesCollection = Firestore.firestore().collection(collectionName).whereField("username", isEqualTo: username)
+
+        recipesCollection.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            var recipes = [Recipe]()
+            var nextSnapshot: DocumentSnapshot?
+
+            for document in snapshot?.documents ?? [] {
+                print(document)
+                if let recipe = Recipe(snapshot: document) {
+                        recipes.append(recipe)
+                }
+            }
+
+            // Get the last document snapshot to use for the next pagination query
+            nextSnapshot = snapshot?.documents.last
+
+            completion(.success((recipes, nextSnapshot)))
+        }
+    }
+    func getRecipesPageForUsersAndUser(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, usernames: [String], additionalUsername: String?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        let collectionName = "recipes"
+        let recipesCollection = Firestore.firestore().collection(collectionName)
+
+        var query = recipesCollection
+            .whereField("username", in: usernames)
+
+        if let username = additionalUsername, !username.isEmpty {
+            let combinedUsernames = usernames + [username]
+            query = query
+                .whereField("username", in: combinedUsernames)
+                .limit(to: 1) // Limit to 1 document for the specific username query
+        } else {
+            // Fetch for multiple usernames with a pageSize limit
+            query = query
+                .limit(to: pageSize)
+        }
+
+        // Start the query from the lastDocumentSnapshot if provided
+        if let lastSnapshot = lastDocumentSnapshot {
+            query = query.start(afterDocument: lastSnapshot)
+        }
+
+        query.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            var recipes = [Recipe]()
+            var nextSnapshot: DocumentSnapshot?
+
+            for document in snapshot?.documents ?? [] {
+                print(document)
+                if let recipe = Recipe(snapshot: document) {
+                    recipes.append(recipe)
+                }
+            }
+
+            // Get the last document snapshot to use for the next pagination query
+            nextSnapshot = snapshot?.documents.last
+
+            completion(.success((recipes, nextSnapshot)))
+        }
+    }
+//    func getRecipesPageForUsers(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, usern: [GUser], completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+//        let collectionName = "recipes"
+//        var recipes = [Recipe]()
+//        for user in users {
+//            
+//        }
+//        let recipesCollection = Firestore.firestore().collection(collectionName).whereField("username", isEqualTo: username)
+//
+//        recipesCollection.getDocuments { snapshot, error in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//
+//            var nextSnapshot: DocumentSnapshot?
+//
+//            for document in snapshot?.documents ?? [] {
+//                print(document)
+//                if let recipe = Recipe(snapshot: document) {
+//                        recipes.append(recipe)
+//                }
+//            }
+//
+//            // Get the last document snapshot to use for the next pagination query
+//            nextSnapshot = snapshot?.documents.last
+//
+//        }
+//        completion(.success((recipes, nextSnapshot)))
+//
+//    }
+    func getAllPaginationRecipes(pageSize: Int, lastRecipe: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        var query = db.collection("recipes").limit(to: pageSize)
         
+        if let lastRecipe = lastRecipe {
+            query = query.start(afterDocument: lastRecipe)
+        }
+        
+        query.getDocuments { (snapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                completion(.failure(NSError(domain: "Firestore", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch data from Firestore"])))
+                return
+            }
+            
+            var recipes: [Recipe] = []
+            for document in snapshot.documents {
+                // Assuming you have a function to convert Firestore document to Recipe object
+                if let recipe = Recipe(snapshot: document) {
+                    recipes.append(recipe)
+                }
+            }
+            
+            let lastSnapshot = snapshot.documents.last
+            completion(.success((recipes, lastSnapshot)))
+        }
+    }
+
+//    func getAllPaginationRecipes(pageSize: Int, lastRecipe: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void)
+//    {
+//        let first = db.collection("recipes")
+//            .limit(to: pageSize)
+//
+//        first.addSnapshotListener { (snapshot, error) in
+//            if let error = error {
+//                              completion(.failure(error))
+//                              return
+//                          }
+//            guard let snapshot = snapshot else {
+//                print("Error retreving cities: \(error.debugDescription)")
+//                return
+//            }
+//
+//            guard let lastSnapshot = snapshot.documents.last else {
+//                // The collection is empty.
+//                return
+//            }
+//
+//            let next = self.db.collection("recipes")
+//                .start(afterDocument: lastSnapshot)
+//
+//
+//        }
+//    }
+//    {
+//        let usersCollection = database.collection("users")
+//        
+//        var query = usersCollection.limit(to: pageSize )
+//        
+//        if let lastRecipe = lastRecipe {
+//            let lastRecipeRef = lastRecipe.getDocumentReference() // Assuming you have a method in Recipe class to get the document reference
+//            lastRecipeRef?.getDocument { snapshot, error in
+//                if let error = error {
+//                    completion(.failure(error))
+//                    return
+//                }
+//                
+//                if let lastSnapshot = snapshot {
+//                    query = query.start(afterDocument: lastSnapshot)
+//                }
+//                
+//                self.fetchRecipesWithQuery(query, completion: completion)
+//            }
+//        } else {
+//            fetchRecipesWithQuery(query, completion: completion)
+//        }
+//    }
+
+    func fetchRecipesWithQuery(_ query: Query, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
         query.getDocuments { snapshot, error in
             if let error = error {
                 completion(.failure(error))
@@ -231,7 +548,7 @@ class FirebaseManager {
                 let userDocRef = document.reference
                 let recipesCollection = userDocRef.collection("recipes")
                 
-                recipesCollection.getDocuments { snapshot, error in
+                .getDocuments { snapshot, error in
                     if let error = error {
                         completion(.failure(error))
                         return
@@ -240,6 +557,7 @@ class FirebaseManager {
                     for document in snapshot?.documents ?? [] {
                         if let recipe = Recipe(snapshot: document) {
                             recipes.append(recipe)
+                            print("Count: ", recipes.count)
                         }
                     }
                     
@@ -252,6 +570,51 @@ class FirebaseManager {
             }
         }
     }
+
+//    func getAllPaginationRecipes(pageSize: Int, lastRecipe: Recipe?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+//        let usersCollection = database.collection("users")
+//        
+//
+//        var query = usersCollection.order(by: "title").start(after: [lastRecipe?.title ?? ""]).limit(to: pageSize)
+//        
+//        if let lastRecipe = lastRecipe {
+//            query = query.start(afterDocument: lastRecipe)
+//        }
+//        
+//        query.getDocuments { snapshot, error in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//            
+//            var recipes = [Recipe]()
+//            var nextSnapshot: DocumentSnapshot?
+//            
+//            for document in snapshot?.documents ?? [] {
+//                let userDocRef = document.reference
+//                let recipesCollection = userDocRef.collection("recipes")
+//                
+//                recipesCollection.getDocuments { snapshot, error in
+//                    if let error = error {
+//                        completion(.failure(error))
+//                        return
+//                    }
+//                    
+//                    for document in snapshot?.documents ?? [] {
+//                        if let recipe = Recipe(snapshot: document) {
+//                            recipes.append(recipe)
+//                        }
+//                    }
+//                    
+//                    if let lastDocumentSnapshot = snapshot?.documents.last {
+//                        nextSnapshot = lastDocumentSnapshot
+//                    }
+//                    
+//                    completion(.success((recipes, nextSnapshot)))
+//                }
+//            }
+//        }
+//    }
     func fetchRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<QuerySnapshot, Error>) -> Void) {
         let recipesCollection = database.collection("recipes")
         

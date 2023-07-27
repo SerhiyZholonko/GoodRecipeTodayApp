@@ -16,6 +16,9 @@ final class SearchCollectionViewControllerViewModel {
     //MARK: - Properties
     weak var delegate: SearchCollectionViewControllerViewModelDelegate?
     let firebaseManager = FirebaseManager.shared
+    private var pageSize: Int = 10
+    private var lastSnapshot: DocumentSnapshot?
+    public var isLastRecipe: Bool = false
     public var type: CheckmarkTextViewType {
         return typeForFilter
     }
@@ -62,60 +65,65 @@ final class SearchCollectionViewControllerViewModel {
      private func getingRecipes() {
         switch typeForFilter {
         case .all:
-            firebaseManager.getAllRecipes { [weak self] result in
-                switch result {
-                case .success(let recipes):
-                    self?.recipes = recipes
-                    //TODO: - filter recomend
-                case .failure(_):
-                    print("error recomendRecipes")
-                }
-            }
+            break
         case .rate:
+            guard let searchText = searchText else { return }
+            firebaseManager.getRecipesPageForPartialSearch(pageSize: pageSize, lastDocumentSnapshot: lastSnapshot, searchText: searchText) { [weak self] result in
+                guard let strongSelf = self else { return }
+                switch result{
+                case .success(let (recipes, _)):
+                    print("recipes::", recipes)
+//                    strongSelf.recipes = recipes
+                    strongSelf.recipes = recipes.sorted { [weak self] recipe1, recipe2 in
+                                                guard let strongsSelf = self else { return false}
+                                                let rate1 = recipe1.rate ?? 0.0
+                                                let rate2 = recipe2.rate ?? 0.0
+                                                let counter1 = recipe1.rateCounter
+                                                let counter2 = recipe2.rateCounter
+                        
+                                                let value1 = counter1 == 0 ? 0 : rate1 / Double(counter1)
+                                                let value2 = counter2 == 0 ? 0 : rate2 / Double(counter2)
+                        
+                                                return strongsSelf.isRevers ? value1 > value2 : value1 < value2
+                                            }
 
-            firebaseManager.getAllRecipes { [weak self] result in
-                switch result {
-                case .success(let recipes):
-                    let newRecipes = recipes.sorted { [weak self] recipe1, recipe2 in
-                        guard let strongsSelf = self else { return false}
-                        let rate1 = recipe1.rate ?? 0.0
-                        let rate2 = recipe2.rate ?? 0.0
-                        let counter1 = recipe1.rateCounter
-                        let counter2 = recipe2.rateCounter
-
-                        let value1 = counter1 == 0 ? 0 : rate1 / Double(counter1)
-                        let value2 = counter2 == 0 ? 0 : rate2 / Double(counter2)
-
-                        return strongsSelf.isRevers ? value1 > value2 : value1 < value2
-                    }
-
-                    self?.recipes = newRecipes
-
-                    // TODO: - filter recomend
-                case .failure(_):
-                    print("error recomendRecipes")
+                    strongSelf.delegate?.reloadCollectionView()
+                case .failure(let error):
+                    // Handle the error appropriately
+                    print("Error fetching recipes: \(error)")
                 }
             }
+
         case .time:
-            firebaseManager.getAllRecipes { [weak self] result in
-                switch result {
-                case .success(let recipes):
-                    let newRecipes = recipes.sorted{ [weak self] in
+            guard let searchText = searchText else { return }
+            firebaseManager.getRecipesPageForPartialSearch(pageSize: pageSize, lastDocumentSnapshot: lastSnapshot, searchText: searchText) { [weak self] result in
+                guard let strongSelf = self else { return }
+                switch result{
+                case .success(let (recipes, _)):
+                    print("recipes::", recipes)
+//                    strongSelf.recipes = recipes
+                    strongSelf.recipes = recipes.sorted{ [weak self] in
                         guard let strongsSelf = self else { return false}
                         return strongsSelf.isRevers ? $0.time < $1.time : $0.time > $1.time
                     }
-                    self?.recipes = newRecipes
-                    //TODO: - filter recomend
-                case .failure(_):
-                    print("error recomendRecipes")
+
+                    strongSelf.delegate?.reloadCollectionView()
+                case .failure(let error):
+                    // Handle the error appropriately
+                    print("Error fetching recipes: \(error)")
                 }
             }
-        case .date:
 
-            firebaseManager.getAllRecipes { [weak self] result in
-                switch result {
-                case .success(let recipes):
-                    let newRecipes = recipes.sorted { [weak self] recipe1, recipe2 in
+
+        case .date:
+            guard let searchText = searchText else { return }
+
+            firebaseManager.getRecipesPageForPartialSearch(pageSize: pageSize, lastDocumentSnapshot: lastSnapshot, searchText: searchText) { [weak self] result in
+                guard let strongSelf = self else { return }
+                switch result{
+                case .success(let (recipes, _)):
+//                    strongSelf.recipes = recipes
+                    strongSelf.recipes = recipes.sorted { [weak self] recipe1, recipe2 in
                         guard let strongsSelf = self else { return false}
                         if let createdAt1 = recipe1.createdAt, let createdAt2 = recipe2.createdAt {
                             return strongsSelf.isRevers ? createdAt1 < createdAt2 : createdAt1 > createdAt2
@@ -125,12 +133,14 @@ final class SearchCollectionViewControllerViewModel {
                             return false
                         }
                     }
-                    self?.recipes = newRecipes
-                    // TODO: - filter recommendation
-                case .failure(_):
-                    print("Error getting recipes")
+                    strongSelf.delegate?.reloadCollectionView()
+                case .failure(let error):
+                    // Handle the error appropriately
+                    print("Error fetching recipes: \(error)")
                 }
             }
+
+
 
         }
      

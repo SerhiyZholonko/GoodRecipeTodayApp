@@ -109,6 +109,7 @@
 		18A825A72A57E0A6002D8304 /* SenderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A825A62A57E0A6002D8304 /* SenderCellViewModel.swift */; };
 		18A825AC2A57E2BD002D8304 /* SenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A825AB2A57E2BD002D8304 /* SenderViewController.swift */; };
 		18A825AE2A57E2E2002D8304 /* SenderViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A825AD2A57E2E2002D8304 /* SenderViewControllerViewModel.swift */; };
+		18A85CA62A6E6D9C00C186A5 /* FooterLodingCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18A85CA52A6E6D9C00C186A5 /* FooterLodingCollectionReusableView.swift */; };
 		18ABCED62A1B420500AD97A2 /* PresentImageViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ABCED52A1B420500AD97A2 /* PresentImageViewControllerViewModel.swift */; };
 		18C098D72A29B68D0034A95E /* RecipeTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C098D62A29B68D0034A95E /* RecipeTabBar.swift */; };
 		18C098DB2A2A5BEE0034A95E /* PhotoInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C098DA2A2A5BEE0034A95E /* PhotoInfoView.swift */; };
@@ -277,6 +278,8 @@
 		18A825A62A57E0A6002D8304 /* SenderCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderCellViewModel.swift; sourceTree = "<group>"; };
 		18A825AB2A57E2BD002D8304 /* SenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderViewController.swift; sourceTree = "<group>"; };
 		18A825AD2A57E2E2002D8304 /* SenderViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderViewControllerViewModel.swift; sourceTree = "<group>"; };
+		18A85CA52A6E6D9C00C186A5 /* FooterLodingCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterLodingCollectionReusableView.swift; sourceTree = "<group>"; };
+		18AAF15E2A7284C400DD8399 /* click-button-140881.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "click-button-140881.mp3"; sourceTree = "<group>"; };
 		18ABCED52A1B420500AD97A2 /* PresentImageViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentImageViewControllerViewModel.swift; sourceTree = "<group>"; };
 		18C098D62A29B68D0034A95E /* RecipeTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTabBar.swift; sourceTree = "<group>"; };
 		18C098DA2A2A5BEE0034A95E /* PhotoInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoView.swift; sourceTree = "<group>"; };
@@ -395,6 +398,7 @@
 		1806AEB72A35B6CD009549DC /* RecipesOfTheWeekController */ = {
 			isa = PBXGroup;
 			children = (
+				18A85CA42A6E6D7F00C186A5 /* Views */,
 				1806AEB82A35B739009549DC /* RecipesOfTheWeekController.swift */,
 				1806AEBA2A35B942009549DC /* RecipesOfTheWeekControllerViewModel.swift */,
 			);
@@ -514,6 +518,7 @@
 		1816E6EE29FC0DE900A87487 /* GoodRecipeToDay */ = {
 			isa = PBXGroup;
 			children = (
+				18AAF15E2A7284C400DD8399 /* click-button-140881.mp3 */,
 				180A2B412A061D82001DC4EB /* Managers */,
 				1816E70629FC0F0500A87487 /* Resurces */,
 				18C5986629FE79C1001506D7 /* Models */,
@@ -551,6 +556,7 @@
 		1816E71129FC16FF00A87487 /* MainViewController */ = {
 			isa = PBXGroup;
 			children = (
+				183FDF962A5536A200963973 /* MenuViewController */,
 				18CE674029FC2F730057BE58 /* Controllers */,
 				18CE673E29FC2F480057BE58 /* Views */,
 			);
@@ -642,7 +648,6 @@
 		183EA6072A14ECA800ECE4E7 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				183FDF962A5536A200963973 /* MenuViewController */,
 				1817E0B12A0CD19400F23009 /* TabBarViewController */,
 				1816E71129FC16FF00A87487 /* MainViewController */,
 				18CE673229FC26600057BE58 /* SearchViewController */,
@@ -1060,6 +1065,14 @@
 				18A825AD2A57E2E2002D8304 /* SenderViewControllerViewModel.swift */,
 			);
 			path = SenderViewController;
+			sourceTree = "<group>";
+		};
+		18A85CA42A6E6D7F00C186A5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				18A85CA52A6E6D9C00C186A5 /* FooterLodingCollectionReusableView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		18ABCED42A1B41EE00AD97A2 /* PresentImageViewController */ = {
@@ -1673,6 +1686,7 @@
 				18D9A5FE2A2B5FA800649CFA /* MyReipeCollectionViewCell.swift in Sources */,
 				1806AEC22A35F620009549DC /* UserViewViewModel.swift in Sources */,
 				18A825A52A57D9A8002D8304 /* SenderCell.swift in Sources */,
+				18A85CA62A6E6D9C00C186A5 /* FooterLodingCollectionReusableView.swift in Sources */,
 				18DA2B452A2E2DDF002C8E64 /* SubCollectionViewCell.swift in Sources */,
 				180935C82A20C7FC0062F1E9 /* ImageTextView.swift in Sources */,
 				18C151542A2780040075D57F /* FavoriteCollectionViewCellViewModel.swift in Sources */,

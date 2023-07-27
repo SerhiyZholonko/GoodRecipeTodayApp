@@ -12,7 +12,8 @@ final class RecomendViewController: UIViewController {
     //MARK: - Properties
 
     var viewModel = RecomendViewControllerViewModel()
-    
+    var isLoadData: Bool = false
+
     // Search Controller
     let searchController = UISearchController(searchResultsController: nil)
 
@@ -29,6 +30,7 @@ final class RecomendViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(RecomendCollectionViewCell.self, forCellWithReuseIdentifier: RecomendCollectionViewCell.identifier)
+        collectionView.register(FooterLodingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLodingCollectionReusableView.identifier)
         collectionView.backgroundColor = .systemBackground
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -100,7 +102,32 @@ extension RecomendViewController: UICollectionViewDelegate, UICollectionViewData
         cell.configure(viewModel: .init(recipe: viewModel.getRecipe(indexParh: indexPath)))
         return cell
     }
-
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter.self else {
+            fatalError("Unsupported")
+        }
+        let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLodingCollectionReusableView.identifier, for: indexPath)
+        return footer
+    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Check if we need to load more data when reaching the last cell
+        guard !viewModel.isLastRecipe else { return }
+        if indexPath.item == viewModel.filteredData.count - 1{
+            isLoadData = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                self.isLoadData = false
+                self.viewModel.getingRecipes()
+                
+            }
+        }
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard !isLoadData && !viewModel.isLastRecipe else {
+            return .zero
+        }
+            return CGSize(width: collectionView.frame.width, height: 150)
+    }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let recipe = viewModel.getRecipe(indexParh: indexPath)

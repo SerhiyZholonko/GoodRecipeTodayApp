@@ -19,8 +19,8 @@ final class CategoryViewControllerViewModel {
     
     weak var delegate: CategoryViewControllerViewModelDelegate?
     let firebaseManager = FirebaseManager.shared
-    
-    private let pageSize: Int = 10
+    public var isLastRecipe: Bool = false
+    private let pageSize: Int = 8
     private var lastSnapshot: DocumentSnapshot?
     private var isFetchingData: Bool = false
     private var isRevers: Bool = false {
@@ -32,6 +32,7 @@ final class CategoryViewControllerViewModel {
         return category.title
     }
     private(set) var dataSource: [Recipe] = []
+    private var filteredRecipes: [Recipe] = []
 
     private let category: Categories
     init(category: Categories) {
@@ -47,23 +48,28 @@ final class CategoryViewControllerViewModel {
         isRevers.toggle()
     }
      func getingRecipes() {
-        firebaseManager.getAllRecipes {[weak self] result in
-            guard let strongSelf = self else { return }
 
-            switch result {
-            case .success(let recipes):
-                let filteredRecipes = recipes.filter { $0.category == strongSelf.category.rawValue }
+         firebaseManager.getRecipesPageForCategory(pageSize: pageSize, lastDocumentSnapshot: lastSnapshot, category: category) { [weak self] result in
+             guard let strongSelf = self else { return }
+             switch result {
+             case .success(let (recipes, nextSnapshot)):
+                 strongSelf.lastSnapshot = nextSnapshot
+                 if !strongSelf.dataSource.contains(recipes) {
+                     strongSelf.dataSource.append(contentsOf: recipes)
+                 } else {
+                     strongSelf.isLastRecipe = true
+                 }
+                 strongSelf.filteredRecipes = strongSelf.dataSource.filter { $0.category == strongSelf.category.rawValue }
 
-                strongSelf.dataSource = filteredRecipes.sorted  {
-                    strongSelf.isRevers ? $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date()) :
-                    $0.createdAt ?? Timestamp(date: Date()) < $1.createdAt ?? Timestamp(date: Date())
-                }
-                strongSelf.delegate?.didFetchData()
-                //TODO: - filter recomend
-            case .failure(_):
-                print("error recomendRecipes")
-            }
-        }
-
+                 strongSelf.dataSource = strongSelf.filteredRecipes.sorted  {
+                                   strongSelf.isRevers ? $0.createdAt ?? Timestamp(date: Date()) > $1.createdAt ?? Timestamp(date: Date()) :
+                                   $0.createdAt ?? Timestamp(date: Date()) < $1.createdAt ?? Timestamp(date: Date())
+                               }
+                 strongSelf.delegate?.didFetchData()
+                 
+             case .failure(let error):
+                 print(error)
+             }
+         }
     }
 }

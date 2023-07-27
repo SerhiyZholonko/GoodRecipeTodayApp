@@ -9,7 +9,7 @@ import UIKit
 
 
 class MainSearchCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+    var isLoadData: Bool = false
     var viewModel = MainSearchCollectionViewControllerViewModel()
     let emptyLabel: UIImageView = {
       let view = UIImageView()
@@ -20,9 +20,9 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.addSubview(emptyLabel)
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+       
 
+        collectionView.register(FooterLodingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLodingCollectionReusableView.identifier)
         // Register cell classes
         self.collectionView!.register(MainSearchCollectionViewCell.self, forCellWithReuseIdentifier: MainSearchCollectionViewCell.identifier)
         addConstraints()
@@ -39,8 +39,8 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        emptyLabel.alpha = viewModel.recipes.isEmpty ? 1 : 0
-        return viewModel.recipes.count
+        emptyLabel.alpha = viewModel.filteredData.isEmpty ? 1 : 0
+        return viewModel.filteredData.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -51,6 +51,13 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
     }
 
     // MARK: UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter.self else {
+            fatalError("Unsupported")
+        }
+        let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLodingCollectionReusableView.identifier, for: indexPath)
+        return footer
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            // Return the desired size of each item (cell)
            // This will depend on the spacing and number of items per row you want
@@ -62,6 +69,19 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
 
         return CGSize(width: itemWidth, height: itemWidth * 1.5)
        }
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        // Check if we need to load more data when reaching the last cell
+        guard !viewModel.isLastRecipe else { return }
+        if indexPath.item == viewModel.filteredData.count - 1{
+            isLoadData = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                self.isLoadData = false
+                self.viewModel.getingRecipes()
+                
+            }
+        }
+        
+    }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
          let recipe = viewModel.getRecipe(indexParh: indexPath)
         let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
@@ -80,6 +100,12 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
 
            return UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
        }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard !isLoadData && !viewModel.isLastRecipe else {
+            return .zero
+        }
+            return CGSize(width: collectionView.frame.width, height: 150)
+    }
     private func addConstraints() {
         let emptyLabelConstraints = [
             emptyLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
