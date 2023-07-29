@@ -26,7 +26,8 @@ class AuthButton: UIButton {
     private func configure() {
         layer.cornerRadius      = 10
         titleLabel?.textColor   = .white
-        backgroundColor = .systemGreen
+        isEnabled = false
+        setupView()
         tintColor = .white
         titleLabel?.font        = UIFont.preferredFont(forTextStyle: .headline)
         translatesAutoresizingMaskIntoConstraints = false
@@ -37,5 +38,8 @@ class AuthButton: UIButton {
         let attributedTitle = NSAttributedString(string: title, attributes: attributes)
 
         setAttributedTitle(attributedTitle, for: .normal)
+    }
+    func setupView() {
+        backgroundColor = isEnabled ? .systemGreen : .systemGray
     }
 }

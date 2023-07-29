@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 
 class SignInViewController: UIViewController {
@@ -29,7 +30,7 @@ class SignInViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    lazy var signUpButton: AuthButton = {
+    lazy var signInButton: AuthButton = {
         let button = AuthButton(backgroundColor: .systemGreen, title: "Sign In")
         button.addTarget(self, action: #selector(didTappedSignIn), for: .touchUpInside)
         return button
@@ -57,6 +58,7 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
         configure()
         addConstraints()
+        viewModel.delegate = self
     }
     
     //MARK: - Functions
@@ -65,7 +67,7 @@ class SignInViewController: UIViewController {
         view.addSubview(backButton)
         view.addSubview(titleLabel)
         view.addSubview(authViewStack)
-        view.addSubview(signUpButton)
+        view.addSubview(signInButton)
         nameView.delegate = self
         passwordView.delegate = self
     }
@@ -86,10 +88,10 @@ class SignInViewController: UIViewController {
             
                
                let signUpButtonConstraints = [
-                   signUpButton.topAnchor.constraint(equalTo: authViewStack.bottomAnchor, constant: 20),
-                   signUpButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40),
-                   signUpButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -40),
-                   signUpButton.heightAnchor.constraint(equalToConstant: 50)
+                   signInButton.topAnchor.constraint(equalTo: authViewStack.bottomAnchor, constant: 20),
+                   signInButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40),
+                   signInButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -40),
+                   signInButton.heightAnchor.constraint(equalToConstant: 50)
                ]
                NSLayoutConstraint.activate(signUpButtonConstraints)
                
@@ -107,16 +109,20 @@ class SignInViewController: UIViewController {
     }
     @objc private func didTappedSignIn() {
         viewModel.signIn{ [weak self] isSuccess in
-                if isSuccess {
-                    self?.navigationController?.popToRootViewController(animated: false)
+            guard let strongSelf = self else { return }
+            switch isSuccess {
+                
+            case .success():
+                    strongSelf.navigationController?.popToRootViewController(animated: false)
                     NotificationCenter.default.post(name: .authVCClose, object: nil, userInfo: nil)
                     NotificationCenter.default.post(name: .reloadMainViewControlelr, object: nil, userInfo: nil)
-                } else {
-                    print("Some thing wrong")
-                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-        
+
+            }
     }
+
 }
 
 
@@ -125,13 +131,26 @@ extension SignInViewController: AuthViewdelegate {
     func usernameDidChange(name: String?) {
         guard let name = name else { return }
         viewModel.username = name
+            signInButton.isEnabled = viewModel.validation()
+            signInButton.setupView()
     }
     func emailDidChange(email: String?) {
-        
+       
     }
     func passwordDidChange(password: String?) {
         guard let password = password else { return }
         viewModel.password = password
+            signInButton.isEnabled = viewModel.validation()
+            signInButton.setupView()
+    }
+}
+
+
+//MARK: delegate SignInViewControllerViewModelDelegate
+extension SignInViewController: SignInViewControllerViewModelDelegate {
+    func forAlertError(error: Error) {
+        showErrorHUD("Invalid, username or password")
+
     }
     
     

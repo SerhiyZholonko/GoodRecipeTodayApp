@@ -95,7 +95,7 @@ final class ContentViewController: UIViewController {
             vc.delegate = self
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
-            self.present(navVC, animated: true)
+            self.present(navVC, animated: false)
         }
     }
     @objc func didSignUp(){

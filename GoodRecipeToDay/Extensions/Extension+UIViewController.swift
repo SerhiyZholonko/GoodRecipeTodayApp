@@ -7,7 +7,7 @@
 
 import UIKit
 
-import UIKit
+import JGProgressHUD
 
 extension UIViewController {
     
@@ -29,7 +29,16 @@ extension UIViewController {
         childViewController.didMove(toParent: self)
     }
     
-    
+     func showErrorHUD(_ message: String) {
+           if let mainWindowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let mainWindow = mainWindowScene.windows.first(where: { $0.isKeyWindow }) {
+               let hud = JGProgressHUD(style: .extraLight)
+               hud.indicatorView = JGProgressHUDErrorIndicatorView()
+               hud.textLabel.text = message
+               hud.show(in: mainWindow)
+               hud.dismiss(afterDelay: 3.0, animated: true) // Auto-dismiss after 3 seconds
+           }
+       }
 }
 
 

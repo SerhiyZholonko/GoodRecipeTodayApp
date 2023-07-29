@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol IsViewAgreeDelegtae: AnyObject {
+protocol ViewAgreeDelegtae: AnyObject {
     func isAgree(agree: Bool)
 }
 
-class IsViewAgree: UIView {
+class ViewAgree: UIView {
 
   //MARK: - Properties
-    weak var delegate: IsViewAgreeDelegtae?
+    weak var delegate: ViewAgreeDelegtae?
     lazy var checkmarkView: CheckView = {
        let view = CheckView()
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedCheck)))

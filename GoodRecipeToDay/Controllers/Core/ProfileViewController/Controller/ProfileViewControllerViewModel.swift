@@ -89,6 +89,7 @@ final class ProfileViewControllerViewModel {
     }
     
     public func fetchCurrentUserRecipe() {
+       recipes = []
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
             guard let strongSelf = self else { return }
             guard let user = user else { return }
@@ -114,15 +115,17 @@ final class ProfileViewControllerViewModel {
                         }
 
                     })
+        if recipes.count == 0 {
+            delegate?.updateRecipes()
+        }
             }
     public func getRecipeFromFollowers() {
               let users = followers.map{ user -> String in
+                  print("users", user.username)
                   return user.username
               }
-        print("users.count ", users.count)
         firebaseManager.getRecipesPageForUsersAndUser(pageSize: pageSize, lastDocumentSnapshot: lastSnapshot, usernames: users, additionalUsername: nil) { result in
             switch result {
-                
             case .success(let (recipes, nextSnapshot)):
                 self.lastSnapshot = nextSnapshot
                 if !self.recipes.contains(recipes) {

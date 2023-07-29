@@ -52,11 +52,12 @@ class ProfileViewController: UIViewController {
     
     
     // MARK: - Livecycle
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadPhotoInfoView()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-     
-
         view.addSubview(photoInfoView)
         view.addSubview(segmentedControl)
         view.addSubview(collectionView)
@@ -346,7 +347,7 @@ extension ProfileViewController: PhotoInfoViewDelegate {
     func sendMessges() {}
     
     func reloadPhotoInfoView() {
-//        photoInfoView.configure(viewModel: PhotoInfoViewViewModel())
+        photoInfoView.configure(viewModel: photoInfoView.viewModel ?? PhotoInfoViewViewModel(type: .profile))
     }
     
     func setPhotoImageView() {
@@ -401,6 +402,9 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
                     
                 case .success():
                     print("Succussfully image")
+                    self.photoInfoView.configure(viewModel: PhotoInfoViewViewModel(type: .profile))
+
+
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -413,7 +417,8 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 
 //MARK: - Delegate
-
+ 
+//TODO:  - update photo
 extension ProfileViewController: ProfileViewControllerViewModelDelegate {
 
     
@@ -453,3 +458,5 @@ extension ProfileViewController: AlertControllerOKCanselDelegate {
     
     
 }
+
+

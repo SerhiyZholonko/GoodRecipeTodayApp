@@ -29,7 +29,6 @@ class SignUpViewController: UIViewController {
     let nameView = AuthView(type: .name)
     let emailView = AuthView(type: .email)
     let passwordView = AuthView(type: .password)
-    let agreeView = IsViewAgree()
     //MARK: - Livecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -53,6 +52,7 @@ class SignUpViewController: UIViewController {
         button.addTarget(self, action: #selector(didTappedSignUp), for: .touchUpInside)
         return button
     }()
+    let agreeView = ViewAgree()
     let haveAccountLabel : UILabel = {
         let label = UILabel()
         label.text = "Already have an account"
@@ -136,11 +136,13 @@ class SignUpViewController: UIViewController {
     }
     @objc private func didTappedSignUp() {
         if viewModel.isAgree {
-            viewModel.signUp { [weak self] isSuccess in
+            viewModel.signUp { [weak self] isSuccess, message  in
                 if isSuccess {
                     self?.delegate?.isDismissVC(isAuth: isSuccess)
                 } else {
-                    print("Some thing wrong")
+                    if let message = message {
+                        self?.showErrorHUD(message)
+                    }
                 }
             }
         } 
@@ -162,14 +164,20 @@ extension SignUpViewController: AuthViewdelegate {
     func usernameDidChange(name: String?) {
         guard let name = name else { return }
         viewModel.username = name
+        signUpButton.isEnabled = viewModel.validation()
+        signUpButton.setupView()
     }
     func emailDidChange(email: String?) {
         guard let email = email else { return }
         viewModel.email = email
+        signUpButton.isEnabled = viewModel.validation()
+        signUpButton.setupView()
     }
     func passwordDidChange(password: String?) {
         guard let password = password else { return }
         viewModel.password = password
+        signUpButton.isEnabled = viewModel.validation()
+        signUpButton.setupView()
     }
     
     
@@ -177,6 +185,8 @@ extension SignUpViewController: AuthViewdelegate {
 
 
 extension SignUpViewController: SignUpViewControllerViewModelDelegate {
+   
+    
     func forAlertError(error: Error) {
         print(error.localizedDescription)
         self.presentAlertViewController(error: error.localizedDescription)
@@ -184,8 +194,10 @@ extension SignUpViewController: SignUpViewControllerViewModelDelegate {
 }
 
 
-extension SignUpViewController: IsViewAgreeDelegtae {
+extension SignUpViewController: ViewAgreeDelegtae {
     func isAgree(agree: Bool) {
         viewModel.isAgree = agree
+        signUpButton.isEnabled = viewModel.validation()
+        signUpButton.setupView()
     }
 }

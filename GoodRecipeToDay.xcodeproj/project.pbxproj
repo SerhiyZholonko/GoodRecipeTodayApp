@@ -70,6 +70,7 @@
 		185706D52A0E19B3008D680C /* SignInViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185706D42A0E19B3008D680C /* SignInViewControllerViewModel.swift */; };
 		18588F092A42FE3E00F640F0 /* AuthViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18588F082A42FE3E00F640F0 /* AuthViewControllerViewModel.swift */; };
 		185A31AB29FFF17700D0EAE4 /* TopBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A31AA29FFF17700D0EAE4 /* TopBarView.swift */; };
+		186186DA2A73DD9300148CD5 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 186186D92A73DD9300148CD5 /* JGProgressHUD */; };
 		1864241F2A2C4B1900355F44 /* PhotoInfoViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1864241E2A2C4B1900355F44 /* PhotoInfoViewViewModel.swift */; };
 		186927D02A04C0D300A3A4C7 /* AddDatePikerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927CF2A04C0D300A3A4C7 /* AddDatePikerViewController.swift */; };
 		186927D22A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186927D12A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift */; };
@@ -361,6 +362,7 @@
 				18951D382A0666D10064DC00 /* FirebaseAuth in Frameworks */,
 				18951D3C2A0666D10064DC00 /* FirebaseFirestore in Frameworks */,
 				183EA6062A14A5C900ECE4E7 /* SDWebImage in Frameworks */,
+				186186DA2A73DD9300148CD5 /* JGProgressHUD in Frameworks */,
 				18D440242A36452900311B6C /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1566,6 +1568,7 @@
 				180AA0852A24684F00C6265E /* Cosmos */,
 				18D440232A36452900311B6C /* GoogleSignIn */,
 				18D440252A36452900311B6C /* GoogleSignInSwift */,
+				186186D92A73DD9300148CD5 /* JGProgressHUD */,
 			);
 			productName = GoodRecipeToDay;
 			productReference = 1816E6EC29FC0DE900A87487 /* GoodRecipeToDay.app */;
@@ -1600,6 +1603,7 @@
 				183EA6042A14A5C900ECE4E7 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 				180AA0842A24684F00C6265E /* XCRemoteSwiftPackageReference "Cosmos" */,
 				18D440222A36452900311B6C /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				186186D82A73DD9300148CD5 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
 			);
 			productRefGroup = 1816E6ED29FC0DE900A87487 /* Products */;
 			projectDirPath = "";
@@ -1938,6 +1942,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.GoodRecipeToDay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1964,6 +1972,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.GoodRecipeToDay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2010,6 +2022,14 @@
 				kind = branch;
 			};
 		};
+		186186D82A73DD9300148CD5 /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		18951D362A0666D10064DC00 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -2038,6 +2058,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 183EA6042A14A5C900ECE4E7 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImage;
+		};
+		186186D92A73DD9300148CD5 /* JGProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 186186D82A73DD9300148CD5 /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
+			productName = JGProgressHUD;
 		};
 		18951D372A0666D10064DC00 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

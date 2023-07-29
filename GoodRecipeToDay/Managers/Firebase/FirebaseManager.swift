@@ -379,6 +379,7 @@ class FirebaseManager {
         }
     }
     func getRecipesPageForUsersAndUser(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, usernames: [String], additionalUsername: String?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
+        guard usernames.count > 0 else { return }
         let collectionName = "recipes"
         let recipesCollection = Firestore.firestore().collection(collectionName)
 
@@ -1274,20 +1275,34 @@ class FirebaseManager {
 
 extension FirebaseManager {
     // MARK: - Authentication
-        func signIn(username: String, password: String, completion: @escaping (Error?) -> Void) {
-            database.collection("users").document(username).getDocument { [weak self] snapshot, error in
-                guard let email = snapshot?.data()?["email"] as? String, let _ = snapshot?.data()?["uid"] as? String, error == nil else {
-                    return
-                }
-                self?.auth.signIn(withEmail: email, password: password) { result, error in
-                    guard result != nil, error == nil else {
-                        completion(error)
-                        return
-                    }
-                    completion(nil)
+    func signIn(username: String, password: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        database.collection("users").document(username).getDocument { [weak self] snapshot, error in
+            if let error = error {
+                // Handle the case where there was an error (e.g., username not found)
+                completion(.failure(error))
+                return
+            }
+
+            guard let email = snapshot?.data()?["email"] as? String, let _ = snapshot?.data()?["uid"] as? String else {
+                // Handle the case where email or uid is missing
+                let missingDataError = NSError(domain: "com.example.app", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid data in Firestore document"])
+                completion(.failure(missingDataError))
+                return
+            }
+
+            // Attempt to sign in the user
+            self?.auth.signIn(withEmail: email, password: password) { result, error in
+                if let error = error {
+                    // Handle the sign-in error
+                    completion(.failure(error))
+                } else {
+                    // Sign-in successful
+                    completion(.success(()))
                 }
             }
         }
+    }
+
         
         func signUp(username: String, email: String, password: String, completion: @escaping (Error?) -> Void) {
             auth.createUser(withEmail: email, password: password) { result, error in
