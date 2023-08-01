@@ -17,6 +17,8 @@ final class UserViewControllerViewModel {
 
     weak var delegate: UserViewControllerViewModelDelegate?
     
+    public var type: UserViewControllerType
+    
     public var title: String {
         return "User"
     }
@@ -28,8 +30,9 @@ final class UserViewControllerViewModel {
     private let user: GUser
     private lazy var currentUser: GUser? = firebaseManager.mainUser
     //MARK: - Init
-    init(user: GUser) {
+    init(user: GUser, type: UserViewControllerType = .main) {
         self.user = user
+        self.type = type
         configure()
     }
     //MARK: - Functions

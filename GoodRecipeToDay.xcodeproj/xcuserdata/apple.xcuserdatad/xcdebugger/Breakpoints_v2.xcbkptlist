@@ -2114,8 +2114,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
             landmarkName = "viewModel"
             landmarkType = "24">
          </BreakpointContent>
@@ -2130,8 +2130,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "viewModel"
             landmarkType = "24">
          </BreakpointContent>
@@ -2435,8 +2435,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "24"
             endingLineNumber = "24"
-            landmarkName = "MainCollectionView"
-            landmarkType = "3">
+            landmarkName = "init(frame:viewModel:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2997,38 +2997,6 @@
                   offsetFromSymbolStart = "224">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9AF1A40A-5759-4146-86B0-9C77103221C3"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
-            landmarkName = "followerBottonPressed()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "140004F5-A950-437C-BCD1-FB4716DBACAD"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
-            landmarkName = "followerBottonPressed()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3665,8 +3633,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "388"
+            endingLineNumber = "388"
             landmarkName = "changeIsFollow(viewModel:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3825,8 +3793,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/userView/userView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "didTapButton()"
             landmarkType = "7">
          </BreakpointContent>
@@ -3985,8 +3953,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/userView/userView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "showButtonFollower(isShowButton:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -4001,8 +3969,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/userView/userView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "showButtonFollower(isShowButton:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5239,8 +5207,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1270"
-            endingLineNumber = "1270"
+            startingLineNumber = "1148"
+            endingLineNumber = "1148"
             landmarkName = "FirebaseManager"
             landmarkType = "3">
          </BreakpointContent>
@@ -5446,8 +5414,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
             landmarkName = "segmentedControlValueChanged()"
             landmarkType = "7">
          </BreakpointContent>
@@ -5462,8 +5430,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
             landmarkName = "segmentedControlValueChanged()"
             landmarkType = "7">
          </BreakpointContent>
@@ -5750,8 +5718,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "922"
-            endingLineNumber = "922"
+            startingLineNumber = "800"
+            endingLineNumber = "800"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5766,8 +5734,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "923"
-            endingLineNumber = "923"
+            startingLineNumber = "801"
+            endingLineNumber = "801"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5782,8 +5750,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "924"
-            endingLineNumber = "924"
+            startingLineNumber = "802"
+            endingLineNumber = "802"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5798,8 +5766,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "933"
-            endingLineNumber = "933"
+            startingLineNumber = "811"
+            endingLineNumber = "811"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
             <Locations>
@@ -5846,8 +5814,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "932"
-            endingLineNumber = "932"
+            startingLineNumber = "810"
+            endingLineNumber = "810"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5862,8 +5830,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "931"
-            endingLineNumber = "931"
+            startingLineNumber = "809"
+            endingLineNumber = "809"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5878,8 +5846,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "936"
-            endingLineNumber = "936"
+            startingLineNumber = "814"
+            endingLineNumber = "814"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5894,8 +5862,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "937"
-            endingLineNumber = "937"
+            startingLineNumber = "815"
+            endingLineNumber = "815"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5910,8 +5878,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "938"
-            endingLineNumber = "938"
+            startingLineNumber = "816"
+            endingLineNumber = "816"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
             <Locations>
@@ -5973,8 +5941,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "941"
-            endingLineNumber = "941"
+            startingLineNumber = "819"
+            endingLineNumber = "819"
             landmarkName = "getCurrentUsername(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -5989,8 +5957,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1028"
-            endingLineNumber = "1028"
+            startingLineNumber = "906"
+            endingLineNumber = "906"
             landmarkName = "fetchCurrentUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -6005,8 +5973,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1029"
-            endingLineNumber = "1029"
+            startingLineNumber = "907"
+            endingLineNumber = "907"
             landmarkName = "fetchCurrentUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -6021,8 +5989,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1044"
-            endingLineNumber = "1044"
+            startingLineNumber = "922"
+            endingLineNumber = "922"
             landmarkName = "fetchCurrentUser(completion:)"
             landmarkType = "7">
             <Locations>
@@ -6069,8 +6037,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/MainView/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "rateView"
             landmarkType = "24">
          </BreakpointContent>
@@ -6321,8 +6289,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/RecipeDetailViewController/RecipeDetailViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "didTapFavorite()"
             landmarkType = "7">
          </BreakpointContent>
@@ -6337,8 +6305,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/RecipeDetailViewController/RecipeDetailViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "didTapFavorite()"
             landmarkType = "7">
          </BreakpointContent>
@@ -7500,8 +7468,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/FavoriteViewController/Controllers/UserViewController/UserViewControllerViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
             landmarkName = "saveMessage(message:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -7516,8 +7484,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/FavoriteViewController/Controllers/UserViewController/UserViewControllerViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "saveMessage(message:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -7532,8 +7500,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/FavoriteViewController/Controllers/UserViewController/UserViewControllerViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "saveMessage(message:)"
             landmarkType = "7">
             <Locations>
@@ -7580,8 +7548,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1075"
-            endingLineNumber = "1075"
+            startingLineNumber = "953"
+            endingLineNumber = "953"
             landmarkName = "updateMessageForUser(username:currentUsername:sender:chatMessage:completion:)"
             landmarkType = "7">
             <Locations>
@@ -7852,8 +7820,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/FavoriteViewController/Controllers/UserViewController/UserViewControllerViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "UserViewControllerViewModel"
             landmarkType = "3">
          </BreakpointContent>
@@ -8495,8 +8463,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1046"
-            endingLineNumber = "1046"
+            startingLineNumber = "924"
+            endingLineNumber = "924"
             landmarkName = "fetchCurrentUser(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -8639,8 +8607,8 @@
             filePath = "GoodRecipeToDay/Controllers/Core/FavoriteViewController/Controllers/UserViewController/UserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
             landmarkName = "handleDarkViewTap(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -9006,8 +8974,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "541"
-            endingLineNumber = "541"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
             landmarkName = "fetchRecipesWithQuery(_:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -9022,8 +8990,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "540"
-            endingLineNumber = "540"
+            startingLineNumber = "435"
+            endingLineNumber = "435"
             landmarkName = "fetchRecipesWithQuery(_:completion:)"
             landmarkType = "7">
             <Locations>
@@ -9070,8 +9038,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "545"
-            endingLineNumber = "545"
+            startingLineNumber = "440"
+            endingLineNumber = "440"
             landmarkName = "fetchRecipesWithQuery(_:completion:)"
             landmarkType = "7">
             <Locations>
@@ -9118,8 +9086,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "546"
-            endingLineNumber = "546"
+            startingLineNumber = "441"
+            endingLineNumber = "441"
             landmarkName = "fetchRecipesWithQuery(_:completion:)"
             landmarkType = "7">
             <Locations>
@@ -9166,154 +9134,10 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "548"
-            endingLineNumber = "548"
+            startingLineNumber = "443"
+            endingLineNumber = "443"
             landmarkName = "fetchRecipesWithQuery(_:completion:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9CACEE2E-16CF-4364-833B-538299F7DC6A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "517"
-            endingLineNumber = "517"
-            landmarkName = "FirebaseManager"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "9CACEE2E-16CF-4364-833B-538299F7DC6A - bedc1461ccbcfd07"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GoodRecipeToDay.FirebaseManager.getAllPaginationRecipes(pageSize: Swift.Int, lastRecipe: Swift.Optional&lt;GoodRecipeToDay.Recipe&gt;, completion: (Swift.Result&lt;(Swift.Array&lt;GoodRecipeToDay.Recipe&gt;, Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "GoodRecipeToDay"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/projects/GoodRecipeToDay/GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "249"
-                  endingLineNumber = "249"
-                  offsetFromSymbolStart = "300">
-               </Location>
-               <Location
-                  uuid = "9CACEE2E-16CF-4364-833B-538299F7DC6A - d9ad09677c4ef521"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in GoodRecipeToDay.FirebaseManager.getAllPaginationRecipes(pageSize: Swift.Int, lastRecipe: Swift.Optional&lt;GoodRecipeToDay.Recipe&gt;, completion: (Swift.Result&lt;(Swift.Array&lt;GoodRecipeToDay.Recipe&gt;, Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "GoodRecipeToDay"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/projects/GoodRecipeToDay/GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "249"
-                  endingLineNumber = "249"
-                  offsetFromSymbolStart = "96">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "37F8787D-7FE4-4C4A-8CF5-92E6A0A70185"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "519"
-            endingLineNumber = "519"
-            landmarkName = "FirebaseManager"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "37F8787D-7FE4-4C4A-8CF5-92E6A0A70185 - bedc1461ccbcfdb9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GoodRecipeToDay.FirebaseManager.getAllPaginationRecipes(pageSize: Swift.Int, lastRecipe: Swift.Optional&lt;GoodRecipeToDay.Recipe&gt;, completion: (Swift.Result&lt;(Swift.Array&lt;GoodRecipeToDay.Recipe&gt;, Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "GoodRecipeToDay"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/projects/GoodRecipeToDay/GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "251"
-                  endingLineNumber = "251"
-                  offsetFromSymbolStart = "808">
-               </Location>
-               <Location
-                  uuid = "37F8787D-7FE4-4C4A-8CF5-92E6A0A70185 - bedc1461ccbcfdb9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GoodRecipeToDay.FirebaseManager.getAllPaginationRecipes(pageSize: Swift.Int, lastRecipe: Swift.Optional&lt;GoodRecipeToDay.Recipe&gt;, completion: (Swift.Result&lt;(Swift.Array&lt;GoodRecipeToDay.Recipe&gt;, Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "GoodRecipeToDay"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/projects/GoodRecipeToDay/GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "251"
-                  endingLineNumber = "251"
-                  offsetFromSymbolStart = "820">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B0A75627-AB80-4015-A633-3A968B93767D"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "518"
-            endingLineNumber = "518"
-            landmarkName = "FirebaseManager"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "B0A75627-AB80-4015-A633-3A968B93767D - bedc1461ccbcfdb9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GoodRecipeToDay.FirebaseManager.getAllPaginationRecipes(pageSize: Swift.Int, lastRecipe: Swift.Optional&lt;GoodRecipeToDay.Recipe&gt;, completion: (Swift.Result&lt;(Swift.Array&lt;GoodRecipeToDay.Recipe&gt;, Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "GoodRecipeToDay"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/projects/GoodRecipeToDay/GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "251"
-                  endingLineNumber = "251"
-                  offsetFromSymbolStart = "808">
-               </Location>
-               <Location
-                  uuid = "B0A75627-AB80-4015-A633-3A968B93767D - bedc1461ccbcfdb9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "GoodRecipeToDay.FirebaseManager.getAllPaginationRecipes(pageSize: Swift.Int, lastRecipe: Swift.Optional&lt;GoodRecipeToDay.Recipe&gt;, completion: (Swift.Result&lt;(Swift.Array&lt;GoodRecipeToDay.Recipe&gt;, Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "GoodRecipeToDay"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/projects/GoodRecipeToDay/GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "251"
-                  endingLineNumber = "251"
-                  offsetFromSymbolStart = "820">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -9514,8 +9338,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
+            startingLineNumber = "345"
+            endingLineNumber = "345"
             landmarkName = "getRecipesPageForUser(pageSize:lastDocumentSnapshot:username:completion:)"
             landmarkType = "7">
             <Locations>
@@ -9592,8 +9416,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "360"
-            endingLineNumber = "360"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "getRecipesPageForUser(pageSize:lastDocumentSnapshot:username:completion:)"
             landmarkType = "7">
             <Locations>
@@ -9640,8 +9464,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "361"
-            endingLineNumber = "361"
+            startingLineNumber = "334"
+            endingLineNumber = "334"
             landmarkName = "getRecipesPageForUser(pageSize:lastDocumentSnapshot:username:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -9656,8 +9480,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "368"
-            endingLineNumber = "368"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "getRecipesPageForUser(pageSize:lastDocumentSnapshot:username:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -9672,8 +9496,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "378"
-            endingLineNumber = "378"
+            startingLineNumber = "351"
+            endingLineNumber = "351"
             landmarkName = "getRecipesPageForUser(pageSize:lastDocumentSnapshot:username:completion:)"
             landmarkType = "7">
             <Locations>
@@ -9944,6 +9768,21 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "105"
                   endingLineNumber = "105"
+                  offsetFromSymbolStart = "908">
+               </Location>
+               <Location
+                  uuid = "6DDA23F6-76D4-4E7C-AAF2-D20140240795 - 45caadc37e56bf0d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;(Swift.Array&lt;GoodRecipeToDay.Recipe&gt;, Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;), Swift.Error&gt;) -&gt; () in closure #1 (Swift.Optional&lt;GoodRecipeToDay.GUser&gt;) -&gt; () in GoodRecipeToDay.ProfileViewControllerViewModel.fetchCurrentUserRecipe() -&gt; ()"
+                  moduleName = "GoodRecipeToDay"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/Documents/projects/GoodRecipeToDay/GoodRecipeToDay/Controllers/Core/ProfileViewController/Controller/ProfileViewControllerViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
                   offsetFromSymbolStart = "908">
                </Location>
             </Locations>
@@ -10453,8 +10292,8 @@
             filePath = "GoodRecipeToDay/Managers/Firebase/FirebaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1278"
-            endingLineNumber = "1278"
+            startingLineNumber = "1156"
+            endingLineNumber = "1156"
             landmarkName = "signIn(username:password:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -11027,6 +10866,118 @@
             startingLineNumber = "107"
             endingLineNumber = "107"
             landmarkName = "fetchCurrentUserRecipe()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DF2E46A1-B6F6-481E-A467-32EEA800586C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/RecipeDetailViewController/RecipeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
+            landmarkName = "showUserProfile(guser:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "722B3303-C1CF-4C8E-8AAD-65CD8F64153B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/FollowView/FollowView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "didTouchProfileButton()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E3B72ECE-DFDF-4BB1-B6BE-C4612B0C6F4D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/FollowView/FollowView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "didTouchProfileButton()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1AEDE8FA-4582-441F-B679-4375F195D59E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/FollowView/FollowView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "didTouchProfileButton()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9B4DE470-FEC9-4425-80DA-56AA4F79D46D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/Views/FollowView/FollowView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "setupeAnimation()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B60EC539-5114-4827-893E-EF0448AC09D9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/RecipeDetailViewController/RecipeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "533CF674-585C-4136-BA56-E2CB9699BBDC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GoodRecipeToDay/Controllers/Core/MainViewController/Controllers/DetailViewController/RecipeDetailViewController/RecipeDetailViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
+            landmarkName = "showFollowView(title:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

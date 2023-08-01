@@ -323,34 +323,7 @@ class FirebaseManager {
         }
     }
 
-//    func getRecipesPageForSearch(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, searchText: String, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
-//        print("searchText ", searchText)
-//        let collectionName = "recipes"
-//        let recipesCollection = Firestore.firestore().collection(collectionName).whereField("title", isEqualTo: searchText).limit(to: pageSize)
-//
-//        recipesCollection.getDocuments { snapshot, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//
-//            var recipes = [Recipe]()
-//            var nextSnapshot: DocumentSnapshot?
-//
-//            for document in snapshot?.documents ?? [] {
-//                print("document: ", document.data().count)
-//                if let recipe = Recipe(snapshot: document) {
-//                        recipes.append(recipe)
-//                    print("recipes::", recipes.count)
-//
-//                }
-//            }
-//
-//            // Get the last document snapshot to use for the next pagination query
-//            nextSnapshot = snapshot?.documents.last
-//            completion(.success((recipes, nextSnapshot)))
-//        }
-//    }
+
 
     func getRecipesPageForUser(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, username: String, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
         let collectionName = "recipes"
@@ -424,36 +397,7 @@ class FirebaseManager {
             completion(.success((recipes, nextSnapshot)))
         }
     }
-//    func getRecipesPageForUsers(pageSize: Int, lastDocumentSnapshot: DocumentSnapshot?, usern: [GUser], completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
-//        let collectionName = "recipes"
-//        var recipes = [Recipe]()
-//        for user in users {
-//            
-//        }
-//        let recipesCollection = Firestore.firestore().collection(collectionName).whereField("username", isEqualTo: username)
-//
-//        recipesCollection.getDocuments { snapshot, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//
-//            var nextSnapshot: DocumentSnapshot?
-//
-//            for document in snapshot?.documents ?? [] {
-//                print(document)
-//                if let recipe = Recipe(snapshot: document) {
-//                        recipes.append(recipe)
-//                }
-//            }
-//
-//            // Get the last document snapshot to use for the next pagination query
-//            nextSnapshot = snapshot?.documents.last
-//
-//        }
-//        completion(.success((recipes, nextSnapshot)))
-//
-//    }
+
     func getAllPaginationRecipes(pageSize: Int, lastRecipe: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
         var query = db.collection("recipes").limit(to: pageSize)
         
@@ -485,55 +429,6 @@ class FirebaseManager {
         }
     }
 
-//    func getAllPaginationRecipes(pageSize: Int, lastRecipe: DocumentSnapshot?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void)
-//    {
-//        let first = db.collection("recipes")
-//            .limit(to: pageSize)
-//
-//        first.addSnapshotListener { (snapshot, error) in
-//            if let error = error {
-//                              completion(.failure(error))
-//                              return
-//                          }
-//            guard let snapshot = snapshot else {
-//                print("Error retreving cities: \(error.debugDescription)")
-//                return
-//            }
-//
-//            guard let lastSnapshot = snapshot.documents.last else {
-//                // The collection is empty.
-//                return
-//            }
-//
-//            let next = self.db.collection("recipes")
-//                .start(afterDocument: lastSnapshot)
-//
-//
-//        }
-//    }
-//    {
-//        let usersCollection = database.collection("users")
-//        
-//        var query = usersCollection.limit(to: pageSize )
-//        
-//        if let lastRecipe = lastRecipe {
-//            let lastRecipeRef = lastRecipe.getDocumentReference() // Assuming you have a method in Recipe class to get the document reference
-//            lastRecipeRef?.getDocument { snapshot, error in
-//                if let error = error {
-//                    completion(.failure(error))
-//                    return
-//                }
-//                
-//                if let lastSnapshot = snapshot {
-//                    query = query.start(afterDocument: lastSnapshot)
-//                }
-//                
-//                self.fetchRecipesWithQuery(query, completion: completion)
-//            }
-//        } else {
-//            fetchRecipesWithQuery(query, completion: completion)
-//        }
-//    }
 
     func fetchRecipesWithQuery(_ query: Query, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
         query.getDocuments { snapshot, error in
@@ -572,50 +467,6 @@ class FirebaseManager {
         }
     }
 
-//    func getAllPaginationRecipes(pageSize: Int, lastRecipe: Recipe?, completion: @escaping (Result<([Recipe], DocumentSnapshot?), Error>) -> Void) {
-//        let usersCollection = database.collection("users")
-//        
-//
-//        var query = usersCollection.order(by: "title").start(after: [lastRecipe?.title ?? ""]).limit(to: pageSize)
-//        
-//        if let lastRecipe = lastRecipe {
-//            query = query.start(afterDocument: lastRecipe)
-//        }
-//        
-//        query.getDocuments { snapshot, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//            
-//            var recipes = [Recipe]()
-//            var nextSnapshot: DocumentSnapshot?
-//            
-//            for document in snapshot?.documents ?? [] {
-//                let userDocRef = document.reference
-//                let recipesCollection = userDocRef.collection("recipes")
-//                
-//                recipesCollection.getDocuments { snapshot, error in
-//                    if let error = error {
-//                        completion(.failure(error))
-//                        return
-//                    }
-//                    
-//                    for document in snapshot?.documents ?? [] {
-//                        if let recipe = Recipe(snapshot: document) {
-//                            recipes.append(recipe)
-//                        }
-//                    }
-//                    
-//                    if let lastDocumentSnapshot = snapshot?.documents.last {
-//                        nextSnapshot = lastDocumentSnapshot
-//                    }
-//                    
-//                    completion(.success((recipes, nextSnapshot)))
-//                }
-//            }
-//        }
-//    }
     func fetchRecipes(pageSize: Int, lastSnapshot: DocumentSnapshot?, completion: @escaping (Result<QuerySnapshot, Error>) -> Void) {
         let recipesCollection = database.collection("recipes")
         
@@ -917,7 +768,34 @@ class FirebaseManager {
             }
         }
     }
-    
+    func getUserForUsername(username: String, completion: @escaping (Result<GUser, Error>) -> Void) {
+        guard let currentUser = auth.currentUser else {
+            completion(.failure(FirebaseError.userNotLoggedIn))
+            return
+        }
+
+        let usersRef = database.collection("users")
+        let query = usersRef.whereField("username", isEqualTo: username).limit(to: 1)
+
+        query.getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let document = snapshot?.documents.first else {
+                completion(.failure(FirebaseError.userNotFound))
+                return
+            }
+
+            if let user = GUser(document: document) {
+                completion(.success(user))
+            } else {
+                completion(.failure(FirebaseError.invalidUserData))
+            }
+        }
+    }
+
     func getCurrentUsername(completion: @escaping (Result<String, Error>) -> Void) {
         guard let currentUser = auth.currentUser else {
             completion(.failure(FirebaseError.userNotLoggedIn))
@@ -1355,6 +1233,8 @@ enum FirebaseError: Error {
     case missingKey
     case imageConversionFailure
     case userNotLoggedIn
+    case userNotFound
+    case invalidUserData
 }
 
 

@@ -10,6 +10,7 @@ protocol MainViewDelegate: AnyObject {
     func reloadChatView()
     func reloadVM()
     func changeSize()
+    func showFollowView(title: String)
 }
 
 class MainView: UIView {
@@ -174,7 +175,15 @@ class MainView: UIView {
         calculateIngredientTableViewHeight()
         calculateInstructionTableViewHeight()
     }
-   
+    public func changeFollow() {
+        guard let viewModel = viewModel else { return }
+        if viewModel.isFallow {
+            viewModel.deleteFollowersFrolUser()
+        } else  {
+            viewModel.userToFollower()
+        }
+        userView.configure(isFollow: viewModel.isFallow, viewModel: UserViewViewModel(username: viewModel.username))
+    }
     private func setupScrollView() {
         addSubview(scrollView)
         NSLayoutConstraint.activate([
@@ -278,6 +287,8 @@ class MainView: UIView {
         ]
         NSLayoutConstraint.activate(instructionTableViewConstraints)
     }
+
+
     @objc private func segmentedControlValueChanged() {
         if segmentedControl.selectedSegmentIndex == 0 {
             UIView.animate(withDuration: 0.5, delay: 1) {[weak self] in
@@ -351,6 +362,7 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
 }
 
 
@@ -364,15 +376,12 @@ extension MainView: InstructionTableViewCellDelegate {
     }
 }
 extension MainView: UserViewDelegate {
-    func followerBottonPressed() {
-        guard let viewModel = viewModel else { return }
-        if viewModel.isFallow {
-            viewModel.deleteFollowersFrolUser()
-        } else  {
-            viewModel.userToFollower()
-        }
-        userView.configure(isFollow: viewModel.isFallow, viewModel: UserViewViewModel(username: viewModel.username))
+    func followerBottonPressed(title: String) {
+        delegate?.showFollowView(title: title)
+       
     }
+
+    
 }
 
 extension MainView: MainViewViewModelDelegate {

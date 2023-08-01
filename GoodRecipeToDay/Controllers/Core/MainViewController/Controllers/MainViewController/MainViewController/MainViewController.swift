@@ -12,7 +12,7 @@ protocol MainViewControllerDelegate: AnyObject {
     func updateImageInMenu()
 }
 
-final class MainViewController: UIViewController {
+final class MainViewController: UIViewController, UINavigationControllerDelegate {
     
     weak var delegate: MainViewControllerDelegate?
     
@@ -226,12 +226,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .recomend(viewModel: let viewModel):
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
-            
-            vc.delegate = self
-            vc.modalPresentationStyle = .fullScreen
-            vc.modalTransitionStyle = .crossDissolve
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.delegate = self
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
-                self.present(vc, animated: true)
+                self.present(navVC, animated: true)
             }
         case .oftheWeek(viewModel: let viewModel):
             let recipe = viewModel[indexPath.item].recipe

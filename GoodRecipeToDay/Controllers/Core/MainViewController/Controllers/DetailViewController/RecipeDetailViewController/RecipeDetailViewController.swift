@@ -22,7 +22,6 @@ class RecipeDetailViewController: UIViewController {
 
     lazy var mainImageView: UIImageView = {
        let iv = UIImageView()
-
         iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
@@ -57,9 +56,15 @@ class RecipeDetailViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    lazy var  followerView: FollowView = {
+        let view = FollowView(viewModel: .init(followerUsername: viewModel.currentRecipe.username))
+        view.delegate = self
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     var mainViewHeightConstraint: NSLayoutConstraint = NSLayoutConstraint()
     private lazy var chatViewController = ChatViewController(viewModel: ChatViewControllerViewModel(recipe: viewModel.currentRecipe))
-
     init(viewModel: RecipeDetailViewControllerViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -69,22 +74,37 @@ class RecipeDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func viewWillAppear(_ animated: Bool) {
+          super.viewWillAppear(animated)
+          navigationController?.setNavigationBarHidden(true, animated: animated)
+      }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         view.addSubview(mainImageView)
-        view.addSubview(arrowBack)
-        view.addSubview(favoriteButton)
-        view.addSubview(mainView)
-        setupUI()
-        addConstraints()
-        configure()
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateCoredata), name: .didUpdateCoredata, object: nil)
-        self.addChildViewController(chatViewController, to: mainView.chatView)
+          view.addSubview(arrowBack)
+          view.addSubview(favoriteButton)
+          view.addSubview(mainView)
+          view.addSubview(followerView) // Add the followerView as a subview first
+
+          setupUI()
+          addConstraints()
+          configure()
+
+          NotificationCenter.default.addObserver(self, selector: #selector(didUpdateCoredata), name: .didUpdateCoredata, object: nil)
+          self.addChildViewController(chatViewController, to: mainView.chatView)
     }
  
 //MARK: - Functions
-
+    func addBlurEffect(to view: UIView) {
+         let blurEffect = UIBlurEffect(style: .dark)
+         let blurView = UIVisualEffectView(effect: blurEffect)
+         blurView.frame = view.bounds
+         view.addSubview(blurView)
+     }
     private func calculateIngredientІackTableViewHeight() {
         let totalRowHeight = CGFloat(-140)
         mainViewHeightConstraint.constant = totalRowHeight
@@ -143,8 +163,15 @@ class RecipeDetailViewController: UIViewController {
             mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ]
         NSLayoutConstraint.activate(mainViewConstraints)
-
+        let followerViewConstraints = [
+            followerView.topAnchor.constraint(equalTo: view.topAnchor),
+            followerView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            followerView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            followerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(followerViewConstraints)
     }
+ 
     @objc private func didTappedBack() {
         UIView.animate(withDuration: 0.5, delay: 0) {
             self.delegate?.reloadCollectionView()
@@ -186,6 +213,17 @@ class RecipeDetailViewController: UIViewController {
 
 
 extension RecipeDetailViewController: MainViewDelegate {
+    func showFollowView(title: String) {
+        UIView.animate(withDuration: 0.3) {[weak self] in
+            self?.followerView.followButtom.setTitle(title, for: .normal)
+            self?.followerView.isHidden = false
+        }
+        followerView.setupeAnimation()
+
+    }
+    
+  
+    
     func changeSize() {
         guard let mainViewTopConstraint = mainViewTopConstraint else { return }
         if mainViewTopConstraint.constant == -20 {
@@ -227,6 +265,30 @@ extension RecipeDetailViewController: MainViewDelegate {
 extension RecipeDetailViewController: RecipeDetailViewControllerViewModelDelegate {
     func update(with viewModel: RecipeDetailViewControllerViewModel) {
         self.viewModel = viewModel
+    }
+    
+    
+}
+
+
+extension RecipeDetailViewController: FollowViewDelegate {
+    func showUserProfile(guser: GUser) {
+        let vc = UserViewController(viewModel: UserViewControllerViewModel(user: guser, type: .watch))
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func changeFollow() {
+        mainView.changeFollow()
+        UIView.animate(withDuration: 0.3) {[weak self] in
+            self?.followerView.isHidden = true
+        }
+    }
+    
+    func forFollow(currentTitleForButton: String) {
+        UIView.animate(withDuration: 0.3) {[weak self] in
+            self?.followerView.isHidden = true
+        }
     }
     
     

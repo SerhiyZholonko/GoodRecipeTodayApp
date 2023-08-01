@@ -89,7 +89,7 @@ final class ProfileViewControllerViewModel {
     }
     
     public func fetchCurrentUserRecipe() {
-       recipes = []
+//       recipes = []
         firebaseManager.fetchCurrentUser(completion: { [ weak self ] user in
             guard let strongSelf = self else { return }
             guard let user = user else { return }

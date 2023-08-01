@@ -8,6 +8,11 @@
 import UIKit
 
 
+enum UserViewControllerType {
+    case watch
+    case main
+}
+
 final class UserViewController: UIViewController {
     //MARK: - Properties
     
@@ -64,6 +69,7 @@ final class UserViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -184,7 +190,7 @@ final class UserViewController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.sendTextView.alpha = 1
             
-            self.sendTextView.transform = CGAffineTransform(translationX: 0, y: -280)
+            self.sendTextView.transform = CGAffineTransform(translationX: 0, y: self.viewModel.type == .watch ? -320 : -280)
         }
     }
     

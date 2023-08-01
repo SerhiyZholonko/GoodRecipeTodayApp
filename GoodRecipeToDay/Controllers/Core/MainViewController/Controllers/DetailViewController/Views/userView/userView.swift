@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UserViewDelegate: AnyObject {
-    func followerBottonPressed()
+    func followerBottonPressed(title: String)
 }
 
 class UserView: UIView {
@@ -74,7 +74,8 @@ class UserView: UIView {
         NSLayoutConstraint.activate(followButtonConstraints)
     }
     @objc  func didTapButton() {
-        delegate?.followerBottonPressed()
+        guard let title = followrButton.title(for: .normal) else { return }
+        delegate?.followerBottonPressed(title: title)
     }
 }
 

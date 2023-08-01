@@ -92,6 +92,7 @@
 		18972F612A0C026100D02733 /* AuthAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18972F602A0C026100D02733 /* AuthAlertViewController.swift */; };
 		189780812A5A85470038EE44 /* MenuViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189780802A5A85470038EE44 /* MenuViewControllerViewModel.swift */; };
 		189780832A5AAEF70038EE44 /* ContentViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189780822A5AAEF70038EE44 /* ContentViewControllerViewModel.swift */; };
+		189950592A779A760045CBF0 /* FollowViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189950582A779A760045CBF0 /* FollowViewViewModel.swift */; };
 		189C6D1F2A022B9E001EB808 /* AddIngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189C6D1E2A022B9E001EB808 /* AddIngredientTableViewCell.swift */; };
 		189C6D212A02527E001EB808 /* CookingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189C6D202A02527E001EB808 /* CookingTableViewCell.swift */; };
 		189F946B2A18AEE8002DDAEF /* MainViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F946A2A18AEE8002DDAEF /* MainViewViewModel.swift */; };
@@ -155,6 +156,9 @@
 		18D440212A36430E00311B6C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18D440202A36430E00311B6C /* GoogleService-Info.plist */; };
 		18D440242A36452900311B6C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 18D440232A36452900311B6C /* GoogleSignIn */; };
 		18D440262A36452900311B6C /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 18D440252A36452900311B6C /* GoogleSignInSwift */; };
+		18D4BFD22A7632A60083A433 /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D4BFD12A7632A60083A433 /* FollowView.swift */; };
+		18D4BFD52A764E530083A433 /* FollowButtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D4BFD42A764E530083A433 /* FollowButtom.swift */; };
+		18D4BFD72A7683420083A433 /* Extension+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D4BFD62A7683420083A433 /* Extension+UIButton.swift */; };
 		18D946AB2A0CE60E0008948F /* Extension+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D946AA2A0CE60E0008948F /* Extension+Notification.swift */; };
 		18D9A5F62A2B07BB00649CFA /* TitleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9A5F52A2B07BB00649CFA /* TitleTextView.swift */; };
 		18D9A5F92A2B091D00649CFA /* TitleTextViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D9A5F82A2B091D00649CFA /* TitleTextViewViewModel.swift */; };
@@ -261,6 +265,7 @@
 		18972F602A0C026100D02733 /* AuthAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAlertViewController.swift; sourceTree = "<group>"; };
 		189780802A5A85470038EE44 /* MenuViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewControllerViewModel.swift; sourceTree = "<group>"; };
 		189780822A5AAEF70038EE44 /* ContentViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewControllerViewModel.swift; sourceTree = "<group>"; };
+		189950582A779A760045CBF0 /* FollowViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowViewViewModel.swift; sourceTree = "<group>"; };
 		189C6D1E2A022B9E001EB808 /* AddIngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientTableViewCell.swift; sourceTree = "<group>"; };
 		189C6D202A02527E001EB808 /* CookingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTableViewCell.swift; sourceTree = "<group>"; };
 		189F946A2A18AEE8002DDAEF /* MainViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewViewModel.swift; sourceTree = "<group>"; };
@@ -325,6 +330,9 @@
 		18D266DB2A5E8A3C004CF417 /* AlertControllerOKCansel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllerOKCansel.swift; sourceTree = "<group>"; };
 		18D266DD2A5E8FD7004CF417 /* AlertControllerOKCanselViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertControllerOKCanselViewModel.swift; sourceTree = "<group>"; };
 		18D440202A36430E00311B6C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		18D4BFD12A7632A60083A433 /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
+		18D4BFD42A764E530083A433 /* FollowButtom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButtom.swift; sourceTree = "<group>"; };
+		18D4BFD62A7683420083A433 /* Extension+UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIButton.swift"; sourceTree = "<group>"; };
 		18D946AA2A0CE60E0008948F /* Extension+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Notification.swift"; sourceTree = "<group>"; };
 		18D9A5F52A2B07BB00649CFA /* TitleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTextView.swift; sourceTree = "<group>"; };
 		18D9A5F82A2B091D00649CFA /* TitleTextViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTextViewViewModel.swift; sourceTree = "<group>"; };
@@ -682,6 +690,7 @@
 		183EA60C2A150EAA00ECE4E7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				18D4BFD02A76328A0083A433 /* FollowView */,
 				18FFF1D22A2F5E44004AE7B9 /* userView */,
 				183EA6122A153F2100ECE4E7 /* supViews */,
 				189F94692A18AE80002DDAEF /* MainView */,
@@ -1186,6 +1195,7 @@
 				180AA0822A245D1F00C6265E /* Extension+String.swift */,
 				180AA0872A24989E00C6265E /* Extension+Double.swift */,
 				18E2161D2A2676EE00177161 /* Extention+Timeshtamp.swift */,
+				18D4BFD62A7683420083A433 /* Extension+UIButton.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1393,6 +1403,24 @@
 				18C151562A2782BD0075D57F /* CoredataManager.swift */,
 			);
 			path = Coredata;
+			sourceTree = "<group>";
+		};
+		18D4BFD02A76328A0083A433 /* FollowView */ = {
+			isa = PBXGroup;
+			children = (
+				18D4BFD12A7632A60083A433 /* FollowView.swift */,
+				189950582A779A760045CBF0 /* FollowViewViewModel.swift */,
+				18D4BFD32A764DCF0083A433 /* CustomButtoms */,
+			);
+			path = FollowView;
+			sourceTree = "<group>";
+		};
+		18D4BFD32A764DCF0083A433 /* CustomButtoms */ = {
+			isa = PBXGroup;
+			children = (
+				18D4BFD42A764E530083A433 /* FollowButtom.swift */,
+			);
+			path = CustomButtoms;
 			sourceTree = "<group>";
 		};
 		18D9A5F72A2B086100649CFA /* TitleTextView */ = {
@@ -1660,6 +1688,7 @@
 				186927D42A050D6C00A3A4C7 /* QuantityIngredientsModel.swift in Sources */,
 				18A825AC2A57E2BD002D8304 /* SenderViewController.swift in Sources */,
 				18C098D72A29B68D0034A95E /* RecipeTabBar.swift in Sources */,
+				18D4BFD52A764E530083A433 /* FollowButtom.swift in Sources */,
 				189C6D212A02527E001EB808 /* CookingTableViewCell.swift in Sources */,
 				1819CF8F2A404504009C2CDD /* TextFildButtonViewViewModel.swift in Sources */,
 				189F946B2A18AEE8002DDAEF /* MainViewViewModel.swift in Sources */,
@@ -1677,6 +1706,7 @@
 				18D266DE2A5E8FD7004CF417 /* AlertControllerOKCanselViewModel.swift in Sources */,
 				18C23E3429FD3A0F00B06C53 /* MainWeekHeaderView.swift in Sources */,
 				18D266DC2A5E8A3C004CF417 /* AlertControllerOKCansel.swift in Sources */,
+				18D4BFD72A7683420083A433 /* Extension+UIButton.swift in Sources */,
 				182926F12A3C5AEB00405B6B /* ChatViewControllerViewModel.swift in Sources */,
 				187C070A2A53E63C00D9A570 /* ContentViewController.swift in Sources */,
 				180935CA2A20E2410062F1E9 /* ImageTextViewViewModel.swift in Sources */,
@@ -1697,6 +1727,7 @@
 				18C23E3D29FD657F00B06C53 /* FilterView.swift in Sources */,
 				18C151522A276C8C0075D57F /* BackgroundTextView.swift in Sources */,
 				18CEEC0A2A19EE840019B11F /* InstructionTableViewCellViewModel.swift in Sources */,
+				18D4BFD22A7632A60083A433 /* FollowView.swift in Sources */,
 				18E86D1D2A0B58E1006BDA6E /* AuthTextField.swift in Sources */,
 				187C070C2A53E6A100D9A570 /* MenuViewController.swift in Sources */,
 				186FA35F2A0D32FF0050A5A6 /* AuthAlertViewControllerViewModel.swift in Sources */,
@@ -1774,6 +1805,7 @@
 				18C151572A2782BD0075D57F /* CoredataManager.swift in Sources */,
 				183FDFA12A55929E00963973 /* MessageCellViewModel.swift in Sources */,
 				18D9A6002A2B709900649CFA /* MyReipeCollectionViewCellViewModel.swift in Sources */,
+				189950592A779A760045CBF0 /* FollowViewViewModel.swift in Sources */,
 				18CE674229FC2FAD0057BE58 /* HeaderHomeView.swift in Sources */,
 				18E86D1A2A0B56F3006BDA6E /* AuthButton.swift in Sources */,
 				18A6DEC12A1DFF8200EEFA76 /* CategoryViewControllerViewModel.swift in Sources */,
