@@ -111,21 +111,32 @@ class FollowView: UIView {
     }
     //MARK: - Functions
     public func setupeAnimation() {
-        currentUserImageView.transform = .init(translationX: 200, y: 0)
-        followImageView.transform = .init(translationX: -200, y: 0)
+        currentUserImageView.transform =  .init(rotationAngle: -30 * .pi / 180).concatenating(.init(translationX: 200, y: 0))
+        followImageView.transform = .init(rotationAngle: -30 * .pi / 180).concatenating(.init(translationX: -200, y: 0))
+        sendMessageButtom.transform = .init(translationX: -500, y: 0)
+        followButtom.transform = .init(translationX: 500, y: 0)
+
         arrowRoundImageView.transform = .identity // Reset the transform to identity before each animation
-        let rotationAngleInDegrees: CGFloat = 380.0
+        let rotationAngleInDegrees: CGFloat = 180.0
         let rotationAngleInRadians = rotationAngleInDegrees * .pi / 180.0
 
         UIView.animate(withDuration: 0.7) {
             self.currentUserImageView.transform = .identity
             self.followImageView.transform = .identity
+          
         }
 
         UIView.animate(withDuration: 0.7) {
             self.arrowRoundImageView.transform = CGAffineTransform(rotationAngle: rotationAngleInRadians)
         }
+        UIView.animate(withDuration: 0.9, delay: 0.7, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: [], animations: {
+            self.sendMessageButtom.transform = .identity
+            self.followButtom.transform = .identity
+        }, completion: nil)
+
     }
+
+
 
     private func setupObservers() {
         
@@ -174,7 +185,7 @@ class FollowView: UIView {
         
         
         let followButtomConstraints = [
-            followButtom.topAnchor.constraint(equalTo: sendMessageButtom.bottomAnchor, constant: 40),
+            followButtom.topAnchor.constraint(equalTo: sendMessageButtom.bottomAnchor, constant: 10),
             followButtom.centerXAnchor.constraint(equalTo: centerXAnchor),
             followButtom.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6),
             followButtom.heightAnchor.constraint(equalToConstant: 55)

@@ -200,6 +200,11 @@ class ProfileViewController: UIViewController {
     }
     
     @objc private func segmentedControlValueChanged() {
+        if !viewModel.checkInternetConnection() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.showErrorHUD("you have not internet connection")
+              }
+        }
         if segmentedControl.selectedSegmentIndex == 0 {
             viewModel.lastSnapshot = nil
             viewModel.recipes = []
@@ -229,6 +234,11 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if !viewModel.checkInternetConnection() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.showErrorHUD("you have not internet connection")
+              }
+        }
         // Return the number of items in the collection view
         if viewModel.recipes.count == 0 {
             noRecipeLabel.isHidden = false
@@ -328,12 +338,13 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
         let recipe = viewModel.getRecipe(indexPath: indexPath)
         let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
         vc.delegate = self
-
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .crossDissolve
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.modalTransitionStyle = .crossDissolve
         UIView.animate(withDuration: 0.5) {
-            self.present(vc, animated: true)
+            self.present(navVC, animated: true)
         }
+     
     }
 }
 

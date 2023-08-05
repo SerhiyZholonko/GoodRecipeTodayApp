@@ -16,6 +16,7 @@ protocol ProfileViewControllerViewModelDelegate: AnyObject {
 
 final class ProfileViewControllerViewModel {
     //MARK: - Parameters
+    let internetManager = InternetConnectionManager.shared
     weak var delegate: ProfileViewControllerViewModelDelegate?
     public var isLastRecipeOfCurrentuser: Bool = false {
         didSet {
@@ -61,6 +62,13 @@ final class ProfileViewControllerViewModel {
         configure()
     }
     //MARK: - Functions
+    public func checkInternetConnection() -> Bool {
+        if internetManager.isInternetAvailable() {
+            return true
+        } else {
+            return false
+        }
+    }
     public func updateName(_ newName: String) {
         // Update the name with the new value
         // You can add your logic here

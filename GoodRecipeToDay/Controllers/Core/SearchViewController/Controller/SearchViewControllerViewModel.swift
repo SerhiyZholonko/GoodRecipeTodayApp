@@ -9,7 +9,7 @@ import Foundation
 
 struct SearchViewControllerViewModel {
     let title = "Search"
-    
+
     public var type: CheckmarkTextViewType {
         return typeForFilter
     }
@@ -23,6 +23,5 @@ struct SearchViewControllerViewModel {
     public mutating func setupType(type: CheckmarkTextViewType){
         self.typeForFilter = type
     }
-    
     
 }

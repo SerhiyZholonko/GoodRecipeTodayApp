@@ -154,6 +154,7 @@ class FavoriteViewController: UIViewController {
 //MARK: - delegate collection view
 extension FavoriteViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         if viewModel.recipes.isEmpty {
             emptyRecipesLabel.isHidden = false
         } else {

@@ -216,6 +216,11 @@ final class UserViewController: UIViewController {
 extension UserViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Return the number of items in the collection view
+        if !viewModel.checkInternetConnection() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.showErrorHUD("You have not internet connection")
+              }
+        }
         return viewModel.recipes.count
     }
     

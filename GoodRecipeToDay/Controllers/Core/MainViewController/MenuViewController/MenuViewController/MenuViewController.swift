@@ -9,14 +9,17 @@ import Foundation
 
 
 import UIKit
+import SwiftUI
 import SDWebImage
 import StoreKit
+import MessageUI
+import SafariServices
 
 protocol MenuViewControllerDelegate: AnyObject {
     func configureHeaderView()
 }
 
-class MenuViewController: UIViewController {
+class MenuViewController: UIViewController, MFMailComposeViewControllerDelegate {
     //MARK: - Properties
     weak var delegate: MenuViewControllerDelegate?
     
@@ -121,7 +124,25 @@ class MenuViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(menuStackConstraints)
     }
-    
+
+    func sendEmail() {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["you@yoursite.com"])
+            mail.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
+
+            present(mail, animated: true)
+        } else {
+            // show failure alert
+            guard let url = URL(string: "https://www.google.com") else { return }
+            let vc = SFSafariViewController(url: url)
+                   present(vc, animated: true)
+        }
+    }
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
     @objc func handleTapMessage(_ gesture: UITapGestureRecognizer) {
         // Action to be performed when the gesture is recognized
         let vc = SenderViewController()
@@ -130,10 +151,15 @@ class MenuViewController: UIViewController {
         present(navVC, animated: true)
     }
     @objc func handleTapRateUs(_ gesture: UITapGestureRecognizer) {
-
+        print("Test requestReview")
             if let windowScene = view.window?.windowScene{
                 SKStoreReviewController.requestReview(in: windowScene)
-            
+
+        }
+        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            DispatchQueue.main.async { // claimed to be more reliable, not necessary
+                SKStoreReviewController.requestReview(in: scene)
+            }
         }
     }
     
@@ -157,11 +183,13 @@ class MenuViewController: UIViewController {
              }
     }
     @objc func handleTapContact(_ gesture: UITapGestureRecognizer) {
-
+        sendEmail()
        
     }
     @objc func handleTapPrivacy(_ gesture: UITapGestureRecognizer) {
-
+let vc = PrivacyPolicyViewController()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
        
     }
     

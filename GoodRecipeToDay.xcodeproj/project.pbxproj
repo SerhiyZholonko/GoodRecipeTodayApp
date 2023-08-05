@@ -42,6 +42,10 @@
 		1816E71329FC171400A87487 /* MainViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1816E71229FC171400A87487 /* MainViewControllerViewModel.swift */; };
 		1817E0B32A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1817E0B22A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift */; };
 		1819CF8F2A404504009C2CDD /* TextFildButtonViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1819CF8E2A404504009C2CDD /* TextFildButtonViewViewModel.swift */; };
+		181D25082A7CD78E00AF6106 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181D25072A7CD78E00AF6106 /* PrivacyPolicyViewController.swift */; };
+		181D250D2A7CDF0B00AF6106 /* PrivacyPolicy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 181D250C2A7CDF0B00AF6106 /* PrivacyPolicy.txt */; };
+		181D25102A7CEE3200AF6106 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 181D250F2A7CEE3200AF6106 /* Reachability */; };
+		181D25132A7CF2E200AF6106 /* InternetConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181D25122A7CF2E200AF6106 /* InternetConnectionManager.swift */; };
 		182926EE2A3C5ACD00405B6B /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182926ED2A3C5ACD00405B6B /* ChatViewController.swift */; };
 		182926F12A3C5AEB00405B6B /* ChatViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182926F02A3C5AEB00405B6B /* ChatViewControllerViewModel.swift */; };
 		182926F42A3C6E8C00405B6B /* TextFildButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182926F32A3C6E8C00405B6B /* TextFildButtonView.swift */; };
@@ -221,6 +225,9 @@
 		1816E71229FC171400A87487 /* MainViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerViewModel.swift; sourceTree = "<group>"; };
 		1817E0B22A0CD1AE00F23009 /* TabBarViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewControllerViewModel.swift; sourceTree = "<group>"; };
 		1819CF8E2A404504009C2CDD /* TextFildButtonViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFildButtonViewViewModel.swift; sourceTree = "<group>"; };
+		181D25072A7CD78E00AF6106 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		181D250C2A7CDF0B00AF6106 /* PrivacyPolicy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PrivacyPolicy.txt; sourceTree = "<group>"; };
+		181D25122A7CF2E200AF6106 /* InternetConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionManager.swift; sourceTree = "<group>"; };
 		182926ED2A3C5ACD00405B6B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		182926F02A3C5AEB00405B6B /* ChatViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerViewModel.swift; sourceTree = "<group>"; };
 		182926F32A3C6E8C00405B6B /* TextFildButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFildButtonView.swift; sourceTree = "<group>"; };
@@ -370,6 +377,7 @@
 				18951D382A0666D10064DC00 /* FirebaseAuth in Frameworks */,
 				18951D3C2A0666D10064DC00 /* FirebaseFirestore in Frameworks */,
 				183EA6062A14A5C900ECE4E7 /* SDWebImage in Frameworks */,
+				181D25102A7CEE3200AF6106 /* Reachability in Frameworks */,
 				186186DA2A73DD9300148CD5 /* JGProgressHUD in Frameworks */,
 				18D440242A36452900311B6C /* GoogleSignIn in Frameworks */,
 			);
@@ -501,6 +509,7 @@
 		180A2B412A061D82001DC4EB /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				181D25112A7CF2CC00AF6106 /* InternetConnection */,
 				18C151552A27829F0075D57F /* Firebase */,
 				18D2F3A82A46B2B700DC4395 /* Coredata */,
 			);
@@ -528,6 +537,7 @@
 		1816E6EE29FC0DE900A87487 /* GoodRecipeToDay */ = {
 			isa = PBXGroup;
 			children = (
+				181D250C2A7CDF0B00AF6106 /* PrivacyPolicy.txt */,
 				18AAF15E2A7284C400DD8399 /* click-button-140881.mp3 */,
 				180A2B412A061D82001DC4EB /* Managers */,
 				1816E70629FC0F0500A87487 /* Resurces */,
@@ -581,6 +591,22 @@
 				182E84142A5D38B0003C5B76 /* TabBarViewController */,
 			);
 			path = TabBarViewController;
+			sourceTree = "<group>";
+		};
+		181D25062A7CD77500AF6106 /* Politic */ = {
+			isa = PBXGroup;
+			children = (
+				181D25072A7CD78E00AF6106 /* PrivacyPolicyViewController.swift */,
+			);
+			path = Politic;
+			sourceTree = "<group>";
+		};
+		181D25112A7CF2CC00AF6106 /* InternetConnection */ = {
+			isa = PBXGroup;
+			children = (
+				181D25122A7CF2E200AF6106 /* InternetConnectionManager.swift */,
+			);
+			path = InternetConnection;
 			sourceTree = "<group>";
 		};
 		182926EF2A3C5AD700405B6B /* ChatViewController */ = {
@@ -710,6 +736,7 @@
 		183FDF962A5536A200963973 /* MenuViewController */ = {
 			isa = PBXGroup;
 			children = (
+				181D25062A7CD77500AF6106 /* Politic */,
 				183FDF972A5536CC00963973 /* MenuViewController */,
 				183FDF982A5536D400963973 /* MessgesViewController */,
 			);
@@ -1597,6 +1624,7 @@
 				18D440232A36452900311B6C /* GoogleSignIn */,
 				18D440252A36452900311B6C /* GoogleSignInSwift */,
 				186186D92A73DD9300148CD5 /* JGProgressHUD */,
+				181D250F2A7CEE3200AF6106 /* Reachability */,
 			);
 			productName = GoodRecipeToDay;
 			productReference = 1816E6EC29FC0DE900A87487 /* GoodRecipeToDay.app */;
@@ -1632,6 +1660,7 @@
 				180AA0842A24684F00C6265E /* XCRemoteSwiftPackageReference "Cosmos" */,
 				18D440222A36452900311B6C /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				186186D82A73DD9300148CD5 /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+				181D250E2A7CEE3200AF6106 /* XCRemoteSwiftPackageReference "Reachability" */,
 			);
 			productRefGroup = 1816E6ED29FC0DE900A87487 /* Products */;
 			projectDirPath = "";
@@ -1647,6 +1676,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				181D250D2A7CDF0B00AF6106 /* PrivacyPolicy.txt in Resources */,
 				1816E6FC29FC0DEA00A87487 /* LaunchScreen.storyboard in Resources */,
 				18D1C4052A42C16400B32AC0 /* credentials.plist in Resources */,
 				1816E6F929FC0DEA00A87487 /* Assets.xcassets in Resources */,
@@ -1745,6 +1775,7 @@
 				18E86D272A0B8C12006BDA6E /* CheckView.swift in Sources */,
 				18C85C6F2A34469D00902F51 /* CategoriesViewController.swift in Sources */,
 				189780832A5AAEF70038EE44 /* ContentViewControllerViewModel.swift in Sources */,
+				181D25082A7CD78E00AF6106 /* PrivacyPolicyViewController.swift in Sources */,
 				189C6D1F2A022B9E001EB808 /* AddIngredientTableViewCell.swift in Sources */,
 				18A6DEBF2A1DF8B500EEFA76 /* CategoryViewController.swift in Sources */,
 				180935BE2A20976C0062F1E9 /* HeaderSearchViewViewModel.swift in Sources */,
@@ -1793,6 +1824,7 @@
 				18538B722A34BCE800EF161F /* RecomendCollectionViewCellViewModel.swift in Sources */,
 				186927D22A04EC0400A3A4C7 /* AddPersonsPikerViewController.swift in Sources */,
 				186FA35C2A0D293B0050A5A6 /* Extension+UIViewController.swift in Sources */,
+				181D25132A7CF2E200AF6106 /* InternetConnectionManager.swift in Sources */,
 				18803E542A347A05001E1975 /* CategoryColloctionViewCell.swift in Sources */,
 				18A825AE2A57E2E2002D8304 /* SenderViewControllerViewModel.swift in Sources */,
 				18CEEC0D2A1A4B860019B11F /* PresentImageViewController.swift in Sources */,
@@ -2046,6 +2078,14 @@
 				kind = branch;
 			};
 		};
+		181D250E2A7CEE3200AF6106 /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		183EA6042A14A5C900ECE4E7 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
@@ -2085,6 +2125,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 180AA0842A24684F00C6265E /* XCRemoteSwiftPackageReference "Cosmos" */;
 			productName = Cosmos;
+		};
+		181D250F2A7CEE3200AF6106 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 181D250E2A7CEE3200AF6106 /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
 		};
 		183EA6052A14A5C900ECE4E7 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;

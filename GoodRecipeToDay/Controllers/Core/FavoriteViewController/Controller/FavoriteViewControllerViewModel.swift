@@ -32,6 +32,7 @@ final class FavoriteViewControllerViewModel {
        
     }
     //MARK: - Functions
+
     public func configure() {
     recipes = []
         firebaseManager.getCurrentUsername { [weak self] result in

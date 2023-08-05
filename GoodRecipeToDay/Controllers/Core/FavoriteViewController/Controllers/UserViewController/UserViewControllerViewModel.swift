@@ -14,6 +14,7 @@ protocol UserViewControllerViewModelDelegate: AnyObject {
 final class UserViewControllerViewModel {
     //MARK: - Parameters
     let firebaseManager = FirebaseManager.shared
+    let internetManager = InternetConnectionManager.shared
 
     weak var delegate: UserViewControllerViewModelDelegate?
     
@@ -36,6 +37,13 @@ final class UserViewControllerViewModel {
         configure()
     }
     //MARK: - Functions
+    public func checkInternetConnection() -> Bool {
+        if internetManager.isInternetAvailable() {
+            return true
+        } else {
+            return false
+        }
+    }
     public func getRecipe(indexPath: IndexPath) -> Recipe {
         return self.recipes[indexPath.item]
     }

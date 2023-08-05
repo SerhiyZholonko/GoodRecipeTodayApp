@@ -20,6 +20,9 @@ protocol MainViewControllerViewModelDelegate: AnyObject {
 }
 final class MainViewControllerViewModel {
     weak var delegate: MainViewControllerViewModelDelegate?
+    
+    let internetManager = InternetConnectionManager.shared
+
 //    var completion: ((GUser?) -> Void)?
     let allCategories = Categories.allCases
     let firebaseManager = FirebaseManager.shared
@@ -53,11 +56,21 @@ final class MainViewControllerViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(getingRecipes), name: .updateRecipes, object: nil)
     }
     //MARK: functions
+    public func checkInternetConnection() -> Bool {
+        if internetManager.isInternetAvailable() {
+//            print("Internet is available.")
+            return true
+        } else {
+//            print("Internet is not available.")
+            return false
+        }
+    }
     public func setUser(complition: @escaping (GUser?) -> Void) {
         firebaseManager.fetchCurrentUser {  guser in
             complition(guser)
         }
     }
+    
     
  
 

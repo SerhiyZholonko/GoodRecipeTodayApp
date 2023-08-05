@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Reachability
+
 protocol MainViewControllerDelegate: AnyObject {
     func touchDisMiss()
     func didTapMenuButton()
@@ -158,6 +160,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return viewModel.sections.count
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if !viewModel.checkInternetConnection() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.showErrorHUD("you have not internet connection")
+              }
+        }
         let sectionType = viewModel.sections[section]
 
         switch sectionType {
@@ -218,16 +225,17 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             let vc = CategoryViewController()
             vc.configure(viewModel: CategoryViewControllerViewModel(category: viewModel[indexPath.row].currentCategory))
-            vc.modalPresentationStyle = .fullScreen
-            vc.modalTransitionStyle = .crossDissolve
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
-                self.present(vc, animated: true)
+                self.present(navVC, animated: true)
             }
         case .recomend(viewModel: let viewModel):
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
+            vc.delegate = self
             let navVC = UINavigationController(rootViewController: vc)
-            navVC.delegate = self
             navVC.modalPresentationStyle = .fullScreen
             navVC.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
@@ -237,11 +245,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let recipe = viewModel[indexPath.item].recipe
             let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
             vc.delegate = self
-
-            vc.modalPresentationStyle = .fullScreen
-            vc.modalTransitionStyle = .crossDissolve
+            let navVC = UINavigationController(rootViewController: vc)
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.modalTransitionStyle = .crossDissolve
             UIView.animate(withDuration: 0.5) {
-                self.present(vc, animated: true)
+                self.present(navVC, animated: true)
             }
         }
     }

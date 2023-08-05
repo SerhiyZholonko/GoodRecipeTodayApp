@@ -15,6 +15,7 @@ protocol SearchCollectionViewControllerViewModelDelegate: AnyObject {
 final class SearchCollectionViewControllerViewModel {
     //MARK: - Properties
     weak var delegate: SearchCollectionViewControllerViewModelDelegate?
+    let internetManager = InternetConnectionManager.shared
     let firebaseManager = FirebaseManager.shared
     private var pageSize: Int = 10
     private var lastSnapshot: DocumentSnapshot?
@@ -48,6 +49,14 @@ final class SearchCollectionViewControllerViewModel {
 
     init() {}
     //MARK: - Functions
+    public func checkInternetConnection() -> Bool {
+        if internetManager.isInternetAvailable() {
+            return true
+        } else {
+            return false
+        }
+    }
+
     public func changeRevers() {
         isRevers.toggle()
         getingRecipes()

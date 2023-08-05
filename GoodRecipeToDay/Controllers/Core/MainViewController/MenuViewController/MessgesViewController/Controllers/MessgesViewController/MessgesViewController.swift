@@ -127,11 +127,11 @@ class MessgesViewController: UIViewController {
 
 extension MessgesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if viewModel?.messages.count ?? 0 == 0 {
-//            emptyChatLabel.isHidden = false
-//        } else {
-//            emptyChatLabel.isHidden = true
-//        }
+        if viewModel?.messages.count ?? 0 == 0 {
+            emptyChatLabel.isHidden = false
+        } else {
+            emptyChatLabel.isHidden = true
+        }
         return viewModel?.messages.count ?? 0
     }
     

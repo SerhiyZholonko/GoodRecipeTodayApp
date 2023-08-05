@@ -65,6 +65,11 @@ class SubViewController: UIViewController {
 
 extension SubViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if !viewModel.checkInternetConnection() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.showErrorHUD("You have not internet connection")
+              }
+        }
         if viewModel.filteredData.isEmpty {
             emptyUsersLabel.isHidden = false
         } else {

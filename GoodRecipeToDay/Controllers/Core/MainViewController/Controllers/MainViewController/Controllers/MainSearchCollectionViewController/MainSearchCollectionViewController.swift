@@ -87,11 +87,13 @@ class MainSearchCollectionViewController: UICollectionViewController, UICollecti
         let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
         vc.delegate = self
         
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .crossDissolve
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.modalTransitionStyle = .crossDissolve
         UIView.animate(withDuration: 0.5) {
-            self.present(vc, animated: true)
+            self.present(navVC, animated: true)
         }
+
     }
        // Implement the UICollectionViewDelegateFlowLayout method to specify the spacing around cells
        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

@@ -32,7 +32,11 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
         self.viewModel.updateSearchText(newText: searchText)
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
+        if !viewModel.checkInternetConnection() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.showErrorHUD("you have not internet connection")
+              }
+        }
         if viewModel.recipes.count == 0 {
             delegate?.didNoResult(isHitten: false)
         } else {
@@ -70,13 +74,17 @@ class SearchCollectionViewController: UICollectionViewController, UICollectionVi
         
         
         let recipe = viewModel.getRecipe(indexParh: indexPath)
+       
         let vc = RecipeDetailViewController(viewModel: .init(recipe: recipe) )
         vc.delegate = self
-        vc.modalPresentationStyle = .fullScreen
-        vc.modalTransitionStyle = .crossDissolve
+        let navVC = UINavigationController(rootViewController: vc)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.modalTransitionStyle = .crossDissolve
         UIView.animate(withDuration: 0.5) {
-            self.present(vc, animated: true)
+            self.present(navVC, animated: true)
         }
+    
+
     }
 
 }

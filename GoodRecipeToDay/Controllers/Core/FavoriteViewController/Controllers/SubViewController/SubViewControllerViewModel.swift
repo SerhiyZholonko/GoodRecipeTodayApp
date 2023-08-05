@@ -16,6 +16,8 @@ final class SubViewControllerViewModel {
     weak var delegate: SubViewControllerViewModelDelegate?
     
     private let firebaseManager = FirebaseManager.shared
+    let internetManager = InternetConnectionManager.shared
+
     var followers: [GUser] = [] 
     var filteredData: [GUser] = []
 
@@ -26,6 +28,13 @@ final class SubViewControllerViewModel {
         
     }
     //MARK: - Functions
+    public func checkInternetConnection() -> Bool {
+        if internetManager.isInternetAvailable() {
+            return true
+        } else {
+            return false
+        }
+    }
     public func getUser(indexPath: IndexPath) -> GUser{
             return self.followers[indexPath.item]
     }
